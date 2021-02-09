@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryDashboard", "Legen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryDashboard.Contracts", "LegendaryDashboard.Contracts\LegendaryDashboard.Contracts.csproj", "{FA1BDF0F-8974-4EA4-8E7E-5D46083CBA33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryDashboard.Application", "LegendaryDashboard.Application\LegendaryDashboard.Application.csproj", "{CC182057-C702-4C4A-9D43-99A2BD40C504}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{FA1BDF0F-8974-4EA4-8E7E-5D46083CBA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA1BDF0F-8974-4EA4-8E7E-5D46083CBA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA1BDF0F-8974-4EA4-8E7E-5D46083CBA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC182057-C702-4C4A-9D43-99A2BD40C504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC182057-C702-4C4A-9D43-99A2BD40C504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC182057-C702-4C4A-9D43-99A2BD40C504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC182057-C702-4C4A-9D43-99A2BD40C504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
