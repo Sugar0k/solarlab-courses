@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\alexb\AppData\Local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\alexb\AppData\Local\JetBrains\Rider2020.3\resharper-host\Local\Transient\Rider\v203\SolutionCaches\_LegendaryDashboard.162841733.00" t="ExcludeRecursive" />
+    <e p="C:\Users\alexb\LegendaryDashboard" t="IncludeFlat">
+      <e p="LegendaryDashboard" t="IncludeRecursive">
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Contracts" t="Include">
+          <e p="Advert" t="Include">
+            <e p="AdvertDto.cs" t="Include" />
+            <e p="Requests" t="Include">
+              <e p="Contracts.CreateAdvertRequest.cs" t="Include" />
+              <e p="GetAdvertsRequest.cs" t="Include" />
+            </e>
+          </e>
+          <e p="AdvertImage" t="Include">
+            <e p="AdvertImageDto.cs" t="Include" />
+            <e p="Requests" t="Include">
+              <e p="AdvertImageCreateRequest.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Category" t="Include">
+            <e p="CategoryDto.cs" t="Include" />
+            <e p="Requests" t="Include">
+              <e p="CreateCategoryRequest.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Feedback" t="Include">
+            <e p="FeedbackDto.cs" t="Include" />
+            <e p="FeedbackTotalDto.cs" t="Include" />
+            <e p="Requests" t="Include">
+              <e p="FeedbackCreateRequest.cs" t="Include" />
+              <e p="FeedbackGetRequest.cs" t="Include" />
+              <e p="FeedbackUpdateRequest.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Role" t="Include">
+            <e p="Requests" t="Include">
+              <e p="CreateRoleRequest.cs" t="Include" />
+            </e>
+            <e p="RoleDto.cs" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="Requests" t="Include">
+              <e p="CreateUserRequest.cs" t="Include" />
+            </e>
+            <e p="UserDto.cs" t="Include" />
+          </e>
+          <e p="UserAdvert" t="Include">
+            <e p="Requests" t="Include">
+              <e p="CreateUserAdvertRequest.cs" t="Include" />
+            </e>
+            <e p="UserAdvertDto.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Controllers" t="Include">
+          <e p="Advert" t="Include">
+            <e p="AdvertController.Create.cs" t="Include" />
+            <e p="AdvertController.cs" t="Include" />
+            <e p="AdvertController.Delete.cs" t="Include" />
+            <e p="AdvertController.Get.cs" t="Include" />
+            <e p="AdvertController.Get.Selected.cs" t="Include" />
+            <e p="AdvertExstension.cs" t="Include" />
+          </e>
+          <e p="AdvertImage" t="Include">
+            <e p="AdvertImageController.Create.cs" t="Include" />
+            <e p="AdvertImageController.cs" t="Include" />
+            <e p="AdvertImageController.DeleteByAdvetrId.cs" t="Include" />
+            <e p="AdvertImageController.DeleteById.cs" t="Include" />
+            <e p="AdvertImageController.Get.cs" t="Include" />
+          </e>
+          <e p="Category" t="Include">
+            <e p="CategoryController.Create.cs" t="Include" />
+            <e p="CategoryController.cs" t="Include" />
+            <e p="CategoryController.Delete.cs" t="Include" />
+            <e p="CategoryController.Get.cs" t="Include" />
+            <e p="CategoryExtension.cs" t="Include" />
+          </e>
+          <e p="Feedback" t="Include">
+            <e p="FeedbackController.Create.cs" t="Include" />
+            <e p="FeedbackController.cs" t="Include" />
+            <e p="FeedbackController.Delete.cs" t="Include" />
+            <e p="FeedbackController.Get.cs" t="Include" />
+            <e p="FeedbackController.Update.cs" t="Include" />
+          </e>
+          <e p="Image" t="Include">
+            <e p="ImageController.Create.cs" t="Include" />
+            <e p="ImageController.cs" t="Include" />
+            <e p="ImageController.Delete.cs" t="Include" />
+            <e p="ImageController.Get.cs" t="Include" />
+          </e>
+          <e p="Role" t="Include">
+            <e p="RoleController.Create.cs" t="Include" />
+            <e p="RoleController.cs" t="Include" />
+            <e p="RoleController.DeleteById.cs" t="Include" />
+            <e p="RoleController.GetAll.cs" t="Include" />
+            <e p="RoleController.GetById.cs" t="Include" />
+            <e p="RoleExtension.cs" t="Include" />
+          </e>
+          <e p="User" t="Include">
+            <e p="UserController.Create.cs" t="Include" />
+            <e p="UserController.cs" t="Include" />
+            <e p="UserController.DeleteById.cs" t="Include" />
+            <e p="UserController.GetAll.cs" t="Include" />
+            <e p="UserController.GetByEmail.cs" t="Include" />
+            <e p="UserController.GetById.cs" t="Include" />
+            <e p="UserController.GetByPhone.cs" t="Include" />
+            <e p="UserExtension.cs" t="Include" />
+          </e>
+          <e p="UserAdvert" t="Include">
+            <e p="UserAdvertController.Create.cs" t="Include" />
+            <e p="UserAdvertController.cs" t="Include" />
+            <e p="UserAdvertController.DeleteByAdvertId.cs" t="Include" />
+            <e p="UserAdvertController.DeleteById.cs" t="Include" />
+            <e p="UserAdvertController.DeleteByUserId.cs" t="Include" />
+            <e p="UserAdvertController.GetAll.cs" t="Include" />
+            <e p="UserAdvertController.GetByAdvertId.cs" t="Include" />
+            <e p="UserAdvertController.GetById.cs" t="Include" />
+            <e p="UserAdvertController.GetByUserId.cs" t="Include" />
+            <e p="UserAdvertController.GetLikedByUserId.cs" t="Include" />
+            <e p="UserAdvertExtension.cs" t="Include" />
+          </e>
+        </e>
+        <e p="DbContext" t="Include">
+          <e p="DashboardContext.cs" t="Include" />
+        </e>
+        <e p="LegendaryDashboard.csproj" t="IncludeRecursive" />
+        <e p="Models" t="Include">
+          <e p="Advert.cs" t="Include" />
+          <e p="AdvertConnectionType.cs" t="Include" />
+          <e p="AdvertConnectionTypeEnum.cs" t="Include" />
+          <e p="AdvertImage.cs" t="Include" />
+          <e p="BaseEntity.cs" t="Include" />
+          <e p="Category.cs" t="Include" />
+          <e p="Feedback.cs" t="Include" />
+          <e p="Image.cs" t="Include" />
+          <e p="Role.cs" t="Include" />
+          <e p="User.cs" t="Include" />
+          <e p="UserAdvert.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="LegendaryDashboard.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+      </e>
+      <e p="LegendaryDashboard.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
