@@ -319,6 +319,16 @@
         "runtime": {
           "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll": {}
         }
+      },
+      "LegendaryDashboard.Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/LegendaryDashboard.Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LegendaryDashboard.Contracts.dll": {}
+        }
       }
     }
   },
@@ -957,10 +967,16 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "LegendaryDashboard.Contracts/1.0.0": {
+      "type": "project",
+      "path": "../LegendaryDashboard.Contracts/LegendaryDashboard.Contracts.csproj",
+      "msbuildProject": "../LegendaryDashboard.Contracts/LegendaryDashboard.Contracts.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "LegendaryDashboard.Contracts >= 1.0.0",
       "Microsoft.EntityFrameworkCore.InMemory >= 5.0.2",
       "Microsoft.EntityFrameworkCore.Relational >= 5.0.2",
       "Microsoft.EntityFrameworkCore.Tools >= 5.0.2",
@@ -990,7 +1006,11 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\alexb\\LegendaryDashboard\\LegendaryDashboard.Contracts\\LegendaryDashboard.Contracts.csproj": {
+              "projectPath": "C:\\Users\\alexb\\LegendaryDashboard\\LegendaryDashboard.Contracts\\LegendaryDashboard.Contracts.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
