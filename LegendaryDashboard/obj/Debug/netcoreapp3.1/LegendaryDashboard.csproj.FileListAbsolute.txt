@@ -32,3 +32,13 @@ C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\obj\Debug\netcoreapp3.1\sta
 C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\obj\Debug\netcoreapp3.1\LegendaryDashboard.dll
 C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\obj\Debug\netcoreapp3.1\LegendaryDashboard.pdb
 C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\obj\Debug\netcoreapp3.1\LegendaryDashboard.genruntimeconfig.cache
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Humanizer.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.InMemory.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\alexb\LegendaryDashboard\LegendaryDashboard\obj\Debug\netcoreapp3.1\LegendaryDashboard.MvcApplicationPartsAssemblyInfo.cs
