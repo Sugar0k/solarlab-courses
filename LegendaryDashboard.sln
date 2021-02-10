@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryDashboard", "LegendaryDashboard\LegendaryDashboard.csproj", "{C494BB2A-9FBF-4945-BC25-8E36DF4C1054}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryDashboard.Api", "LegendaryDashboard.Api\LegendaryDashboard.Api.csproj", "{C494BB2A-9FBF-4945-BC25-8E36DF4C1054}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryDashboard.Contracts", "LegendaryDashboard.Contracts\LegendaryDashboard.Contracts.csproj", "{FA1BDF0F-8974-4EA4-8E7E-5D46083CBA33}"
 EndProject
