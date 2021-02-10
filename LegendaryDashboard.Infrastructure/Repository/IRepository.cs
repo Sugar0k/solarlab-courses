@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LegendaryDashboard.Domain.Models;
 
-namespace LegendaryDashboard.Application
+namespace LegendaryDashboard.Infrastructure.Repository
 {
     public interface IRepository<TEntity, TId>
         where TEntity : BaseEntity<TId>
@@ -12,5 +11,7 @@ namespace LegendaryDashboard.Application
         IQueryable<TEntity> AsQueryable();
         
         Task<TEntity> Save(TEntity entity, CancellationToken ct = default);
+        Task<TEntity> FindById(TId Id, CancellationToken cancellationToken);
+        Task DeleteById(TId Id, CancellationToken cancellationToken);
     }
 }

@@ -5,9 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LegendaryDashboard.Api\LegendaryDashboard.Api.csproj" />
       <ProjectReference Include="..\LegendaryDashboard.Domain\LegendaryDashboard.Domain.csproj" />
-      <ProjectReference Include="..\LegendaryDashboard.Infrastructure\LegendaryDashboard.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
