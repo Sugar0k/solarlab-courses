@@ -1,6 +1,6 @@
 namespace LegendaryDashboard.Domain.Models
 {
-    public class UserAdvert : BaseEntity
+    public class UserAdvert : BaseEntity<int>
     {
         public int UserId { get; set; }
         public User User { get; set; }
