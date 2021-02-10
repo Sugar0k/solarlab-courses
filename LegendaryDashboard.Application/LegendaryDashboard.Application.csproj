@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\UserService\Implimintations" />
+      <Folder Include="Services\UserService\Implementations" />
       <Folder Include="Services\UserService\Interfaces" />
     </ItemGroup>
 
