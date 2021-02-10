@@ -1,6 +1,6 @@
 namespace LegendaryDashboard.Domain.Models
 {
-    public class AdvertImage : BaseEntity
+    public class AdvertImage : BaseEntity<int>
     {
         public string ImageGuid { get; set; }      // внешний ключ
         public Image Image { get; set; }      // навигационное свойство

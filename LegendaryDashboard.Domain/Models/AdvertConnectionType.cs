@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace LegendaryDashboard.Domain.Models
 {
-    public class AdvertConnectionType : BaseEntity
+    public class AdvertConnectionType : BaseEntity<int>
     {
         public string Heading { get; set; }
         

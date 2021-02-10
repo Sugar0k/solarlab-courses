@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LegendaryDashboard.Domain.Models
 {
-    public class Image
+    public class Image : BaseEntity<string>
     {
         public string FileName { get; set; } //Изначальное название
         public string Guid { get; set; } //Уникальный номер + расширение 

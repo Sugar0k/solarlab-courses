@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LegendaryDashboard.Domain.Models
 {
-    public class Advert : BaseEntity
+    public class Advert : BaseEntity<int>
     {
         public int CategoryId { get; set; } 
         public Category Category { get; set; }

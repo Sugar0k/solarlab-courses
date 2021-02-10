@@ -4,4 +4,14 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LegendaryDashboard.Api\LegendaryDashboard.Api.csproj" />
+      <ProjectReference Include="..\LegendaryDashboard.Domain\LegendaryDashboard.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\UserService\Implementations" />
+      <Folder Include="Services\UserService\Interfaces" />
+    </ItemGroup>
+
 </Project>

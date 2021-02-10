@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LegendaryDashboard.Domain.Models
 {
-    public class Feedback : BaseEntity
+    public class Feedback : BaseEntity<int>
     {
         public int UserId { get; set; } //Кому пишут комментарий
         public User User { get; set; }

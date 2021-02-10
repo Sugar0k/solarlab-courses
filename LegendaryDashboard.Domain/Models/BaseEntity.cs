@@ -1,7 +1,7 @@
 namespace LegendaryDashboard.Domain.Models
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity<TId>
     {
-        public int Id { get; set; }
+        public TId Id { get; set; }
     }
 }
