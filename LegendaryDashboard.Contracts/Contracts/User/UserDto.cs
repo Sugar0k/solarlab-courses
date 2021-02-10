@@ -1,6 +1,6 @@
 using System;
 
-namespace LegendaryDashboard.Contracts.User
+namespace LegendaryDashboard.Contracts.Contracts.User
 {
     public class UserDto
     {

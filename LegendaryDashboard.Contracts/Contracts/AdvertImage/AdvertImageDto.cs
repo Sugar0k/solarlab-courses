@@ -1,4 +1,4 @@
-namespace LegendaryDashboard.Controllers.AdvertImage.AdvertImageDto
+namespace LegendaryDashboard.Contracts.Contracts.AdvertImage
 {
     public class AdvertImageDto
     {

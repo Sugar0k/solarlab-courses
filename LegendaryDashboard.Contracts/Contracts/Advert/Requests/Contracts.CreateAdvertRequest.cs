@@ -1,4 +1,4 @@
-﻿namespace LegendaryDashboard.Contracts
+﻿namespace LegendaryDashboard.Contracts.Contracts.Advert.Requests
 {
     public sealed class CreateAdvertRequest
     {

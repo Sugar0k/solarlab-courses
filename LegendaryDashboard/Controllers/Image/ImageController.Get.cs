@@ -9,7 +9,7 @@ namespace LegendaryDashboard.Controllers.Image
         [Route("get")]
         public IActionResult Get(string guid)
         {
-            Models.Image image = _db.Images.Find(guid);
+            Domain.Models.Image image = _db.Images.Find(guid);
             if (image == null) return BadRequest();
             byte[] mas = System.IO.File.ReadAllBytes(Path.Combine(image.FilePath, image.Guid));
             string fileType = "image/jpeg";

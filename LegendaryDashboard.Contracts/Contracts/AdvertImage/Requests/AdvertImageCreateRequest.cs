@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LegendaryDashboard.Contracts
+namespace LegendaryDashboard.Contracts.Contracts.AdvertImage.Requests
 {
     public class AdvertImageCreateRequest
     {

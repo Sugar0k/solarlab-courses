@@ -1,4 +1,4 @@
-namespace LegendaryDashboard.Controllers.Advert.AdvertDto
+namespace LegendaryDashboard.Contracts.Contracts.Advert.Requests
 {
     public sealed class GetAdvertsRequest
     {

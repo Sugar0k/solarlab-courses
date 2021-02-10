@@ -1,4 +1,4 @@
-using LegendaryDashboard.Models;
+using LegendaryDashboard.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LegendaryDashboard.DbContext

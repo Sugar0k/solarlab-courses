@@ -1,4 +1,4 @@
-﻿namespace LegendaryDashboard.Contracts.CategoryDto
+﻿namespace LegendaryDashboard.Contracts.Contracts.Category
 {
     public sealed class CategoryDto
     {

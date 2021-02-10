@@ -11,7 +11,7 @@ namespace LegendaryDashboard.Controllers.UserAdvert
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Models.UserAdvert userAdvert = _db.UserAdverts.FirstOrDefault(c => c.Id == id);
+            Domain.Models.UserAdvert userAdvert = _db.UserAdverts.FirstOrDefault(c => c.Id == id);
 
             if (userAdvert == null)
             {

@@ -1,5 +1,6 @@
 using System.Linq;
 using LegendaryDashboard.Contracts;
+using LegendaryDashboard.Contracts.Contracts.AdvertImage.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Controllers.AdvertImage
@@ -15,7 +16,7 @@ namespace LegendaryDashboard.Controllers.AdvertImage
                 return BadRequest();
             }
             
-            var adImage = new Models.AdvertImage
+            var adImage = new Domain.Models.AdvertImage
             {
                 ImageGuid = request.ImageGuid,
                 AdvertId = request.AdvertId

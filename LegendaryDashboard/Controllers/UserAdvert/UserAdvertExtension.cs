@@ -1,10 +1,10 @@
-using LegendaryDashboard.Contracts.UserAdvert;
+using LegendaryDashboard.Contracts.Contracts.UserAdvert;
 
 namespace LegendaryDashboard.Controllers.UserAdvert
 {
     public static class UserAdvertExtension
     {
-        public static UserAdvertDto ToDto(this Models.UserAdvert ua)
+        public static UserAdvertDto ToDto(this Domain.Models.UserAdvert ua)
         {
             return new()
             {

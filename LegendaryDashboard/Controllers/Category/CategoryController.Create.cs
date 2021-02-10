@@ -1,5 +1,5 @@
 using System.Linq;
-using LegendaryDashboard.Contracts.Category.Requests;
+using LegendaryDashboard.Contracts.Contracts.Category.Requests;
 using LegendaryDashboard.DbContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +17,7 @@ namespace LegendaryDashboard.Controllers.Category
                 return BadRequest("Элемент с таким названием уже существует");    
             }
 
-            var newCategory = new Models.Category
+            var newCategory = new Domain.Models.Category
             {
                 Title = request.Title,
                 ParentCategoryId = request.ParentCategoryId

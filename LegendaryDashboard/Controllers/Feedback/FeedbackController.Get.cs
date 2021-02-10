@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using LegendaryDashboard.Contracts.Feedback.Requests;
-using LegendaryDashboard.Contracts.FeedbackDto;
+using LegendaryDashboard.Contracts.Contracts.Feedback;
+using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Controllers.Feedback

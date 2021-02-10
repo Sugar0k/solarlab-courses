@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LegendaryDashboard.Models
+namespace LegendaryDashboard.Domain.Models
 {
     public class Advert : BaseEntity
     {

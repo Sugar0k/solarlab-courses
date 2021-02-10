@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LegendaryDashboard.Contracts;
+using LegendaryDashboard.Contracts.Contracts.AdvertImage;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Controllers.AdvertImage
@@ -10,10 +11,10 @@ namespace LegendaryDashboard.Controllers.AdvertImage
     {
         [HttpPost]
         [Route("get")]
-        public IEnumerable<AdvertImageDto.AdvertImageDto> Get(int advertId)
+        public IEnumerable<AdvertImageDto> Get(int advertId)
         {
             return _db.AdvertImages.Where(c => c.AdvertId == advertId)
-                .Select(adImage => new AdvertImageDto.AdvertImageDto()
+                .Select(adImage => new AdvertImageDto()
             {
                 id = adImage.Id,
                 ImageGuid = adImage.ImageGuid,

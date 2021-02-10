@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LegendaryDashboard.Models
+namespace LegendaryDashboard.Domain.Models
 {
     public class Feedback : BaseEntity
     {

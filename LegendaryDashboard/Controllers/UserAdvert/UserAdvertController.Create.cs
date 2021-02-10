@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using LegendaryDashboard.Contracts.UserAdvert.Requests;
+using LegendaryDashboard.Contracts.Contracts.UserAdvert.Requests;
 
 namespace LegendaryDashboard.Controllers.UserAdvert
 {
@@ -16,7 +16,7 @@ namespace LegendaryDashboard.Controllers.UserAdvert
                 return BadRequest("Такая связь уже существует!");
             }
 
-            var newUserAdvert = new Models.UserAdvert
+            var newUserAdvert = new Domain.Models.UserAdvert
             {
                 UserId = request.UserId,
                 AdvertId = request.AdvertId,

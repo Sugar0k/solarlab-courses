@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LegendaryDashboard.Models
+namespace LegendaryDashboard.Domain.Models
 {
     public class User : BaseEntity
     {

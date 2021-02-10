@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LegendaryDashboard.Contracts.Role.Requests
+namespace LegendaryDashboard.Contracts.Contracts.Role.Requests
 {
     public class CreateRoleRequest
     {

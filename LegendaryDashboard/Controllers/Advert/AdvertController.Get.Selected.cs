@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LegendaryDashboard.Controllers.Advert.AdvertDto;
+using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +9,7 @@ namespace LegendaryDashboard.Controllers.Advert
     public partial class AdvertController
     {
         [HttpPost("selected")]
-        public List<AdvertDto.AdvertDto> GetSelectedAdverts(GetAdvertsRequest request)
+        public List<Contracts.Contracts.Advert.AdvertDto> GetSelectedAdverts(GetAdvertsRequest request)
         {
             var query = _db.Adverts.AsQueryable();
 

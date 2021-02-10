@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using LegendaryDashboard.Contracts.Role.Requests;
+using LegendaryDashboard.Contracts.Contracts.Role.Requests;
 
 namespace LegendaryDashboard.Controllers.Role
 {
@@ -15,7 +15,7 @@ namespace LegendaryDashboard.Controllers.Role
                 return BadRequest("Роль с таким названием уже существует");
             }
 
-            var newRole = new Models.Role
+            var newRole = new Domain.Models.Role
             {
                 Name = request.Name
             };

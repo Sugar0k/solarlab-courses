@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using LegendaryDashboard.Contracts.CategoryDto;
+using LegendaryDashboard.Contracts.Contracts.Category;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Controllers.Category

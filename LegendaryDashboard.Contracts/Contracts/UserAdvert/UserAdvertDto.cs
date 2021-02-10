@@ -1,4 +1,4 @@
-namespace LegendaryDashboard.Contracts.UserAdvert
+namespace LegendaryDashboard.Contracts.Contracts.UserAdvert
 {
     public class UserAdvertDto
     {

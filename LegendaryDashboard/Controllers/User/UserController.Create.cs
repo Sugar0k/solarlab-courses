@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using LegendaryDashboard.Contracts.User.Requests;
+using LegendaryDashboard.Contracts.Contracts.User.Requests;
 
 namespace LegendaryDashboard.Controllers.User
 {
@@ -16,7 +16,7 @@ namespace LegendaryDashboard.Controllers.User
                 return BadRequest("Пользователь уже существует");
             }
 
-            var newUser = new Models.User
+            var newUser = new Domain.Models.User
             {
                 FirstName = request.FirstName,
                 MiddleName = request.MiddleName,

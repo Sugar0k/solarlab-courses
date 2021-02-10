@@ -1,4 +1,4 @@
-namespace LegendaryDashboard.Models
+namespace LegendaryDashboard.Domain.Models
 {
     public class UserAdvert : BaseEntity
     {

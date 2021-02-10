@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace LegendaryDashboard.Models
+namespace LegendaryDashboard.Domain.Models
 {
     public class Image
     {

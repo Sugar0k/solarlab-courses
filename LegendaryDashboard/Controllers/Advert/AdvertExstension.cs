@@ -2,7 +2,7 @@
 {
     public static class AdvertExtension
     {
-        public static AdvertDto.AdvertDto ToDto(this Models.Advert advert)
+        public static Contracts.Contracts.Advert.AdvertDto ToDto(this Domain.Models.Advert advert)
         {
             return new()
             {

@@ -1,4 +1,4 @@
-namespace LegendaryDashboard.Contracts.RoleDto
+namespace LegendaryDashboard.Contracts.Contracts.Role
 {
     public class RoleDto
     {

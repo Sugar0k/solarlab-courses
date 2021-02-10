@@ -1,5 +1,5 @@
 using System.Linq;
-using LegendaryDashboard.Contracts.Feedback.Requests;
+using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Controllers.Feedback

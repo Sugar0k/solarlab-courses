@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using LegendaryDashboard.Contracts.UserAdvert;
+using LegendaryDashboard.Contracts.Contracts.UserAdvert;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Controllers.UserAdvert

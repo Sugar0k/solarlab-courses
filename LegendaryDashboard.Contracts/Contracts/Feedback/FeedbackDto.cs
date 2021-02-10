@@ -1,4 +1,4 @@
-namespace LegendaryDashboard.Contracts.FeedbackDto
+namespace LegendaryDashboard.Contracts.Contracts.Feedback
 {
     public class FeedbackDto
     {

@@ -1,4 +1,4 @@
-using LegendaryDashboard.Contracts.Feedback.Requests;
+using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using LegendaryDashboard.DbContext;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +10,7 @@ namespace LegendaryDashboard.Controllers.Feedback
         [Route("create")]
         public IActionResult Create(FeedbackCreateRequest createRequest)
         {
-            var feedback = new Models.Feedback
+            var feedback = new Domain.Models.Feedback
             {
                 UserId = createRequest.UserId,
                 //TODO: будет взято из контекста

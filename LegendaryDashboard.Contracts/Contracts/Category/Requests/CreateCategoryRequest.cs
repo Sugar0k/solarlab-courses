@@ -1,4 +1,4 @@
-namespace LegendaryDashboard.Contracts.Category.Requests
+namespace LegendaryDashboard.Contracts.Contracts.Category.Requests
 {
     public sealed class CreateCategoryRequest
     {

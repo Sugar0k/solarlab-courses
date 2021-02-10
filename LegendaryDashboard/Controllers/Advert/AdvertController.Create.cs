@@ -1,4 +1,4 @@
-﻿using LegendaryDashboard.Contracts;
+﻿using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Controllers.Advert
@@ -10,7 +10,7 @@ namespace LegendaryDashboard.Controllers.Advert
         public IActionResult Create(CreateAdvertRequest request)
         {
             
-            var newAdvert = new Models.Advert
+            var newAdvert = new Domain.Models.Advert
             {
                 CategoryId = request.CategoryId,
                 Title = request.Title,

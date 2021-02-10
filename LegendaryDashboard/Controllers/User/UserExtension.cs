@@ -1,10 +1,10 @@
-using LegendaryDashboard.Contracts.User;
+using LegendaryDashboard.Contracts.Contracts.User;
 
 namespace LegendaryDashboard.Controllers.User
 {
     public static class UserExtension
     {
-        public static UserDto ToDto(this Models.User user)
+        public static UserDto ToDto(this Domain.Models.User user)
         {
             return new()
             {

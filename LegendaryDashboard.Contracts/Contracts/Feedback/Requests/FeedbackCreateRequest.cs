@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace LegendaryDashboard.Contracts.Feedback.Requests
+namespace LegendaryDashboard.Contracts.Contracts.Feedback.Requests
 {
     public class FeedbackCreateRequest
     {

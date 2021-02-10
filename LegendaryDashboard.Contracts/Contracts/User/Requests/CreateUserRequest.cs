@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace LegendaryDashboard.Contracts.User.Requests
+namespace LegendaryDashboard.Contracts.Contracts.User.Requests
 {
     public class CreateUserRequest
     {

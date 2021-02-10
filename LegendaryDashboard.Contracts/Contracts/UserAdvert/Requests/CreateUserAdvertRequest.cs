@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
-namespace LegendaryDashboard.Contracts.UserAdvert.Requests
+namespace LegendaryDashboard.Contracts.Contracts.UserAdvert.Requests
 {
     public class CreateUserAdvertRequest
     {

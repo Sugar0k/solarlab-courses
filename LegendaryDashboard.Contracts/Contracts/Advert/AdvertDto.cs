@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
 
-namespace LegendaryDashboard.Controllers.Advert.AdvertDto
+namespace LegendaryDashboard.Contracts.Contracts.Advert
 {
     public sealed class AdvertDto
     {

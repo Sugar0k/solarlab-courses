@@ -10,7 +10,7 @@ namespace LegendaryDashboard.Controllers.User
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Models.User user = _db.Users.FirstOrDefault(c => c.Id == id);
+            Domain.Models.User user = _db.Users.FirstOrDefault(c => c.Id == id);
 
             if (user == null)
             {

@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Controllers.UserAdvert
         [HttpDelete("user/{id}")]
         public IActionResult DeleteByUser(int id)
         {
-            IEnumerable<Models.UserAdvert> userAdverts = _db.UserAdverts.Where(c => c.UserId == id);
+            IEnumerable<Domain.Models.UserAdvert> userAdverts = _db.UserAdverts.Where(c => c.UserId == id);
 
             _db.UserAdverts.RemoveRange(userAdverts);
             _db.SaveChangesAsync();

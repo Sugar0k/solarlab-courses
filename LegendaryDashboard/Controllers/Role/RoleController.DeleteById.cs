@@ -10,7 +10,7 @@ namespace LegendaryDashboard.Controllers.Role
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Models.Role role = _db.Roles.FirstOrDefault(c => c.Id == id);
+            Domain.Models.Role role = _db.Roles.FirstOrDefault(c => c.Id == id);
 
             if (role == null)
             {

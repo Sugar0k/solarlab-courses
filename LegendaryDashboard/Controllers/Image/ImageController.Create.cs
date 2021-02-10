@@ -23,7 +23,7 @@ namespace LegendaryDashboard.Controllers.Image
                 string guid = Guid.NewGuid() + Path.GetExtension(file.FileName);
                 using Stream fileStream = new FileStream(Path.Combine(path, guid), FileMode.Create);
                 file.CopyTo(fileStream);
-                _db.Images.Add(new Models.Image
+                _db.Images.Add(new Domain.Models.Image
                 {
                     FileName = file.FileName,
                     Guid = guid,
