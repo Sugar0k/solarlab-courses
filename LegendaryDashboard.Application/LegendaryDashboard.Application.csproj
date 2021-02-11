@@ -2,12 +2,18 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LegendaryDashboard.Api\LegendaryDashboard.Api.csproj" />
       <ProjectReference Include="..\LegendaryDashboard.Domain\LegendaryDashboard.Domain.csproj" />
       <ProjectReference Include="..\LegendaryDashboard.Infrastructure\LegendaryDashboard.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,7 @@
+using System.Text;
 using LegendaryDashboard.Api.DbContext;
+using LegendaryDashboard.Application.Services.UserService.Identity;
+using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LegendaryDashboard.Api
 {
@@ -21,15 +25,34 @@ namespace LegendaryDashboard.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DashboardContext>(
+            services
+                .AddDbContext<DashboardContext>(
                 opt => opt.UseInMemoryDatabase(databaseName:"Dash"));
-            services.AddControllers();
-            
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services
+                .AddControllers();
+            services
+                .AddHttpContextAccessor()
+                .AddScoped<IClaimsAccessor, HttpContextClaimsAccessor>();
+
+            services
+                .AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "LegendaryDashboard", Version = "v1.1"});
             });
+            /*services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtBearerOptions =>
+                {
+                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateActor = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"]))
+                    };
+                });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,104 +1,94 @@
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using LegendaryDashboard.Infrastructure.Repository;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts.User;
 using LegendaryDashboard.Contracts.Contracts.User.Requests;
 using LegendaryDashboard.Domain.Models;
-using LegendaryDashboard.Infrastructure.Repository;
-using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LegendaryDashboard.Application.Services.UserService.Implementations
 {
-    public sealed class UserService : IUserService
+    public class UserService : IUserService
     {
-        private readonly IConfiguration _configuration;
-
         private readonly IClaimsAccessor _claimsAccessor;
-        private readonly IRepository<User, int> _repository;
-        
+        private readonly IRepository<Domain.Models.User, int> _repository;
+        private readonly IMapper _mapper;
+
+        public UserService(IClaimsAccessor claimsAccessor, IRepository<User, int> repository, IMapper mapper)
+        {
+            _claimsAccessor = claimsAccessor;
+            _repository = repository;
+            _mapper = mapper;
+        }
+
+
         public async Task<UserDto> GetCurrent(CancellationToken cancellationToken)
         {
             var claim = (await _claimsAccessor.GetCurrentClaims(cancellationToken))
                 .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)
                 ?.Value;
-
             if (string.IsNullOrWhiteSpace(claim))
             {
                 return null;
             }
-
             var intId = int.Parse(claim);
-
-            var user = await _repository.FindById(intId, cancellationToken);
-            // if (user == null)
-            // {
-            //     throw new NoRightsException("Нет прав");
-            // }
-            return new UserDto()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                MiddleName = user.MiddleName,
-                LastName = user.LastName,
-                Phone = user.Phone,
-                Email = user.Email,
-                RegisterDate = user.RegisterDate,
-                RoleId = user.RoleId
-            };
-        }
-
-        public async Task<UserDto> Create(CreateUserRequest request, CancellationToken cancellationToken)
-        {
-            if (request == null)
-                throw new ArgumentNullException(nameof(request));
-            //TODO: Добавить автомаппер
-            var user = new User
-            {
-                FirstName = request.FirstName,
-                MiddleName = request.MiddleName,
-                LastName = request.LastName,
-                Phone = request.Phone,
-                Email = request.Email,
-                PasswordHash = request.PasswordHash,
-                RegisterDate = DateTime.UtcNow,
-                RoleId = request.RoleId
-            };
-
-            await _repository.Save(user, cancellationToken);
-            
-            //TODO: Добавить автомаппер
-            return new UserDto()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                MiddleName = user.MiddleName,
-                LastName = user.LastName,
-                Phone = user.Phone,
-                Email = user.Email,
-                RegisterDate = user.RegisterDate,
-                RoleId = user.RoleId
-            };
-            
-        }
-
-        public async Task DeleteById(int Id, CancellationToken cancellationToken)
-        {
-            var user = _repository.FindById(Id, cancellationToken);
+            User user = await _repository.FindById(intId, cancellationToken);
             if (user == null)
             {
-                throw new Exception("Такого пользователя не существует");
+                throw new Exception("Нет прав");
+            }
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public Task<LoginResponce> Login(LoginUserRequest request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*public async Task<LoginResponce> Login(LoginUserRequest request, CancellationToken cancellationToken)
+        {
+            var user = await _repository.FindWhere(u => u.Email == request.Email, cancellationToken);
+            if (user == null || !user.PasswordHash.Equals(request.PasswordHash))
+            {
+                throw new Exception("Нет прав");
             }
 
-            await _repository.DeleteById(Id, cancellationToken);
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Email, request.Email),
+                new(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
             
-        }
-        
-         public async Task<IQueryable<UserDto>> GetAll(CancellationToken cancellationToken)
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(60),
+                notBefore: DateTime.UtcNow,
+                signingCredentials: new SigningCredentials(
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Token:Key"])),
+                    SecurityAlgorithms.HmacSha256)
+            );
+
+            return new LoginResponce()
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token)
+            };
+        }*/
+
+        public async Task<UserDto> Register(CreateUserRequest request, CancellationToken cancellationToken)
         {
-            return await _repository.
+            var user = _mapper.Map<User>(request);
+
+            await _repository.Save(user, cancellationToken);
+
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

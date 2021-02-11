@@ -16,8 +16,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LegendaryDashboard.Application\LegendaryDashboard.Application.csproj" />
       <ProjectReference Include="..\LegendaryDashboard.Contracts\LegendaryDashboard.Contracts.csproj" />
       <ProjectReference Include="..\LegendaryDashboard.Domain\LegendaryDashboard.Domain.csproj" />
+      <ProjectReference Include="..\LegendaryDashboard.Infrastructure\LegendaryDashboard.Infrastructure.csproj" />
     </ItemGroup>
 
 
