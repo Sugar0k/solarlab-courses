@@ -20,18 +20,8 @@ namespace LegendaryDashboard.Api.Controllers.User
             CancellationToken cancellationToken
         )
         {
-            
-            var response = await service.Register(new CreateUserRequest()
-            {
-                FirstName = request.FirstName,
-                MiddleName = request.MiddleName,
-                LastName = request.LastName,
-                Phone = request.Phone,
-                Email = request.Email,
-                RoleId = request.RoleId
-            }, cancellationToken);
-            
-            return Created($"api/v1/users/{response.Id}", response);
+            await service.Register(request, cancellationToken);
+            return Ok();
             /*if (_db.Users.Any(c => c.Phone == request.Phone || c.Email == request.Email))
             {
                 return BadRequest("Пользователь уже существует");

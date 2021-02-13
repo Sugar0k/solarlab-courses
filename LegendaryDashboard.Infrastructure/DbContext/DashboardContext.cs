@@ -1,7 +1,7 @@
 using LegendaryDashboard.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LegendaryDashboard.Api.DbContext
+namespace LegendaryDashboard.Infrastructure.DbContext
 {
     public class DashboardContext : Microsoft.EntityFrameworkCore.DbContext
     {
@@ -10,16 +10,6 @@ namespace LegendaryDashboard.Api.DbContext
             : base(options)
         {
         }
-        
-        public DbSet<Advert> Adverts { get; set; }
-        public DbSet<AdvertConnectionType> AdvertConnectionTypes { get; set; }
-        public DbSet<AdvertImage> AdvertImages { get; set; }
-        public DbSet<Category> Categories {get; set;}
-        public DbSet<Feedback> Feedbacks {get; set;}
-        public DbSet<Image> Images {get; set;}
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<UserAdvert> UserAdverts {get; set;}
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

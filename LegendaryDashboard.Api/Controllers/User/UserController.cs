@@ -1,4 +1,4 @@
-using LegendaryDashboard.Api.DbContext;
+using LegendaryDashboard.Infrastructure.DbContext;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Api.Controllers.User
