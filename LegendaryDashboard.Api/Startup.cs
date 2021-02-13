@@ -1,7 +1,10 @@
 using System.Text;
-using LegendaryDashboard.Api.DbContext;
-using LegendaryDashboard.Application.Services.UserService.Identity;
+using LegendaryDashboard.Application.Services.Repositories;
+using LegendaryDashboard.Application.Services.UserService.Implementations;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
+using LegendaryDashboard.Infrastructure.DbContext;
+using LegendaryDashboard.Infrastructure.IRepositories;
+using LegendaryDashboard.Infrastructure.MapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -31,9 +34,9 @@ namespace LegendaryDashboard.Api
             services
                 .AddControllers();
             services
-                .AddHttpContextAccessor()
-                .AddScoped<IClaimsAccessor, HttpContextClaimsAccessor>();
-
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IUserRepository, UserRepository>()
+                .AddAutoMapper(typeof(UserMapperProfile).Assembly);
             services
                 .AddSwaggerGen(c =>
             {

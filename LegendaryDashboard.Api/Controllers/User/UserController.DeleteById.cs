@@ -1,4 +1,7 @@
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Api.Controllers.User
@@ -8,18 +11,13 @@ namespace LegendaryDashboard.Api.Controllers.User
     {
         //TODO: Добавить Authorize(Roles = "admin")
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(
+            int id,
+            [FromServices] IUserService service,
+            CancellationToken cancellationToken
+        )
         {
-            Domain.Models.User user = _db.Users.FirstOrDefault(c => c.Id == id);
-
-            if (user == null)
-            {
-                return NotFound("There is no such user");    // Нет такого пользователя
-            }
-
-            _db.Users.Remove(user);
-            _db.SaveChangesAsync();
-
+            await service.Delete(id, cancellationToken);
             return NoContent();
         }
     }
