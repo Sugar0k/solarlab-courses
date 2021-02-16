@@ -40,7 +40,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         }
         public async Task<UserDto> FindById(int id, CancellationToken cancellationToken)
         {
-            var user = _repository.FindById(id, cancellationToken);
+            var user = await _repository.FindById(id, cancellationToken);
             return _mapper.Map<UserDto>(user);
         }
     }
