@@ -16,11 +16,8 @@ namespace LegendaryDashboard.Infrastructure.MapperProfiles
                     r => r.Ignore());
 
             CreateMap<User, UserDto>();
-            CreateMap<List<CreateUserRequest>, List<User>>()
-                .ForAllOtherMembers(opt => opt.Ignore());
-            
-            CreateMap<List<User>, List<UserDto>>()
-                .ForAllOtherMembers(opt => opt.Ignore());
+            CreateMap<List<CreateUserRequest>, List<User>>();
+            CreateMap<List<User>, List<UserDto>>();
         }
     }
 }
