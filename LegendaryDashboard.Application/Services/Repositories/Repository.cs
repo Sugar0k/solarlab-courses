@@ -26,16 +26,15 @@ namespace LegendaryDashboard.Application.Services.Repositories
         public async Task Save(TEntity entity, CancellationToken cancellationToken)
         {
             await DbSet.AddAsync(entity, cancellationToken);
+            await Context.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
         {
-            // Слы, переделай :(
             return await DbSet.FindAsync(id);
         }
 
-        /* Перенести в репозитории модели
-         */
+        // TODO: Перенести в репозитории модели
 
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)
         {
