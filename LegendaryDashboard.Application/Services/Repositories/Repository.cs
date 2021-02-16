@@ -26,6 +26,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
         public async Task Save(TEntity entity, CancellationToken cancellationToken)
         {
             await DbSet.AddAsync(entity, cancellationToken);
+            await Context.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
