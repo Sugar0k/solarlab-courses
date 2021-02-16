@@ -30,7 +30,8 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
         {
-            return await DbSet.FindAsync(id, cancellationToken);
+            // Слы, переделай :(
+            return await DbSet.FindAsync(id);
         }
 
         /* Перенести в репозитории модели

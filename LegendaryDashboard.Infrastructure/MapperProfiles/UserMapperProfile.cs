@@ -6,16 +6,23 @@ using LegendaryDashboard.Contracts.Contracts.User.Requests;
 
 namespace LegendaryDashboard.Infrastructure.MapperProfiles
 {
-   
 
     public class UserMapperProfile : Profile
     {
         public UserMapperProfile()
         {
-            CreateMap<CreateUserRequest, User>();
-            CreateMap<User, UserDto>();
-            CreateMap<List<CreateUserRequest>, List<User>>();
-            CreateMap<List<User>, List<UserDto>>();
+            CreateMap<CreateUserRequest, User>()
+                .ForMember(u => u.Id,
+                    r => r.Ignore());
+            
+            CreateMap<User, UserDto>()
+                .ForAllOtherMembers(opt => opt.Ignore());
+            
+            CreateMap<List<CreateUserRequest>, List<User>>()
+                .ForAllOtherMembers(opt => opt.Ignore());
+            
+            CreateMap<List<User>, List<UserDto>>()
+                .ForAllOtherMembers(opt => opt.Ignore());
         }
     }
 }
