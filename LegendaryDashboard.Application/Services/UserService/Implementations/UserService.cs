@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -20,10 +23,31 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             _repository = repository;
             _mapper = mapper;
         }
+        
         public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
         {
+            Match phoneValidation  = Regex.
+                Match(request.Phone,
+                    @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
+            
+            Match emailValidation = Regex.
+                Match(request.Email,
+                "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
+            
+            if (!phoneValidation.Success)
+            {
+                throw new ValidationException("Неверный формат номера телефона");   
+            }
+
+            if (!emailValidation.Success)
+            {
+                throw new ValidationException("Неверный формат электронной почты");
+            }
+            
             var user = _mapper.Map<User>(request);
+            user.RegisterDate = DateTime.UtcNow;
             await _repository.Save(user, cancellationToken);
+            
         }
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
@@ -31,7 +55,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         }
         public async Task<IEnumerable<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
-            var users = _repository.GetPaged(offset, limit, cancellationToken);
+            var users = await _repository.GetPaged(offset, limit, cancellationToken);
             return _mapper.Map<List<UserDto>>(users);
         }
         public async Task<int> Count(CancellationToken cancellationToken)
@@ -41,6 +65,17 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         public async Task<UserDto> FindById(int id, CancellationToken cancellationToken)
         {
             var user = await _repository.FindById(id, cancellationToken);
+            return _mapper.Map<UserDto>(user);
+        }
+
+        public async Task<UserDto> GetByEmail(string email, CancellationToken cancellationToken)
+        {
+            var user = await _repository.GetByEmail(email, cancellationToken);
+            return _mapper.Map<UserDto>(user);
+        }
+        public async Task<UserDto> GetByPhone(string phone, CancellationToken cancellationToken)
+        {
+            var user = await _repository.GetByPhone(phone, cancellationToken);
             return _mapper.Map<UserDto>(user);
         }
     }
