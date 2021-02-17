@@ -41,8 +41,9 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
-            var entity  = DbSet.FindAsync(id, cancellationToken);
-            DbSet.Remove(await entity);
+            var entity  = await DbSet.FindAsync(id);
+            DbSet.Remove(entity);
+            await Context.SaveChangesAsync(cancellationToken);
         }
     }
 }

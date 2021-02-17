@@ -11,12 +11,13 @@ namespace LegendaryDashboard.Api.Controllers.User
     public partial class UserController
     {
         [HttpGet("count")]
-        public async Task<int> GetCount(
+        public async Task<IActionResult> GetCount(
             [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            return await service.Count(cancellationToken);
+            var count = await service.Count(cancellationToken);
+            return Ok(count);
         }
     }
 }

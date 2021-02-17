@@ -11,13 +11,14 @@ namespace LegendaryDashboard.Api.Controllers.User
     public partial class UserController
     {
         [HttpGet("email/{email}")]
-        public async Task<UserDto> GetByEmail(
+        public async Task<IActionResult> GetByEmail(
             string email,
             [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            return await service.GetByEmail(email, cancellationToken);
+            var user = await service.GetByEmail(email, cancellationToken);
+            return Ok(user);
         }
     }
 }
