@@ -23,19 +23,8 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         }
         public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
         {
-            //var user = _mapper.Map<User>(request);
-            // TODO: настроить маппер на создание даты
-            User user = new User
-            {
-                FirstName = request.FirstName,
-                MiddleName = request.MiddleName,
-                LastName = request.LastName,
-                Phone = request.Phone,
-                Email = request.Email,
-                PasswordHash = request.PasswordHash,
-                RegisterDate = DateTime.UtcNow,
-                RoleId = request.RoleId
-            };
+            var user = _mapper.Map<User>(request);
+            user.RegisterDate = DateTime.UtcNow;
             await _repository.Save(user, cancellationToken);
         }
         public async Task Delete(int id, CancellationToken cancellationToken)

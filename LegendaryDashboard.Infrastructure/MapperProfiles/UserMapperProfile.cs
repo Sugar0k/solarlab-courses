@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using LegendaryDashboard.Domain.Models;
 using AutoMapper;
 using LegendaryDashboard.Contracts.Contracts.User;
