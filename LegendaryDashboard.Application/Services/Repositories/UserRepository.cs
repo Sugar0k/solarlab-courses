@@ -19,12 +19,11 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<List<User>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
-            var users = DbSet
+            return await DbSet
                 .OrderBy(u => u.Id)
                 .Skip(offset)
                 .Take(limit)
-                .ToList();
-            return users;
+                .ToListAsync(cancellationToken: cancellationToken);
         }
         public async Task<int> Count(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
         {
@@ -35,13 +34,11 @@ namespace LegendaryDashboard.Application.Services.Repositories
         }
         public async Task<User> GetByEmail(string email, CancellationToken cancellationToken)
         {
-            var user = DbSet.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
-            return await user;
+            return await DbSet.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
         }
         public async Task<User> GetByPhone(string phone, CancellationToken cancellationToken)
         {
-            var user = DbSet.FirstOrDefaultAsync(c => c.Phone == phone, cancellationToken);
-            return await user;
+            return await DbSet.FirstOrDefaultAsync(c => c.Phone == phone, cancellationToken);
         }
     }
 }

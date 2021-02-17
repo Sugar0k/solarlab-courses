@@ -36,7 +36,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)
         {
-            return DbSet.Count();
+            return await DbSet.CountAsync(cancellationToken);
         }
 
         public async Task Delete(TId id, CancellationToken cancellationToken)
