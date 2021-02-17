@@ -25,21 +25,31 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         }
         public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
         {
-            var user = _mapper.Map<User>(request);
-            Match phone_validation  = Regex.
-                Match(user.Phone,
-                @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
-
-            if (phone_validation.Success)
+            Match phoneValidation  = Regex.
+                Match(request.Phone,
+                    @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
+            bool IsValidEmail(string email)
             {
-                user.RegisterDate = DateTime.UtcNow;
-                await _repository.Save(user, cancellationToken);
+                try {
+                    var addr = new System.Net.Mail.MailAddress(email);
+                    return addr.Address == email;
+                }
+                catch {
+                    return false;
+                }
             }
-            else
+            var emailValidation = IsValidEmail(request.Email);
+            if (phoneValidation.Success == false)
             {
                 throw new ValidationException("Неверный формат номера телефона");
             }
-            
+            if (emailValidation == false)
+            {
+                throw new ValidationException("Неверный формат электронной почты");
+            }
+            var user = _mapper.Map<User>(request);
+            user.RegisterDate = DateTime.UtcNow;
+            await _repository.Save(user, cancellationToken);
         }
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
