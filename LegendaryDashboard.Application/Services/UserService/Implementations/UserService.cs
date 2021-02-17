@@ -43,13 +43,11 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             {
                 throw new ValidationException("Неверный формат электронной почты");
             }
-
-            if (emailValidation.Success && phoneValidation.Success)
-            {
-                var user = _mapper.Map<User>(request);
-                user.RegisterDate = DateTime.UtcNow;
-                await _repository.Save(user, cancellationToken);
-            }
+            
+            var user = _mapper.Map<User>(request);
+            user.RegisterDate = DateTime.UtcNow;
+            await _repository.Save(user, cancellationToken);
+            
         }
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
