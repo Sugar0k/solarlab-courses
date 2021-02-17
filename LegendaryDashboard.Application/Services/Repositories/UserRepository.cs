@@ -19,11 +19,12 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<List<User>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
-            // var users = DbSet
-            //     .OrderBy(u => u.Id)
-            //     .Skip(offset)
-            //     .Take(limit);
-            return DbSet.ToList();
+            var users = DbSet
+                .OrderBy(u => u.Id)
+                .Skip(offset)
+                .Take(limit)
+                .ToList();
+            return users;
         }
         public async Task<int> Count(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
         {

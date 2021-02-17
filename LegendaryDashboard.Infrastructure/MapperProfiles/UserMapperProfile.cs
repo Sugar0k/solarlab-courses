@@ -11,13 +11,8 @@ namespace LegendaryDashboard.Infrastructure.MapperProfiles
     {
         public UserMapperProfile()
         {
-            CreateMap<CreateUserRequest, User>()
-                .ForMember(u => u.Id,
-                    r => r.Ignore());
-
+            CreateMap<CreateUserRequest, User>();
             CreateMap<User, UserDto>();
-            CreateMap<List<CreateUserRequest>, List<User>>();
-            CreateMap<List<User>, List<UserDto>>();
         }
     }
 }

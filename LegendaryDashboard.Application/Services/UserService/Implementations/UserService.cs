@@ -31,8 +31,8 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         }
         public async Task<IEnumerable<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
-            var users = _repository.GetPaged(offset, limit, cancellationToken);
-            return _mapper.Map<List<UserDto>>(users);
+            var users = await _repository.GetPaged(offset, limit, cancellationToken);
+            return _mapper.Map<List<User>, List<UserDto>>(users);;
         }
         public async Task<int> Count(CancellationToken cancellationToken)
         {
