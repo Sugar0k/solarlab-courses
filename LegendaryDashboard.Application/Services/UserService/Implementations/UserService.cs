@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -24,8 +26,20 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
-            user.RegisterDate = DateTime.UtcNow;
-            await _repository.Save(user, cancellationToken);
+            Match phone_validation  = Regex.
+                Match(user.Phone,
+                @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
+
+            if (phone_validation.Success)
+            {
+                user.RegisterDate = DateTime.UtcNow;
+                await _repository.Save(user, cancellationToken);
+            }
+            else
+            {
+                throw new ValidationException("Неверный формат номера телефона");
+            }
+            
         }
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
