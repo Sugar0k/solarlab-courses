@@ -23,33 +23,33 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             _repository = repository;
             _mapper = mapper;
         }
+        
         public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
         {
             Match phoneValidation  = Regex.
                 Match(request.Phone,
                     @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
-            bool IsValidEmail(string email)
+            
+            Match emailValidation = Regex.
+                Match(request.Email,
+                "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
+            
+            if (!phoneValidation.Success)
             {
-                try {
-                    var addr = new System.Net.Mail.MailAddress(email);
-                    return addr.Address == email;
-                }
-                catch {
-                    return false;
-                }
+                throw new ValidationException("Неверный формат номера телефона");   
             }
-            var emailValidation = IsValidEmail(request.Email);
-            if (phoneValidation.Success == false)
-            {
-                throw new ValidationException("Неверный формат номера телефона");
-            }
-            if (emailValidation == false)
+
+            if (!emailValidation.Success)
             {
                 throw new ValidationException("Неверный формат электронной почты");
             }
-            var user = _mapper.Map<User>(request);
-            user.RegisterDate = DateTime.UtcNow;
-            await _repository.Save(user, cancellationToken);
+
+            if (emailValidation.Success && phoneValidation.Success)
+            {
+                var user = _mapper.Map<User>(request);
+                user.RegisterDate = DateTime.UtcNow;
+                await _repository.Save(user, cancellationToken);
+            }
         }
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
