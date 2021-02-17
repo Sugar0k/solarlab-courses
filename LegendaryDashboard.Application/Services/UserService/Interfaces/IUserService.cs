@@ -15,5 +15,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Interfaces
         Task<IEnumerable<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
         Task<int> Count(CancellationToken cancellationToken);
         Task<UserDto> FindById(int id, CancellationToken cancellationToken);
+        Task<UserDto> GetByEmail(string email, CancellationToken cancellationToken);
+        Task<UserDto> GetByPhone(string phone, CancellationToken cancellationToken);
     }
 }

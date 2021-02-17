@@ -33,7 +33,15 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .Where(compiled)
                 .Count();
         }
-        
-        
+        public async Task<User> GetByEmail(string email, CancellationToken cancellationToken)
+        {
+            var user = DbSet.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
+            return await user;
+        }
+        public async Task<User> GetByPhone(string phone, CancellationToken cancellationToken)
+        {
+            var user = DbSet.FirstOrDefaultAsync(c => c.Phone == phone, cancellationToken);
+            return await user;
+        }
     }
 }

@@ -34,20 +34,11 @@ namespace LegendaryDashboard.Application.Services.Repositories
             return await DbSet.FindAsync(id);
         }
 
-        // TODO: Перенести в репозитории модели
-
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)
         {
             return DbSet.Count();
         }
 
-        /* Перенести в репозитории модели
-         public async Task<int> Count(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
-        {
-            var compiled = predicate.Compile();
-            return DbSet.Select(pair => pair.Value).Where(compiled).Count();
-        }*/
-        
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
             var entity  = DbSet.FindAsync(id, cancellationToken);

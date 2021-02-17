@@ -56,5 +56,16 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             var user = await _repository.FindById(id, cancellationToken);
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task<UserDto> GetByEmail(string email, CancellationToken cancellationToken)
+        {
+            var user = await _repository.GetByEmail(email, cancellationToken);
+            return _mapper.Map<UserDto>(user);
+        }
+        public async Task<UserDto> GetByPhone(string phone, CancellationToken cancellationToken)
+        {
+            var user = await _repository.GetByPhone(phone, cancellationToken);
+            return _mapper.Map<UserDto>(user);
+        }
     }
 }
