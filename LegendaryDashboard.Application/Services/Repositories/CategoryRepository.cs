@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using LegendaryDashboard.Domain.Models;
@@ -16,22 +14,18 @@ namespace LegendaryDashboard.Application.Services.Repositories
         public CategoryRepository(DashboardContext context) : base(context)
         {
         }
-
-        public async Task<List<Category>> GetByMatchingTitles(string approximateName,
+        
+        public async Task<List<Category>> GetByTitles(string approximateName,
             CancellationToken cancellationToken)
         {
-            return DbSet.Where(c => c.Title.Contains(approximateName)).ToList();
-        }
-
-        public async Task<Category> GetByTitles(string name, CancellationToken cancellationToken)
-        {
-            return await DbSet.FirstOrDefaultAsync(
-                c => c.Title == name, cancellationToken: cancellationToken);
+            return await DbSet.Where(c => c.Title.Contains(approximateName))
+                .ToListAsync(cancellationToken: cancellationToken);
         }
 
         public async Task<List<Category>> GetByParentCategoryId(int id, CancellationToken cancellationToken)
         {
-            return DbSet.Where(c => c.ParentCategoryId == id).ToList();
+            return await DbSet.Where(c => c.ParentCategoryId == id)
+                .ToListAsync(cancellationToken: cancellationToken);
         }
     }
 }

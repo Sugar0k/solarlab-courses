@@ -7,10 +7,7 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
 {
     public interface ICategoryRepository : IRepository<Category, int>
     {
-        
-        Task<List<Category>> GetByMatchingTitles(string approximateName, CancellationToken cancellationToken);
-        
-        Task<Category> GetByTitles(string name, CancellationToken cancellationToken);
+        Task<List<Category>> GetByTitles(string name, CancellationToken cancellationToken);
         
         Task<List<Category>> GetByParentCategoryId(int id, CancellationToken cancellationToken);
     }
