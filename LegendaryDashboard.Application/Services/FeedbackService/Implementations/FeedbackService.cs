@@ -4,13 +4,15 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
+using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
 
-namespace LegendaryDashboard.Application.Services.UserService.Implementations
+namespace LegendaryDashboard.Application.Services.FeedbackService.Implementations
 {
     public class FeedbackService : IFeedbackService
     {
@@ -46,7 +48,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
         {
             var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
-            if (feedback == null) throw new Exception("Обновляемый элемент не найден");
+            if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
             feedback.Text = updateRequest.Text;
             feedback.Rating = updateRequest.Rating;
             await _repository.Update(feedback, cancellationToken);

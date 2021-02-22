@@ -32,9 +32,8 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken)
         {
-            var compiled = predicate.Compile();
             return DbSet
-                .Where(compiled)
+                .Where(predicate)
                 .Count();
         }
 

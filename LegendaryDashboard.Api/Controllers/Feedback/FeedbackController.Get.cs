@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using Microsoft.AspNetCore.Mvc;

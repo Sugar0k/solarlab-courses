@@ -7,7 +7,7 @@ using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using LegendaryDashboard.Domain.Models;
 
-namespace LegendaryDashboard.Application.Services.UserService.Interfaces
+namespace LegendaryDashboard.Application.Services.FeedbackService.Interfaces
 {
     public interface IFeedbackService
     {
