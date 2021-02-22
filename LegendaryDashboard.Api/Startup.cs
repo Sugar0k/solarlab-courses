@@ -1,4 +1,6 @@
 using System.Text;
+using LegendaryDashboard.Application.Services.FeedbackService.Implementations;
+using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
 using LegendaryDashboard.Application.Services.Repositories;
 using LegendaryDashboard.Application.Services.UserService.Implementations;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
@@ -37,6 +39,11 @@ namespace LegendaryDashboard.Api
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddAutoMapper(typeof(UserMapperProfile).Assembly);
+
+            services
+                .AddScoped<IFeedbackService, FeedbackService>()
+                .AddScoped<IFeedbackRepository, FeedbackRepository>();
+
             services
                 .AddSwaggerGen(c =>
             {

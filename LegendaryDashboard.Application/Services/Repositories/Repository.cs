@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.DbContext;
 using LegendaryDashboard.Infrastructure.IRepositories;
@@ -42,6 +43,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
             var entity  = await DbSet.FindAsync(id);
+            if (entity == null) throw new EntityNotFoundException("Удаляемый элемент не найден");
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
         }
