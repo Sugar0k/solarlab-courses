@@ -37,6 +37,12 @@ namespace LegendaryDashboard.Api
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddAutoMapper(typeof(UserMapperProfile).Assembly);
+            
+            services
+                .AddScoped<IFeedbackService, FeedbackService>()
+                .AddScoped<IFeedbackRepository, FeedbackRepository>()
+                .AddAutoMapper(typeof(FeedbackMapperProfile).Assembly);
+
             services
                 .AddSwaggerGen(c =>
             {

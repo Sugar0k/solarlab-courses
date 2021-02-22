@@ -42,6 +42,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
             var entity  = await DbSet.FindAsync(id);
+            if (entity == null) throw new Exception("Удаляемый элемент не найден");
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
         }
