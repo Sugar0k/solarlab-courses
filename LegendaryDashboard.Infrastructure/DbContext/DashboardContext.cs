@@ -5,22 +5,16 @@ namespace LegendaryDashboard.Infrastructure.DbContext
 {
     public sealed class DashboardContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        
+        //TODO: переделать под миграции и не умереть!!!
         public DashboardContext(DbContextOptions<DashboardContext> options)
             : base(options)
         {
-            // Database.EnsureDeleted();
-            Database.EnsureCreated(); 
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             // Role:User (M:O)
-            // modelBuilder.Entity<Role>()
-            //     .HasMany(r => r.Users)
-            //     .WithOne(u => u.Role)
-            //     .HasForeignKey(u => u.RoleId);
-            //
             //Поменял @Stesniashka 
             // Image:AdvertImage (O:O)
             modelBuilder.Entity<Image>()
@@ -43,25 +37,25 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .HasMany(a => a.AdvertImages)
                 .WithOne(ai => ai.Advert)
                 .HasForeignKey(ai => ai.AdvertId);
-
+            
             // Advert:UserAdvert (M:O)
             modelBuilder.Entity<Advert>()
                 .HasMany(a => a.UsersAdverts)
                 .WithOne(ua => ua.Advert)
                 .HasForeignKey(ua => ua.AdvertId);
-
+            
             // AdvertConnectionType:UserAdvert (M:O)
             modelBuilder.Entity<AdvertConnectionType>()
                 .HasMany(act => act.UsersAdverts)
                 .WithOne(ua => ua.Type)
                 .HasForeignKey(ua => ua.TypeId);
-
+            
             // UserAdvert:User (O:M)
-            // modelBuilder.Entity<UserAdvert>()
-            //     .HasOne(ua => ua.User)
-            //     .WithMany(u => u.UsersAdverts)
-            //     .HasForeignKey(ua => ua.UserId);
-            //
+            modelBuilder.Entity<UserAdvert>()
+                .HasOne(ua => ua.User)
+                .WithMany(u => u.UsersAdverts)
+                .HasForeignKey(ua => ua.UserId);
+
             // User:Feedback (M:O)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.TakenFeedbacks)
@@ -76,17 +70,6 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .HasForeignKey(f => f.CommentatorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // modelBuilder.Entity<Feedback>()
-            //     .HasOne(f => f.User)
-            //     .WithMany(u => u.TakenFeedbacks)
-            //     .HasForeignKey(f => f.UserId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-            //
-            // modelBuilder.Entity<Feedback>()
-            //     .HasOne(f => f.Commentator)
-            //     .WithMany(u => u.SentFeedbacks)
-            //     .HasForeignKey(f => f.CommentatorId)
-            //     .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
