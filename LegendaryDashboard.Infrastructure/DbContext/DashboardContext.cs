@@ -3,22 +3,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LegendaryDashboard.Infrastructure.DbContext
 {
-    public class DashboardContext : Microsoft.EntityFrameworkCore.DbContext
+    public sealed class DashboardContext : Microsoft.EntityFrameworkCore.DbContext
     {
         
         public DashboardContext(DbContextOptions<DashboardContext> options)
             : base(options)
         {
+            // Database.EnsureDeleted();
+            Database.EnsureCreated(); 
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
              // Role:User (M:O)
-            modelBuilder.Entity<Role>()
-                .HasMany(r => r.Users)
-                .WithOne(u => u.Role)
-                .HasForeignKey(u => u.RoleId);
-            
+            // modelBuilder.Entity<Role>()
+            //     .HasMany(r => r.Users)
+            //     .WithOne(u => u.Role)
+            //     .HasForeignKey(u => u.RoleId);
+            //
             //Поменял @Stesniashka 
             // Image:AdvertImage (O:O)
             modelBuilder.Entity<Image>()
@@ -55,23 +57,36 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .HasForeignKey(ua => ua.TypeId);
 
             // UserAdvert:User (O:M)
-            modelBuilder.Entity<UserAdvert>()
-                .HasOne(ua => ua.User)
-                .WithMany(u => u.UsersAdverts)
-                .HasForeignKey(ua => ua.UserId);
-
+            // modelBuilder.Entity<UserAdvert>()
+            //     .HasOne(ua => ua.User)
+            //     .WithMany(u => u.UsersAdverts)
+            //     .HasForeignKey(ua => ua.UserId);
+            //
             // User:Feedback (M:O)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.TakenFeedbacks)
                 .WithOne(f => f.User)
-                .HasForeignKey(f => f.UserId);
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.ClientCascade);
             
             // User:Feedback (M:O)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SentFeedbacks)
                 .WithOne(f => f.Commentator)
-                .HasForeignKey(f => f.CommentatorId);;
+                .HasForeignKey(f => f.CommentatorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // modelBuilder.Entity<Feedback>()
+            //     .HasOne(f => f.User)
+            //     .WithMany(u => u.TakenFeedbacks)
+            //     .HasForeignKey(f => f.UserId)
+            //     .OnDelete(DeleteBehavior.Cascade);
+            //
+            // modelBuilder.Entity<Feedback>()
+            //     .HasOne(f => f.Commentator)
+            //     .WithMany(u => u.SentFeedbacks)
+            //     .HasForeignKey(f => f.CommentatorId)
+            //     .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
