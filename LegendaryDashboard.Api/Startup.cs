@@ -30,9 +30,11 @@ namespace LegendaryDashboard.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddDbContext<DashboardContext>(
-                opt => opt.UseInMemoryDatabase(databaseName:"Dash"));
+            // получаем строку подключения из файла конфигурации
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            // добавляем контекст DashboardContext в качестве сервиса в приложение
+            services.AddDbContext<DashboardContext>(options =>
+                options.UseSqlServer(connection));
             services
                 .AddControllers();
             services
@@ -49,20 +51,6 @@ namespace LegendaryDashboard.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "LegendaryDashboard", Version = "v1.1"});
             });
-            /*services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtBearerOptions =>
-                {
-                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateActor = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidateIssuer = false,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"]))
-                    };
-                });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
