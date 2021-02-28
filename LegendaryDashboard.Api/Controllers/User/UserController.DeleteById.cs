@@ -1,3 +1,5 @@
+using System;
+using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,7 +21,6 @@ namespace LegendaryDashboard.Api.Controllers.User
             CancellationToken cancellationToken
         )
         {
-            
             await service.Delete(id, cancellationToken);
             return NoContent();
         }
