@@ -14,20 +14,19 @@ namespace LegendaryDashboard.Domain.Models
         public string PasswordHash { get; set; }
         public DateTime RegisterDate { get; set; }
         
-        // public int RoleId { get; set; }     // внешний ключ
-        // public Role Role { get; set; }      // навигационное свойство
+        public string Role { get; set; }
 
         public List<UserAdvert> UsersAdverts { get; set; } //связь со списком объявлений
         
         /// <summary>
         /// Отправленные отзывы.
         /// </summary>
-        public List<Feedback> SentFeedbacks { get; set; } 
+        //public List<Feedback> SentFeedbacks { get; set; } 
         
         /// <summary>
         /// Полученные отзывы.
         /// </summary>
-        public List<Feedback> TakenFeedbacks { get; set; } 
+        //public List<Feedback> TakenFeedbacks { get; set; } 
         
         
     }

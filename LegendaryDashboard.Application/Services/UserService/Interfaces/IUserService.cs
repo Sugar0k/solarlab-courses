@@ -11,6 +11,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Interfaces
     public interface IUserService
     {
         Task Register(CreateUserRequest request, CancellationToken cancellationToken);
+        Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
         Task<IEnumerable<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
         Task<int> Count(CancellationToken cancellationToken);

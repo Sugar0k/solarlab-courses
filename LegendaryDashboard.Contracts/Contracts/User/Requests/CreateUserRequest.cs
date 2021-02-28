@@ -26,6 +26,6 @@ namespace LegendaryDashboard.Contracts.Contracts.User.Requests
         //дата регистрации будет устанавливаться в контроллере 
         
         [Required(ErrorMessage = "Role required ")] // необходима роль
-        public int RoleId { get; set; }
+        public string Role { get; set; }
     }
 }

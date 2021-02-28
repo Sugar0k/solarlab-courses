@@ -12,17 +12,17 @@ namespace LegendaryDashboard.Api.Controllers.User
 {
     public partial class UserController
     {
+        
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(
-            [FromBody] CreateUserRequest request,
+        public async Task<IActionResult> Login(
+            [FromBody] LoginUserRequest request,
             [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            await service.Register(request, cancellationToken);
-            return Ok();
+            return Ok(await service.Login(request, cancellationToken));
         }
     }
 }

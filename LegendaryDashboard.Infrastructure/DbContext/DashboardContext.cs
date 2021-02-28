@@ -1,5 +1,8 @@
 using LegendaryDashboard.Domain.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace LegendaryDashboard.Infrastructure.DbContext
 {
@@ -56,19 +59,19 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .WithMany(u => u.UsersAdverts)
                 .HasForeignKey(ua => ua.UserId);
 
-            // User:Feedback (M:O)
+            /*// User:Feedback (M:O)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.TakenFeedbacks)
                 .WithOne(f => f.User)
                 .HasForeignKey(f => f.UserId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
             
             // User:Feedback (M:O)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SentFeedbacks)
                 .WithOne(f => f.Commentator)
                 .HasForeignKey(f => f.CommentatorId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);*/
 
         }
     }

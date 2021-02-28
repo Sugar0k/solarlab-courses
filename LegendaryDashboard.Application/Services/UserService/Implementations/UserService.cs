@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,8 +11,12 @@ using AutoMapper;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts.User;
 using LegendaryDashboard.Contracts.Contracts.User.Requests;
+using LegendaryDashboard.Domain.Common;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
+using LegendaryDashboard.Infrastructure.Options;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LegendaryDashboard.Application.Services.UserService.Implementations
 {
@@ -17,11 +24,13 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
     {
         private readonly IUserRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IOptions<JwtOptions> _jwtOptions;
 
-        public UserService(IUserRepository repository, IMapper mapper)
+        public UserService(IUserRepository repository, IMapper mapper, IOptions<JwtOptions> jwtOptions)
         {
             _repository = repository;
             _mapper = mapper;
+            _jwtOptions = jwtOptions;
         }
         
         public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
@@ -45,10 +54,41 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             }
             
             var user = _mapper.Map<User>(request);
+            user.Role = RoleConstants.UserRole;
             user.RegisterDate = DateTime.UtcNow;
             await _repository.Save(user, cancellationToken);
             
         }
+
+        public async Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken)
+        {
+            var user = await _repository.GetByEmail(request.Email, cancellationToken);
+            if (!user.PasswordHash.Equals(request.PasswordHash))
+            {
+                throw new Exception("Неверный email или пароль!");
+            }
+            //new Claim(ClaimTypes.Role, user.RoleId.ToString()),
+            //new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+            var bytes = Encoding.ASCII.GetBytes(_jwtOptions.Value.Key);
+                var expires = DateTime.UtcNow.AddMinutes(90);
+                var securityKey = new SymmetricSecurityKey(bytes);
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+                {
+                    Expires = expires,
+                    SigningCredentials = credentials,
+                    Subject = new ClaimsIdentity(claims),
+                });
+
+                return tokenHandler.WriteToken(token);
+        }
+
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
             await _repository.Delete(id, cancellationToken);
