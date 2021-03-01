@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Domain.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Api.Controllers.User
@@ -13,7 +14,7 @@ namespace LegendaryDashboard.Api.Controllers.User
     
     public partial class UserController
     {
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(
             int id,

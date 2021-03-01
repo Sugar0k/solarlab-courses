@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,6 +17,7 @@ using LegendaryDashboard.Domain.Common;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
 using LegendaryDashboard.Infrastructure.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -25,12 +28,14 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         private readonly IUserRepository _repository;
         private readonly IMapper _mapper;
         private readonly IOptions<JwtOptions> _jwtOptions;
+        private readonly IHttpContextAccessor _accessor;
 
-        public UserService(IUserRepository repository, IMapper mapper, IOptions<JwtOptions> jwtOptions)
+        public UserService(IUserRepository repository, IMapper mapper, IOptions<JwtOptions> jwtOptions, IHttpContextAccessor accessor)
         {
             _repository = repository;
             _mapper = mapper;
             _jwtOptions = jwtOptions;
+            _accessor = accessor;
         }
         
         public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
@@ -85,13 +90,20 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
                     SigningCredentials = credentials,
                     Subject = new ClaimsIdentity(claims),
                 });
-
-                return tokenHandler.WriteToken(token);
+                
+            return tokenHandler.WriteToken(token);
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            await _repository.Delete(id, cancellationToken);
+            if (_accessor.HttpContext == null) throw new Exception("Нет прав!");
+                var user = _accessor.HttpContext.User;
+            if (user == null) throw new Exception("Нет клеймов");
+            if (id == user.GetClaimValue<int>(ClaimTypes.NameIdentifier) || 
+                "Admin".Equals(user.GetClaimValue<string>(ClaimTypes.Role)))
+            {
+                await _repository.Delete(id, cancellationToken);  
+            }
         }
         public async Task<IEnumerable<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {

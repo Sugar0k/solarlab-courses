@@ -80,7 +80,7 @@ namespace LegendaryDashboard.Api
                         ValidateIssuer = false
                     };
                 });
-            
+            services.AddHttpContextAccessor();
             //Swagger
             services
                 .AddSwaggerGen(c =>
