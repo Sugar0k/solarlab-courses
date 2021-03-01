@@ -38,7 +38,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             _accessor = accessor;
         }
         
-        public async Task Register(CreateUserRequest request, CancellationToken cancellationToken)
+        public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
         {
             Match phoneValidation  = Regex.
                 Match(request.Phone,
@@ -72,8 +72,6 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             {
                 throw new Exception("Неверный email или пароль!");
             }
-            //new Claim(ClaimTypes.Role, user.RoleId.ToString()),
-            //new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
