@@ -15,7 +15,7 @@ namespace LegendaryDashboard.Api.Controllers.User
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(
+        public async Task<IActionResult> Register(
             [FromBody] CreateUserRequest request,
             [FromServices] IUserService service,
             CancellationToken cancellationToken
