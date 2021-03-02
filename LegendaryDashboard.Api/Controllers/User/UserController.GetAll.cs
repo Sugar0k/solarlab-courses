@@ -15,7 +15,7 @@ namespace LegendaryDashboard.Api.Controllers.User
 {
     public partial class UserController
     {
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("all")]
         public async Task<IActionResult> Get(
             int offset,  int limit,

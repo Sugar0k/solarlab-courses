@@ -9,7 +9,7 @@ namespace LegendaryDashboard.Api.Controllers.User
 {
     public partial class UserController
     {
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("count")]
         public async Task<IActionResult> GetCount(
             [FromServices] IUserService service,

@@ -14,7 +14,6 @@ namespace LegendaryDashboard.Api.Controllers.User
     
     public partial class UserController
     {
-        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(
             int id,

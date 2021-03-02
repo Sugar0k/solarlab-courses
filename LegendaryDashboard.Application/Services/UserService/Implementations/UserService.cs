@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -94,11 +92,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            if (_accessor.HttpContext == null) throw new Exception("Нет прав!");
-                var user = _accessor.HttpContext.User;
-            if (user == null) throw new Exception("Нет клеймов");
-            if (id == user.GetClaimValue<int>(ClaimTypes.NameIdentifier) || 
-                "Admin".Equals(user.GetClaimValue<string>(ClaimTypes.Role)))
+            if (ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, id))
             {
                 await _repository.Delete(id, cancellationToken);  
             }

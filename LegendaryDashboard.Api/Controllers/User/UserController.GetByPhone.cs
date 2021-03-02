@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Api.Controllers.User
 {
     public partial class UserController
     {
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("phone/{phone}")]
         public async Task<IActionResult> GetByPhone(
             string phone,
