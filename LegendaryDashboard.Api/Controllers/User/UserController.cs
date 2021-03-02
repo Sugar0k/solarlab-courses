@@ -1,9 +1,11 @@
 using LegendaryDashboard.Infrastructure.DbContext;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Api.Controllers.User
 {
     [ApiController]
+    [Authorize]
     [Route("api/user/")]
     public partial class UserController : ControllerBase
     {

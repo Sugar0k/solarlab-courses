@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Infrastructure.MapperProfiles
     {
         public UserMapperProfile()
         {
-            CreateMap<CreateUserRequest, User>();
+            CreateMap<RegisterUserRequest, User>();
             CreateMap<User, UserDto>();
         }
     }

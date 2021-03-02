@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace LegendaryDashboard.Contracts.Contracts.User.Requests
 {
-    public class CreateUserRequest
+    public class RegisterUserRequest
     {
         [Required(ErrorMessage = "FirstName required ")] // необходимо имя пользователя
         public string FirstName { get; set; }
@@ -19,13 +19,8 @@ namespace LegendaryDashboard.Contracts.Contracts.User.Requests
         
         [Required(ErrorMessage = "Email required ")] // необходим email???
         public string Email { get; set; }
-        
-        [Required(ErrorMessage = "PasswordHash required ")] // необходим пароль
-        public string PasswordHash { get; set; }
-        
-        //дата регистрации будет устанавливаться в контроллере 
-        
-        [Required(ErrorMessage = "Role required ")] // необходима роль
-        public int RoleId { get; set; }
+
+        [Required(ErrorMessage = "Password required ")] // необходим пароль
+        public string Password { get; set; }
     }
 }
