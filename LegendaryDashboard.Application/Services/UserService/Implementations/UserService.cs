@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -58,6 +59,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             
             var user = _mapper.Map<User>(request);
             user.Role = RoleConstants.UserRole;
+            user.PasswordHash = Hashing.GetHash(request.Password);
             user.RegisterDate = DateTime.UtcNow;
             await _repository.Save(user, cancellationToken);
             
@@ -66,7 +68,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         public async Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetByEmail(request.Email, cancellationToken);
-            if (!user.PasswordHash.Equals(request.PasswordHash))
+            if (!user.PasswordHash.Equals(Hashing.GetHash(request.Password)))
             {
                 throw new Exception("Неверный email или пароль!");
             }
@@ -121,6 +123,18 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         {
             var user = await _repository.GetByPhone(phone, cancellationToken);
             return _mapper.Map<UserDto>(user);
+        }
+    }
+
+    public static class Hashing
+    {
+        public static string GetHash(string str)
+        {
+            var strBytes = Encoding.ASCII.GetBytes(str);
+            var sha = new SHA256Managed();
+            var hash = sha.ComputeHash(strBytes);
+            var hashedStr = Encoding.Default.GetString(hash);
+            return hashedStr;
         }
     }
 }

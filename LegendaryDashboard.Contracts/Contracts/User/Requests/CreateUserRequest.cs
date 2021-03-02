@@ -20,7 +20,7 @@ namespace LegendaryDashboard.Contracts.Contracts.User.Requests
         [Required(ErrorMessage = "Email required ")] // необходим email???
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "PasswordHash required ")] // необходим пароль
-        public string PasswordHash { get; set; }
+        [Required(ErrorMessage = "Password required ")] // необходим пароль
+        public string Password { get; set; }
     }
 }
