@@ -9,6 +9,6 @@ namespace LegendaryDashboard.Contracts.Contracts.UserAdvert.Requests
         [Required(ErrorMessage = "Advert required ")] // необходим id объявления
         public int AdvertId { get; set; }
         [Required(ErrorMessage = "ConnectionType required ")] // необходим тип связи
-        public int TypeId { get; set; }
+        public string TypeId { get; set; }
     }
 }
