@@ -69,13 +69,5 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .ToListAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<int> Count(Expression<Func<UserAdvert, bool>> predicate, CancellationToken cancellationToken)
-        {
-            var compiled = predicate.Compile();
-            return DbSet
-                .Where(compiled)
-                .Count();
-        }
-
     }
 }

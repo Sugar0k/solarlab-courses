@@ -24,7 +24,5 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
             int offset, 
             int limit, 
             CancellationToken cancellationToken);
-        Task<int> Count(Expression<Func<UserAdvert, bool>> predicate, CancellationToken cancellationToken);
-
     }
 }

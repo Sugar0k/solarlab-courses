@@ -66,27 +66,18 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .ToListAsync(cancellationToken: cancellationToken);
         }
 
-        public async Task<int> NumberOfViews(int id, CancellationToken cancellationToken)
+        public async Task<int> GetViewsCount(int id, CancellationToken cancellationToken)
         {
-            var advert = FindById(id, cancellationToken).Result;
+            var advert = await FindById(id, cancellationToken);
             return advert.Views;
         }
 
         public async Task AddView(int id, CancellationToken cancellationToken)
         {
-            var advert = FindById(id, cancellationToken).Result;
+            var advert = await FindById(id, cancellationToken);
             if (advert == null) throw new Exception("Объявление не найдено!");
             advert.Views++;
             await Save(advert, cancellationToken);
         }
-
-        public async Task<int> Count(Expression<Func<Advert, bool>> predicate, CancellationToken cancellationToken)
-        {
-            var compiled = predicate.Compile();
-            return DbSet
-                .Where(compiled)
-                .Count();
-        }
-
     }
 }

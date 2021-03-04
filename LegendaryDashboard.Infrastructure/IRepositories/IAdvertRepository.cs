@@ -14,8 +14,7 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
         Task<List<Advert>> GetByState(string state, int offset, int limit, CancellationToken cancellationToken);
         Task<List<Advert>> GetByCity(string city, int offset, int limit, CancellationToken cancellationToken);
         Task<List<Advert>> GetByTitle(string title, int offset, int limit, CancellationToken cancellationToken);
-        Task<int> Count(Expression<Func<Advert, bool>> predicate, CancellationToken cancellationToken);
-        Task<int> NumberOfViews(int id, CancellationToken cancellationToken);
+        Task<int> GetViewsCount(int id, CancellationToken cancellationToken);
         Task AddView(int id, CancellationToken cancellationToken);
 
     }
