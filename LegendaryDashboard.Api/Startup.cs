@@ -56,6 +56,10 @@ namespace LegendaryDashboard.Api
             services
                 .AddScoped<IAdvertRepository, AdvertRepository>();
             
+            //добавление репозитория связи Пользователя и Объявления
+            services
+                .AddScoped<IUserAdvertRepository, UserAdvertRepository>();
+            
             //добавление сервисов и репозиториев Отзыва
             services
                 .AddScoped<IFeedbackService, FeedbackService>()

@@ -46,12 +46,12 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .HasMany(a => a.UsersAdverts)
                 .WithOne(ua => ua.Advert)
                 .HasForeignKey(ua => ua.AdvertId);
-            
+            //
             // AdvertConnectionType:UserAdvert (M:O)
-            modelBuilder.Entity<AdvertConnectionType>()
-                .HasMany(act => act.UsersAdverts)
-                .WithOne(ua => ua.Type)
-                .HasForeignKey(ua => ua.TypeId);
+            // modelBuilder.Entity<AdvertConnectionType>()
+            //     .HasMany(act => act.UsersAdverts)
+            //     .WithOne(ua => ua.Type)
+            //     .HasForeignKey(ua => ua.TypeId);
             
             // UserAdvert:User (O:M)
             modelBuilder.Entity<UserAdvert>()
