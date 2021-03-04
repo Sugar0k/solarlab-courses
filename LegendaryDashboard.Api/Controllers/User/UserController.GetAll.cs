@@ -18,7 +18,7 @@ namespace LegendaryDashboard.Api.Controllers.User
         [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("all")]
         public async Task<IActionResult> Get(
-            int offset,  int limit,
+            int offset, int limit,
             [FromServices] IUserService service,
             CancellationToken cancellationToken
         )

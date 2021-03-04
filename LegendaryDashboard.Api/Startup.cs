@@ -48,9 +48,14 @@ namespace LegendaryDashboard.Api
             services
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IUserRepository, UserRepository>()
+                
                 //подключение автомаппера
                 .AddAutoMapper(typeof(UserMapperProfile).Assembly);
 
+            //добавление репозитория Объявления
+            services
+                .AddScoped<IAdvertRepository, AdvertRepository>();
+            
             //добавление сервисов и репозиториев Отзыва
             services
                 .AddScoped<IFeedbackService, FeedbackService>()
