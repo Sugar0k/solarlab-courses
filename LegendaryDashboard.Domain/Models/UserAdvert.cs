@@ -1,3 +1,5 @@
+using LegendaryDashboard.Domain.Common;
+
 namespace LegendaryDashboard.Domain.Models
 {
     public class UserAdvert : BaseEntity<int>
@@ -8,7 +10,6 @@ namespace LegendaryDashboard.Domain.Models
         public int AdvertId { get; set; }
         public Advert Advert { get; set; }
 
-        public int TypeId { get; set; } //связь со списком Типов связей (напр. Мое, избранное, удаленное, закрытое)
-        public AdvertConnectionType Type { get; set; }
+        public string ConnectionType { get; set; } //связь со списком Типов связей (напр. Мое, избранное
     }
 }
