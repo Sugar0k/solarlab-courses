@@ -22,6 +22,15 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .ToListAsync(cancellationToken: cancellationToken);
         }
 
+        public async Task<List<Category>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        {
+            return await DbSet
+                .OrderBy(u => u.Id)
+                .Skip(offset)
+                .Take(limit)
+                .ToListAsync(cancellationToken: cancellationToken);
+        }
+
         public async Task<List<Category>> GetByParentCategoryId(int id, CancellationToken cancellationToken)
         {
             return await DbSet.Where(c => c.ParentCategoryId == id)

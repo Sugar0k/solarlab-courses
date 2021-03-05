@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using LegendaryDashboard.Application.Services.CategoryService.Implementations;
+using LegendaryDashboard.Application.Services.CategoryService.Interfaces;
 using LegendaryDashboard.Application.Services.FeedbackService.Implementations;
 using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
 using LegendaryDashboard.Application.Services.Repositories;
@@ -44,6 +46,10 @@ namespace LegendaryDashboard.Api
 
             services
                 .AddControllers();
+            //добавление сервисов и репозиториев Категорий
+            services
+                .AddScoped<ICategoryService, CategoryService>()
+                .AddScoped<ICategoryRepository, CategoryRepository>();
             //добавление сервисов и репозиториев Пользователя
             services
                 .AddScoped<IUserService, UserService>()

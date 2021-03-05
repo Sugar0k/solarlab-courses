@@ -33,7 +33,8 @@ namespace LegendaryDashboard.Infrastructure.DbContext
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.ChildCategories)
                 .WithOne(cc => cc.ParentCategory) 
-                .HasForeignKey(cc => cc.ParentCategoryId);
+                .HasForeignKey(cc => cc.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Advert:AdvertImage (M:O)
             modelBuilder.Entity<Advert>()
