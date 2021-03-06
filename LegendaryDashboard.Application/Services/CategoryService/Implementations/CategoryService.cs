@@ -49,11 +49,13 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken)
+        public async Task<CategoryListDto> GetAll(CancellationToken cancellationToken)
         {
             var categories = await _repository.GetAll(cancellationToken);
             if (categories == null) throw new Exception("Категории не найдены");
-            return _mapper.Map<List<CategoryDto>>(categories);
+            var dtoCategories = _mapper.Map<List<CategoryDto>>(categories);
+            var count = await _repository.Count(cancellationToken);
+            return new CategoryListDto(count, dtoCategories);
         }
 
         public async Task<List<CategoryDto>> GetByTitles(string approximateName, CancellationToken cancellationToken)

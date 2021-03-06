@@ -13,7 +13,7 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Interfaces
         Task Delete(int id, CancellationToken cancellationToken);
         Task<int> Count(CancellationToken cancellationToken);
         Task<CategoryDto> FindById(int id, CancellationToken cancellationToken);
-        Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken);
+        Task<CategoryListDto> GetAll(CancellationToken cancellationToken);
         Task<List<CategoryDto>> GetByTitles(string approximateName, CancellationToken cancellationToken);
         Task<List<CategoryDto>> GetByParentCategoryId(int id, CancellationToken cancellationToken);
     }
