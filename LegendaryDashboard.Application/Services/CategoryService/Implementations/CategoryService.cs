@@ -45,24 +45,28 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
         public async Task<CategoryDto> FindById(int id, CancellationToken cancellationToken)
         {
             var category = await _repository.FindById(id, cancellationToken);
+            if (category == null) throw new Exception("Категория не найдена");
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<List<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        public async Task<List<CategoryDto>> GetAll(CancellationToken cancellationToken)
         {
-            var categories = await _repository.GetPaged(offset, limit, cancellationToken);
+            var categories = await _repository.GetAll(cancellationToken);
+            if (categories == null) throw new Exception("Категории не найдены");
             return _mapper.Map<List<CategoryDto>>(categories);
         }
 
         public async Task<List<CategoryDto>> GetByTitles(string approximateName, CancellationToken cancellationToken)
         {
             var categories = await _repository.GetByTitles(approximateName, cancellationToken);
+            if (categories == null) throw new Exception("Категории не найдены");
             return _mapper.Map<List<CategoryDto>>(categories);
         }
 
         public async Task<List<CategoryDto>> GetByParentCategoryId(int id, CancellationToken cancellationToken)
         {
             var categories = await _repository.GetByParentCategoryId(id, cancellationToken);
+            if (categories == null) throw new Exception("Категории не найдены");
             return _mapper.Map<List<CategoryDto>>(categories);
         }
     }
