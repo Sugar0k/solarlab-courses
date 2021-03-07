@@ -11,6 +11,6 @@ namespace LegendaryDashboard.Domain.Models
         
         public string FilePath { get; set; } //Путь к файлу
 
-        public AdvertImage AdvertImage { get; set; } //связь со списком объявлений
+        public List<AdvertImage> ImageAdverts { get; set; } //связь со списком объявлений
     }
 }
