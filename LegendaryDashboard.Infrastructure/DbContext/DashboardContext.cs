@@ -24,11 +24,6 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .HasOne(i => i.AdvertImage)
                 .WithOne(ai => ai.Image);
             
-            // Image key field 
-            modelBuilder.Entity<Image>()
-                .HasKey(s => s.Guid);
-            
-            
             // Category:Category (M:O)
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.ChildCategories)

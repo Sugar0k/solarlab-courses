@@ -32,7 +32,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
         {
-            return await DbSet.FindAsync(id);
+            return await DbSet.FindAsync(id, cancellationToken);
         }
 
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)
@@ -42,7 +42,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
-            var entity  = await DbSet.FindAsync(id);
+            var entity  = await DbSet.FindAsync(id, cancellationToken);
             if (entity == null) throw new EntityNotFoundException("Удаляемый элемент не найден");
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
