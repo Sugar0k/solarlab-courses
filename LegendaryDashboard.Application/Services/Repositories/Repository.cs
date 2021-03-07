@@ -50,7 +50,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
             await Context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<PagedResponce<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        public async Task<PagedResponse<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
             var list = await DbSet
                 .OrderBy(u => u.Id)
@@ -58,7 +58,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .Take(limit)
                 .ToListAsync(cancellationToken: cancellationToken);
             var count = await DbSet.CountAsync(cancellationToken);
-            return new PagedResponce<TEntity>
+            return new PagedResponse<TEntity>
             {
                 Count = count,
                 EntityList = list

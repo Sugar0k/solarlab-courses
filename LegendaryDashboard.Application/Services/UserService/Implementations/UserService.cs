@@ -100,11 +100,11 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
                 await _repository.Delete(id, cancellationToken);  
             }
         }
-        public async Task<PagedResponce<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        public async Task<PagedResponse<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
             var users = await _repository.GetPaged(offset, limit, cancellationToken);
             var usersDto = _mapper.Map<List<UserDto>>(users.EntityList);
-            return new PagedResponce<UserDto>
+            return new PagedResponse<UserDto>
             {
                 Count = users.Count,
                 EntityList = usersDto

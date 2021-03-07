@@ -47,11 +47,11 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<PagedResponce<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        public async Task<PagedResponse<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
             var categories = await _repository.GetPaged(offset, limit, cancellationToken);
             var categoriesDto = _mapper.Map<List<CategoryDto>>(categories.EntityList);
-            return new PagedResponce<CategoryDto>
+            return new PagedResponse<CategoryDto>
             {
                 Count = categories.Count,
                 EntityList = categoriesDto
