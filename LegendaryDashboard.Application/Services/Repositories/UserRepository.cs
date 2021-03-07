@@ -17,21 +17,6 @@ namespace LegendaryDashboard.Application.Services.Repositories
         {
         }
 
-        public async Task<List<User>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
-        {
-            return await DbSet
-                .OrderBy(u => u.Id)
-                .Skip(offset)
-                .Take(limit)
-                .ToListAsync(cancellationToken: cancellationToken);
-        }
-        public async Task<int> Count(Expression<Func<User, bool>> predicate, CancellationToken cancellationToken)
-        {
-            var compiled = predicate.Compile();
-            return DbSet
-                .Where(compiled)
-                .Count();
-        }
         public async Task<User> GetByEmail(string email, CancellationToken cancellationToken)
         {
             return await DbSet.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.DbContext;
@@ -32,14 +34,14 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
         {
-            return await DbSet.FindAsync(id);
+            return await DbSet.FindAsync(id, cancellationToken);
         }
 
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)
         {
             return await DbSet.CountAsync(cancellationToken);
         }
-
+        
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
             var entity  = await DbSet.FindAsync(id);
@@ -47,5 +49,21 @@ namespace LegendaryDashboard.Application.Services.Repositories
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<PagedResponse<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        {
+            var list = await DbSet
+                .OrderBy(u => u.Id)
+                .Skip(offset)
+                .Take(limit)
+                .ToListAsync(cancellationToken: cancellationToken);
+            var count = await DbSet.CountAsync(cancellationToken);
+            return new PagedResponse<TEntity>
+            {
+                Count = count,
+                EntityList = list
+            };
+        }
     }
+
 }

@@ -5,10 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
-using LegendaryDashboard.Application.Services.UserService.Interfaces;
+using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
-using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
 
@@ -37,22 +36,27 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             await _repository.Delete(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<FeedbackDto>> Get(
+        public async Task<PagedResponse<FeedbackDto>> Get(
             FeedbackGetRequest getRequest, 
             CancellationToken cancellationToken)
         {
-            var feedbacks= await _repository.GetPaged(getRequest, cancellationToken);
-            return _mapper.Map<List<FeedbackDto>>(feedbacks);
+            var feedbacks = await _repository.GetPaged(getRequest.Offset, getRequest.Limit, cancellationToken);
+            var feedbacksDto = _mapper.Map<List<FeedbackDto>>(feedbacks.EntityList);
+            return new PagedResponse<FeedbackDto>
+            {
+                Count = feedbacks.Count,
+                EntityList = feedbacksDto
+            };
         }
 
-        public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
-        {
-            var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
-            if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
-            feedback.Text = updateRequest.Text;
-            feedback.Rating = updateRequest.Rating;
-            await _repository.Update(feedback, cancellationToken);
-        }
+        // public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
+        // {
+        //     var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
+        //     if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
+        //     feedback.Text = updateRequest.Text;
+        //     feedback.Rating = updateRequest.Rating;
+        //     await _repository.Update(feedback, cancellationToken);
+        // }
 
         public async Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken)
         {
