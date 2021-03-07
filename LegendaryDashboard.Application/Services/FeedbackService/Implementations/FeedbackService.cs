@@ -5,10 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
-using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
-using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
 
@@ -45,14 +43,14 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             return _mapper.Map<List<FeedbackDto>>(feedbacks);
         }
 
-        public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
-        {
-            var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
-            if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
-            feedback.Text = updateRequest.Text;
-            feedback.Rating = updateRequest.Rating;
-            await _repository.Update(feedback, cancellationToken);
-        }
+        // public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
+        // {
+        //     var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
+        //     if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
+        //     feedback.Text = updateRequest.Text;
+        //     feedback.Rating = updateRequest.Rating;
+        //     await _repository.Update(feedback, cancellationToken);
+        // }
 
         public async Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken)
         {

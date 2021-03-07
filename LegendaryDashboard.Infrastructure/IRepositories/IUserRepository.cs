@@ -10,7 +10,6 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
 {
     public interface IUserRepository : IRepository<User, int>
     {
-        Task<List<User>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
         Task<User> GetByEmail(string email, CancellationToken cancellationToken);
         Task<User> GetByPhone(string phone, CancellationToken cancellationToken);
     }

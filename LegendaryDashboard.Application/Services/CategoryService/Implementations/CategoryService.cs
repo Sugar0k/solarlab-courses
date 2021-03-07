@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using LegendaryDashboard.Application.Services.CategoryService.Interfaces;
+using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Category;
 using LegendaryDashboard.Contracts.Contracts.Category.Requests;
-using LegendaryDashboard.Contracts.Contracts.Feedback;
-using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
-using LegendaryDashboard.Domain.Exceptions;
+using LegendaryDashboard.Contracts.Contracts.User;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
 
@@ -49,13 +47,15 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<CategoryListDto> GetAll(CancellationToken cancellationToken)
+        public async Task<PagedResponce<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
-            var categories = await _repository.GetAll(cancellationToken);
-            if (categories == null) throw new Exception("Категории не найдены");
-            var dtoCategories = _mapper.Map<List<CategoryDto>>(categories);
-            var count = await _repository.Count(cancellationToken);
-            return new CategoryListDto(count, dtoCategories);
+            var categories = await _repository.GetPaged(offset, limit, cancellationToken);
+            var categoriesDto = _mapper.Map<List<CategoryDto>>(categories);
+            return new PagedResponce<CategoryDto>
+            {
+                Count = categories.Count,
+                EntityList = categoriesDto
+            };
         }
 
         public async Task<List<CategoryDto>> GetByTitles(string approximateName, CancellationToken cancellationToken)
