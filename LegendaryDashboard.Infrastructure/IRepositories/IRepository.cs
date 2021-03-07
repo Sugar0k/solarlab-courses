@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
         Task Save(TEntity entity, CancellationToken cancellationToken);
         Task<TEntity> FindById(TId id, CancellationToken cancellationToken);
         Task<int> Count(CancellationToken cancellationToken);
-        Task<List<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
+        Task<PagedResponce<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
         Task Delete(TId id, CancellationToken cancellationToken);
     }
 }

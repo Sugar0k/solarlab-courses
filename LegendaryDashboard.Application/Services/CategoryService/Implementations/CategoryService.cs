@@ -50,7 +50,7 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
         public async Task<PagedResponce<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
             var categories = await _repository.GetPaged(offset, limit, cancellationToken);
-            var categoriesDto = _mapper.Map<List<CategoryDto>>(categories);
+            var categoriesDto = _mapper.Map<List<CategoryDto>>(categories.EntityList);
             return new PagedResponce<CategoryDto>
             {
                 Count = categories.Count,

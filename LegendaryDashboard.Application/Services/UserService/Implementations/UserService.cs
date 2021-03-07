@@ -103,10 +103,10 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         public async Task<PagedResponce<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
             var users = await _repository.GetPaged(offset, limit, cancellationToken);
-            var usersDto = _mapper.Map<List<UserDto>>(users);
+            var usersDto = _mapper.Map<List<UserDto>>(users.EntityList);
             return new PagedResponce<UserDto>
             {
-                Count = usersDto.Count,
+                Count = users.Count,
                 EntityList = usersDto
             };
         }

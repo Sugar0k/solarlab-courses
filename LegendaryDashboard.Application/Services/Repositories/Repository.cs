@@ -49,14 +49,20 @@ namespace LegendaryDashboard.Application.Services.Repositories
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
         }
-        
-        public async Task<List<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+
+        public async Task<PagedResponce<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
-            return await DbSet
+            var list = await DbSet
                 .OrderBy(u => u.Id)
                 .Skip(offset)
                 .Take(limit)
                 .ToListAsync(cancellationToken: cancellationToken);
+            var count = await DbSet.CountAsync(cancellationToken);
+            return new PagedResponce<TEntity>
+            {
+                Count = count,
+                EntityList = list
+            };
         }
     }
 

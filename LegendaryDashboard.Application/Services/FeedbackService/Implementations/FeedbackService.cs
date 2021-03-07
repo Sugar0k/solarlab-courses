@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
+using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using LegendaryDashboard.Domain.Models;
@@ -35,12 +36,17 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             await _repository.Delete(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<FeedbackDto>> Get(
+        public async Task<PagedResponce<FeedbackDto>> Get(
             FeedbackGetRequest getRequest, 
             CancellationToken cancellationToken)
         {
-            var feedbacks= await _repository.GetPaged(getRequest, cancellationToken);
-            return _mapper.Map<List<FeedbackDto>>(feedbacks);
+            var feedbacks = await _repository.GetPaged(getRequest.Offset, getRequest.Limit, cancellationToken);
+            var feedbacksDto = _mapper.Map<List<FeedbackDto>>(feedbacks.EntityList);
+            return new PagedResponce<FeedbackDto>
+            {
+                Count = feedbacks.Count,
+                EntityList = feedbacksDto
+            };
         }
 
         // public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
