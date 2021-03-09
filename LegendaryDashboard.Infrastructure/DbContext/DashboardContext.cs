@@ -18,22 +18,7 @@ namespace LegendaryDashboard.Infrastructure.DbContext
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Image key field 
-            modelBuilder.Entity<Image>()
-                .HasKey(s => s.Guid);
-            
-            // Advert:UserAdvert (M:O)
-            modelBuilder.Entity<Advert>()
-                .HasMany(a => a.UsersAdverts)
-                .WithOne(ua => ua.Advert)
-                .HasForeignKey(ua => ua.AdvertId);
-            
-            // UserAdvert:User (O:M)
-            modelBuilder.Entity<UserAdvert>()
-                .HasOne(ua => ua.User)
-                .WithMany(u => u.UsersAdverts)
-                .HasForeignKey(ua => ua.UserId);
-            
+                       
         }
     }
 }
