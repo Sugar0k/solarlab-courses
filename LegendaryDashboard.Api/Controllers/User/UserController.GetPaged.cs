@@ -16,8 +16,8 @@ namespace LegendaryDashboard.Api.Controllers.User
     public partial class UserController
     {
         [Authorize(Roles = RoleConstants.AdminRole)]
-        [HttpGet("all")]
-        public async Task<IActionResult> Get(
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPaged(
             int offset, int limit,
             [FromServices] IUserService service,
             CancellationToken cancellationToken

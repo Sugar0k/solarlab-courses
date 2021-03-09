@@ -23,12 +23,13 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .HasMany(a => a.UsersAdverts)
                 .WithOne(ua => ua.Advert)
                 .HasForeignKey(ua => ua.AdvertId);
-
+            
             // UserAdvert:User (O:M)
             modelBuilder.Entity<UserAdvert>()
                 .HasOne(ua => ua.User)
                 .WithMany(u => u.UsersAdverts)
                 .HasForeignKey(ua => ua.UserId);
+            
         }
     }
 }

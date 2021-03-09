@@ -8,7 +8,7 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
     public interface ICategoryRepository : IRepository<Category, int>
     {
         Task<List<Category>> GetByTitles(string name, CancellationToken cancellationToken);
-        
+        Task<List<Category>> GetAll(CancellationToken cancellationToken);
         Task<List<Category>> GetByParentCategoryId(int id, CancellationToken cancellationToken);
     }
 }
