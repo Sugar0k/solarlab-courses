@@ -22,6 +22,13 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .ToListAsync(cancellationToken: cancellationToken);
         }
 
+        public async Task<List<Category>> GetAll(CancellationToken cancellationToken)
+        {
+            return await DbSet
+                .OrderBy(u => u.Id)
+                .ToListAsync(cancellationToken: cancellationToken);
+        }
+
         public async Task<List<Category>> GetByParentCategoryId(int id, CancellationToken cancellationToken)
         {
             return await DbSet.Where(c => c.ParentCategoryId == id)

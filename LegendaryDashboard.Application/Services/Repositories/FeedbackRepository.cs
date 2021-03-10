@@ -37,11 +37,11 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .Count();
         }
 
-        public async Task Update(Feedback feedback, CancellationToken cancellationToken)
-        { 
-             DbSet.Update(feedback);
-             await Context.SaveChangesAsync(cancellationToken);
-        }
+        // public async Task Update(Feedback feedback, CancellationToken cancellationToken)
+        // { 
+        //      DbSet.Update(feedback);
+        //      await Context.SaveChangesAsync(cancellationToken);
+        // }
 
         public async Task<Feedback> GetById(int id, CancellationToken cancellationToken)
         {

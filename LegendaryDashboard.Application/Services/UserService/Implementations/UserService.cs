@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
+using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.User;
 using LegendaryDashboard.Contracts.Contracts.User.Requests;
 using LegendaryDashboard.Domain.Common;
@@ -99,10 +100,15 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
                 await _repository.Delete(id, cancellationToken);  
             }
         }
-        public async Task<IEnumerable<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        public async Task<PagedResponse<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
             var users = await _repository.GetPaged(offset, limit, cancellationToken);
-            return _mapper.Map<List<UserDto>>(users);
+            var usersDto = _mapper.Map<List<UserDto>>(users.EntityList);
+            return new PagedResponse<UserDto>
+            {
+                Count = users.Count,
+                EntityList = usersDto
+            };
         }
         public async Task<int> Count(CancellationToken cancellationToken)
         {
