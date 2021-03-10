@@ -9,7 +9,7 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
 {
     public interface IImageRepository: IRepository<Image, string>
     {
-        Task<string> SaveFile(IFormFile file, CancellationToken cancellationToken);
-        Task<ImageDto> FindFileById(string id, CancellationToken cancellationToken);
+        // Task<string> SaveFile(IFormFile file, CancellationToken cancellationToken);
+        Task<Image> FindFileById(string id, CancellationToken cancellationToken);
     }
 }
