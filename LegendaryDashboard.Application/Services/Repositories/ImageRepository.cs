@@ -45,8 +45,8 @@ namespace LegendaryDashboard.Application.Services.Repositories
         //
         // }
 
-        public async Task<Image> FindFileById(string id, CancellationToken cancellationToken)
-        {
+        // public async Task<Image> FindFileById(string id, CancellationToken cancellationToken)
+        // {
             // var image = await DbSet.FindAsync(id, cancellationToken);
             // if (image == null) 
             //     throw new FileNotFoundException($"Файл с id {id} не найден");
@@ -56,8 +56,8 @@ namespace LegendaryDashboard.Application.Services.Repositories
             //     FileType = "image/jpeg",
             //     FileName = image.FileName
             // };
-            return await DbSet.FindAsync(id, cancellationToken);
-        }
+        //     return await DbSet.FindAsync(id, cancellationToken);
+        // }
 
         // public new async Task Delete(string id, CancellationToken cancellationToken)
         // {
