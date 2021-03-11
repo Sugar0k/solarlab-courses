@@ -4,6 +4,7 @@ namespace LegendaryDashboard.Contracts.Contracts.Advert
 {
     public sealed class AdvertDto
     {
+        //TODO: а что с изображениями?
         public int Id { get; set; }
         public int CategoryId { get; set; }
         public string Title { get; set; }

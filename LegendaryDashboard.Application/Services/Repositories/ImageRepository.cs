@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Mime;
@@ -71,5 +72,9 @@ namespace LegendaryDashboard.Application.Services.Repositories
         //     DbSet.Remove(image);
         //     await Context.SaveChangesAsync(cancellationToken);
         // }
+        public async Task DeleteMany(List<Image> images, CancellationToken cancellationToken)
+        {
+            DbSet.RemoveRange(images);
+        }
     }
 }
