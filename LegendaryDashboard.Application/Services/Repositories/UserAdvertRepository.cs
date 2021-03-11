@@ -70,5 +70,24 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .ToListAsync(cancellationToken: cancellationToken);
         }
 
+        public async Task DeleteByAdvertId(int advertId, CancellationToken cancellationToken)
+        {
+            DbSet.RemoveRange(await GetConnectionsByAdvertId(new GetConnectionsRequest
+            {
+                Id = advertId,
+                Limit = 10000,
+                Offset = 0
+            }, cancellationToken));
+        }
+
+        public async Task DeleteByUserId(int userId, CancellationToken cancellationToken)
+        {
+            DbSet.RemoveRange(await GetConnectionsByUserId(new GetConnectionsRequest
+            {
+                Id = userId,
+                Limit = 10000,
+                Offset = 0
+            }, cancellationToken));
+        }
     }
 }

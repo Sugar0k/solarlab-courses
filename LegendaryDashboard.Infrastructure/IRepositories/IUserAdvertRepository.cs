@@ -19,5 +19,7 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
         Task<List<UserAdvert>> GetConnectionsByUserIdAndType(
             GetConnectionsWithTypeRequest request, 
             CancellationToken cancellationToken);
+        Task DeleteByAdvertId(int advertId, CancellationToken cancellationToken);
+        Task DeleteByUserId(int userId, CancellationToken cancellationToken);
     }
 }

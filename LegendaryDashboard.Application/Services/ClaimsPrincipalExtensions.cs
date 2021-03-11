@@ -31,5 +31,13 @@ namespace LegendaryDashboard.Application.Services
             }
             return false;
         }
+
+        public static int GetUserId(IHttpContextAccessor accessor)
+        {
+            if (accessor.HttpContext == null) throw new Exception("Нет прав!");
+            var user = accessor.HttpContext.User;
+            if (user == null) throw new Exception("Нет клеймов");
+            return user.GetClaimValue<int>(ClaimTypes.NameIdentifier);
+        }
     }
 }
