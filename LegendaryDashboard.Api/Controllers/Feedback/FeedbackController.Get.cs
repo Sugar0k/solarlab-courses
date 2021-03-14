@@ -16,6 +16,7 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
             [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
+            //TODO: Работает не коректно, нужно переписать метод 
             var feedbacks = await service.Get(request, cancellationToken);
             return Ok(feedbacks);
         }
