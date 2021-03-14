@@ -21,12 +21,12 @@ namespace LegendaryDashboard.Domain.Models
         /// <summary>
         /// Отправленные отзывы.
         /// </summary>
-        //public List<Feedback> SentFeedbacks { get; set; } 
+        public List<Feedback> SentFeedbacks { get; set; } 
         
         /// <summary>
         /// Полученные отзывы.
         /// </summary>
-        //public List<Feedback> TakenFeedbacks { get; set; } 
+        public List<Feedback> TakenFeedbacks { get; set; } 
         
         
     }

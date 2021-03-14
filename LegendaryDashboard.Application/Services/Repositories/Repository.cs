@@ -44,7 +44,8 @@ namespace LegendaryDashboard.Application.Services.Repositories
         
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
-            var entity  = await DbSet.FindAsync(id, cancellationToken);
+            //TODO: Пофиксить! только как? async метод не работает при текущем конфиге бд
+            var entity  = await DbSet.FindAsync(id);
             if (entity == null) throw new EntityNotFoundException("Удаляемый элемент не найден");
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
