@@ -9,7 +9,6 @@ namespace LegendaryDashboard.Api.Controllers.Category
 {
     public partial class CategoryController
     {
-        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("paged")]
         public async Task<IActionResult> GetPaged(
             int offset, int limit,
