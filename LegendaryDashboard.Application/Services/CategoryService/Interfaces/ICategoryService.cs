@@ -11,6 +11,7 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Interfaces
     {
         Task Save(CreateCategoryRequest request, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
+        Task Update(CreateCategoryRequest request, CancellationToken cancellationToken);
         Task<int> Count(CancellationToken cancellationToken);
         Task<CategoryDto> FindById(int id, CancellationToken cancellationToken);
         Task<PagedResponse<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken);

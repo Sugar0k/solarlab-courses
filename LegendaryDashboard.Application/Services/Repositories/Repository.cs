@@ -50,6 +50,12 @@ namespace LegendaryDashboard.Application.Services.Repositories
             await Context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task Update(TEntity entity, CancellationToken cancellationToken)
+        {
+            DbSet.UpdateRange(entity);
+            await Context.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task<PagedResponse<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
             var list = await DbSet

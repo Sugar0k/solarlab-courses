@@ -14,5 +14,6 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
         Task<int> Count(CancellationToken cancellationToken);
         Task<PagedResponse<TEntity>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
         Task Delete(TId id, CancellationToken cancellationToken);
+        Task Update(TEntity entity, CancellationToken cancellationToken);
     }
 }

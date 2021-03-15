@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -35,6 +36,12 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
             await _repository.Delete(id, cancellationToken);  
         }
 
+        public async Task Update(CreateCategoryRequest request, CancellationToken cancellationToken)
+        {
+            var category = _mapper.Map<Category>(request);
+            await _repository.Update(category, cancellationToken);
+        }
+        
         public async Task<int> Count(CancellationToken cancellationToken)
         {
             return await _repository.Count(cancellationToken);
