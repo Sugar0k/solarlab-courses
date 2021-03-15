@@ -9,15 +9,13 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
 {
     public partial class FeedbackController
     {
-        [HttpPost]
-        [Route("get")]
-        public async Task<IActionResult> Get(
-            [FromBody] FeedbackGetRequest request,
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPaged(
+            int id, int offset, int limit,
             [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
-            //TODO: Работает не коректно, нужно переписать метод 
-            var feedbacks = await service.Get(request, cancellationToken);
+            var feedbacks = await service.GetPaged(id, offset, limit, cancellationToken);
             return Ok(feedbacks);
         }
     }

@@ -36,17 +36,26 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             await _repository.Delete(id, cancellationToken);
         }
 
-        public async Task<PagedResponse<FeedbackDto>> Get(
-            FeedbackGetRequest getRequest, 
+        public async Task<PagedResponse<FeedbackDto>> GetPaged( 
+            int id,
+            int offset, 
+            int limit, 
             CancellationToken cancellationToken)
         {
-            var feedbacks = await _repository.GetPaged(getRequest.Offset, getRequest.Limit, cancellationToken);
+            var feedbacks = await _repository.GetPaged(
+                (f => f.UserId == id),
+                offset, limit, cancellationToken);
             var feedbacksDto = _mapper.Map<List<FeedbackDto>>(feedbacks.EntityList);
             return new PagedResponse<FeedbackDto>
             {
                 Count = feedbacks.Count,
                 EntityList = feedbacksDto
             };
+        }
+        public async Task<FeedbackDto> GetById(int id, CancellationToken cancellationToken)
+        {
+            var feedback = await _repository.GetById(id, cancellationToken);
+            return _mapper.Map<FeedbackDto>(feedback);
         }
 
         // public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
