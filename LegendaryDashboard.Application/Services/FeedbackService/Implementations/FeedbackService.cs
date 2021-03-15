@@ -10,6 +10,7 @@ using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
+using Microsoft.AspNetCore.Http;
 
 namespace LegendaryDashboard.Application.Services.FeedbackService.Implementations
 {
@@ -17,23 +18,32 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
     {
         private readonly IFeedbackRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _accessor;
 
-        public FeedbackService(IFeedbackRepository repository, IMapper mapper)
+
+        public FeedbackService(IFeedbackRepository repository, IMapper mapper, IHttpContextAccessor accessor)
         {
             _repository = repository;
             _mapper = mapper;
+            _accessor = accessor;
         }
 
         public async Task Create(FeedbackCreateRequest createRequest, CancellationToken cancellationToken)
         {
+            int commentatorId = ClaimsPrincipalExtensions.GetUserId(_accessor);
             var feedback = _mapper.Map<Feedback>(createRequest);
+            feedback.CommentatorId = commentatorId;
             feedback.CreateDate = DateTime.UtcNow;
             await _repository.Save(feedback, cancellationToken);
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            await _repository.Delete(id, cancellationToken);
+            var feedback = _repository.GetById(id, cancellationToken);
+            var userId = ClaimsPrincipalExtensions.GetUserId(_accessor);
+            
+            if (feedback.Result.CommentatorId == userId) await _repository.Delete(id, cancellationToken);
+            else throw new Exception("Feedback не пренадлежит текущему пользователю");
         }
 
         public async Task<PagedResponse<FeedbackDto>> GetPaged( 
