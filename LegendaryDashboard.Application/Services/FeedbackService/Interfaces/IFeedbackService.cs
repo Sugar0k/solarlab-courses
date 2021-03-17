@@ -15,7 +15,7 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Interfaces
         Task Create(FeedbackCreateRequest createRequest, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
         Task<PagedResponse<FeedbackDto>> Get(FeedbackGetRequest getRequest, CancellationToken cancellationToken);
-        // Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken);
+        Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken);
         Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken);
     }
 }

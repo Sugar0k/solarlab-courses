@@ -8,6 +8,7 @@ using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
+using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
 
@@ -49,14 +50,14 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             };
         }
 
-        // public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
-        // {
-        //     var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
-        //     if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
-        //     feedback.Text = updateRequest.Text;
-        //     feedback.Rating = updateRequest.Rating;
-        //     await _repository.Update(feedback, cancellationToken);
-        // }
+        public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
+        {
+            var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
+            if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
+            feedback.Text = updateRequest.Text;
+            feedback.Rating = updateRequest.Rating;
+            await _repository.Update(feedback, cancellationToken);
+        }
 
         public async Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken)
         {
