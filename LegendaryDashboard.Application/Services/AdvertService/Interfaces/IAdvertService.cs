@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Advert;
 using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
+using LegendaryDashboard.Contracts.Contracts.AdvertImage;
 using LegendaryDashboard.Domain.Common;
+using Microsoft.AspNetCore.Http;
 
 namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
 {
@@ -98,5 +100,14 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         Task AddFollow(int advertId, CancellationToken cancellationToken);
 
         //что-то еще 
+        public Task<IEnumerable<AdvertImageDto>> GetAdvertImages(int advertId, CancellationToken cancellationToken);
+
+        public Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken);
+
+        public Task DeleteImage(int advertId, string imageId, CancellationToken cancellationToken);
+
+        public Task<AdvertImageDto> GetImage(int advertId, string imageId, CancellationToken cancellationToken);
+        
+
     }
 }

@@ -39,11 +39,10 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            var feedback = _repository.GetById(id, cancellationToken);
-            var userId = ClaimsPrincipalExtensions.GetUserId(_accessor);
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, id))
+                throw new Exception("Feedback не пренадлежит текущему пользователю");
             
-            if (feedback.Result.CommentatorId == userId) await _repository.Delete(id, cancellationToken);
-            else throw new Exception("Feedback не пренадлежит текущему пользователю");
+            await _repository.Delete(id, cancellationToken);
         }
 
         public async Task<PagedResponse<FeedbackDto>> GetPaged( 

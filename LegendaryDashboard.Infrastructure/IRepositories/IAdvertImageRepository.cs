@@ -6,11 +6,9 @@ using LegendaryDashboard.Domain.Models;
 
 namespace LegendaryDashboard.Infrastructure.IRepositories
 {
-    public interface IAdvertImageRepository : IRepository<AdvertImage, int>
+    public interface IAdvertImageRepository : IRepository<AdvertImage, string>
     {
         Task<IEnumerable<AdvertImage>> GetByAdvertId(int advertId, CancellationToken cancellationToken);
-        Task<IEnumerable<AdvertImage>> GetByImageId(string imageGuid, CancellationToken cancellationToken);
         Task DeleteByAdvertId(int advertId, CancellationToken cancellationToken);
-        Task DeleteByImageId(string imagGuid, CancellationToken cancellationToken);
     }
 }

@@ -1,10 +1,11 @@
+using System;
+
 namespace LegendaryDashboard.Contracts.Contracts.AdvertImage
 {
     public class AdvertImageDto
     {
-        public int id { get; set; }
-        public string ImageGuid { get; set; }
-        public int AdvertId { get; set; }
-       
+        public string id { get; set; } 
+        public string FileName { get; set; } //Изначальное название
+        public byte[] data { get; set; }       //Данные
     }
 }
