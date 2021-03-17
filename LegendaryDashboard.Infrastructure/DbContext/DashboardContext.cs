@@ -41,6 +41,11 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .WithOne(f => f.User)
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.ClientCascade);
+            
+            modelBuilder.Entity<Advert>()
+                .HasMany(a => a.AdvertImages)
+                .WithOne(ai => ai.Advert)
+                .HasForeignKey(ai => ai.AdvertId);
 
         }
     }

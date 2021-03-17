@@ -71,6 +71,26 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 EntityList = list
             };
         }
+        
+        public async Task<PagedResponse<TEntity>> GetPaged(
+            Expression<Func<TEntity, bool>> predicate, 
+            int offset, 
+            int limit, 
+            CancellationToken cancellationToken)
+        {
+            var list = await DbSet
+                .Where(predicate)
+                .OrderBy(u => u.Id)
+                .Skip(offset)
+                .Take(limit)
+                .ToListAsync(cancellationToken: cancellationToken);
+            var count = await DbSet.CountAsync(cancellationToken);
+            return new PagedResponse<TEntity>
+            {
+                Count = count,
+                EntityList = list
+            };
+        }
     }
 
 }

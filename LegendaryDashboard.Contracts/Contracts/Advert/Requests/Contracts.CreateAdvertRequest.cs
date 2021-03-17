@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace LegendaryDashboard.Contracts.Contracts.Advert.Requests
 {
     public sealed class CreateAdvertRequest
     {
-        //TODO: А что с изображениями?
         [Required]
         public int CategoryId { get; set; }
         
@@ -24,6 +25,8 @@ namespace LegendaryDashboard.Contracts.Contracts.Advert.Requests
         public string Street { get; set; }
         
         public string House { get; set; }
+        
+        public IEnumerable<IFormFile> Images { get; set; }
 
     }
 }
