@@ -34,5 +34,9 @@
       <ProjectReference Include="..\LegendaryDashboard.Infrastructure\LegendaryDashboard.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Files" />
+    </ItemGroup>
+
 
 </Project>

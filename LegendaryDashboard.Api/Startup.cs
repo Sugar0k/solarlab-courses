@@ -7,6 +7,8 @@ using LegendaryDashboard.Application.Services.CategoryService.Implementations;
 using LegendaryDashboard.Application.Services.CategoryService.Interfaces;
 using LegendaryDashboard.Application.Services.FeedbackService.Implementations;
 using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
+using LegendaryDashboard.Application.Services.FileService.Implementation;
+using LegendaryDashboard.Application.Services.FileService.Interfaces;
 using LegendaryDashboard.Application.Services.Repositories;
 using LegendaryDashboard.Application.Services.UserService.Implementations;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
@@ -72,7 +74,12 @@ namespace LegendaryDashboard.Api
             services
                 .AddScoped<IFeedbackService, FeedbackService>()
                 .AddScoped<IFeedbackRepository, FeedbackRepository>();
-            //TODO: Добавление репок по картинкам
+            //добавление сервисов работы с файлами
+            services
+                .AddScoped<IFileService, FileService>();
+            //добавление репозитория картинок для объявления
+            services
+                .AddScoped<IAdvertImageRepository, AdvertImageRepository>();
             //добавление сервиса Объявления
             services
                 .AddScoped<IAdvertService, AdvertService>();
