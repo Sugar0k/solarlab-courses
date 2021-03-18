@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using LegendaryDashboard.Application.Services.AdvertService.Implementations;
+using LegendaryDashboard.Application.Services.AdvertService.Interfaces;
 using LegendaryDashboard.Application.Services.CategoryService.Implementations;
 using LegendaryDashboard.Application.Services.CategoryService.Interfaces;
 using LegendaryDashboard.Application.Services.FeedbackService.Implementations;
@@ -70,7 +72,11 @@ namespace LegendaryDashboard.Api
             services
                 .AddScoped<IFeedbackService, FeedbackService>()
                 .AddScoped<IFeedbackRepository, FeedbackRepository>();
-            
+            //TODO: Добавление репок по картинкам
+            //добавление сервиса Объявления
+            services
+                .AddScoped<IAdvertService, AdvertService>();
+                
             //Аутентификация
             services.AddOptions<JwtOptions>().Configure<IConfiguration>((o, c) => {
                 c.GetSection("Token").Bind(o);
