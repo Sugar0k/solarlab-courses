@@ -9,7 +9,6 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
 {
     public interface IAdvertRepository : IRepository<Advert, int>
     {
-        Task<List<Advert>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
         Task<List<Advert>> GetByCategoryId(int categoryId, int offset, int limit, CancellationToken cancellationToken);
         Task<List<Advert>> GetByState(string state, int offset, int limit, CancellationToken cancellationToken);
         Task<List<Advert>> GetByCity(string city, int offset, int limit, CancellationToken cancellationToken);
