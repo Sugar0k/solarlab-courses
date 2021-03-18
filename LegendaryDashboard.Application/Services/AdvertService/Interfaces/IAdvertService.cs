@@ -61,10 +61,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<PagedResponse<AdvertDto>> GetPaged(
-            int? ownerId,
-            int? followerId,
-            int offset, 
-            int limit, 
+            PagedAdvertsRequest request,
             CancellationToken cancellationToken);
         
         // /// <summary>
@@ -100,12 +97,39 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         Task AddFollow(int advertId, CancellationToken cancellationToken);
 
         //что-то еще 
+        /// <summary>
+        /// Получение всех изображений объявления
+        /// </summary>
+        /// <param name="advertId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public Task<IEnumerable<AdvertImageDto>> GetAdvertImages(int advertId, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Добавление изображения
+        /// </summary>
+        /// <param name="advertId"></param>
+        /// <param name="file"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Удаление изображения по id
+        /// </summary>
+        /// <param name="advertId"></param>
+        /// <param name="imageId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public Task DeleteImage(int advertId, string imageId, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Получение изображения по id
+        /// </summary>
+        /// <param name="advertId"></param>
+        /// <param name="imageId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public Task<AdvertImageDto> GetImage(int advertId, string imageId, CancellationToken cancellationToken);
         
 

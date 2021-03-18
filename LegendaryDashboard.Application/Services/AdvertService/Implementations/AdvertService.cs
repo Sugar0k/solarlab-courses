@@ -125,9 +125,10 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             return _mapper.Map<AdvertDto>(advert);
         }
 
-        public async Task<PagedResponse<AdvertDto>> GetPaged(int? ownerId, int? followerId, int offset, int limit, CancellationToken cancellationToken)
+        public async Task<PagedResponse<AdvertDto>> GetPaged(PagedAdvertsRequest request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            //TODO: Починить под ownerId & followerId
+            return _mapper.Map<PagedResponse<AdvertDto>>(await _advertRepository.GetPaged(request.Offset, request.Limit, cancellationToken));
         }
         
         public async Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken)
