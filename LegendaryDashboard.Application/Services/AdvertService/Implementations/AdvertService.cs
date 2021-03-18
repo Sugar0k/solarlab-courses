@@ -128,7 +128,19 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         public async Task<PagedResponse<AdvertDto>> GetPaged(PagedAdvertsRequest request, CancellationToken cancellationToken)
         {
             //TODO: Починить под ownerId & followerId
-            return _mapper.Map<PagedResponse<AdvertDto>>(await _advertRepository.GetPaged(request.Offset, request.Limit, cancellationToken));
+            if(request.FollowerId != 0 ) 
+                return _mapper.Map<PagedResponse<AdvertDto>>(
+                    await _advertRepository.GetPaged(
+                        //TODO: Добавить условие
+                        request.Offset, request.Limit, cancellationToken));
+            if(request.OwnerId != 0 ) 
+                return _mapper.Map<PagedResponse<AdvertDto>>(
+                    await _advertRepository.GetPaged(
+                        //TODO: Добавить условие
+                        request.Offset, request.Limit, cancellationToken));
+            if(request.FollowerId == 0 && request.OwnerId == 0) 
+                return _mapper.Map<PagedResponse<AdvertDto>>(await _advertRepository.GetPaged(request.Offset, request.Limit, cancellationToken));
+            throw new Exception("Ошибка запроса!");
         }
         
         public async Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken)
