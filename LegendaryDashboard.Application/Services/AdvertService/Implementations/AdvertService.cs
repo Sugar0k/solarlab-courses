@@ -63,19 +63,19 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 UserId = ClaimsPrincipalExtensions.GetUserId(_accessor),
                 ConnectionType = AdvertUserConnectionTypes.OwnerConnection
             },cancellationToken);
-
-            var path = Path.Combine(ImagesPath, advert.Id.ToString());
-            request.Images.ForAll(async iFormFile =>
-            {
-                await _fileService.Create(iFormFile, path, cancellationToken);
-                await _advertImageRepository.Save(new AdvertImage
-                {
-                    FileName = iFormFile.Name,
-                    FilePath = path,
-                    DateCreate = DateTime.UtcNow,
-                    AdvertId = advert.Id
-                }, cancellationToken); 
-            });
+            //TODO: Забавно, походу нельзя запихнуть картинки с обычным реквестом(в контроллере) ну или я чего-то не знаю
+            // var path = Path.Combine(ImagesPath, advert.Id.ToString());
+            // request.Images.ForAll(async iFormFile =>
+            // {
+            //     await _fileService.Create(iFormFile, path, cancellationToken);
+            //     await _advertImageRepository.Save(new AdvertImage
+            //     {
+            //         FileName = iFormFile.Name,
+            //         FilePath = path,
+            //         DateCreate = DateTime.UtcNow,
+            //         AdvertId = advert.Id
+            //     }, cancellationToken); 
+            // });
             
         }
 
@@ -149,12 +149,11 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
-            
             var path = Path.Combine(ImagesPath, advertId.ToString());
-            await _fileService.Create(file, path, cancellationToken);
             await _advertImageRepository.Save(new AdvertImage
             {
-                FileName = file.Name,
+                Id = await _fileService.Create(file, path, cancellationToken),
+                FileName = file.FileName,
                 FilePath = path,
                 DateCreate = DateTime.UtcNow,
                 AdvertId = advertId
@@ -175,7 +174,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         
         public async Task<AdvertImageDto> GetImage(int advertId, string imageId, CancellationToken cancellationToken)
         {
-            var path = Path.Combine(ImagesPath, imageId);
+            var path = Path.Combine(ImagesPath, advertId.ToString());
             var advertImage = await _advertImageRepository.FindById(imageId, cancellationToken);
             var advertImageDto = _mapper.Map<AdvertImageDto>(advertImage);
             advertImageDto.data = await _fileService.Get(advertImage.Id, path, cancellationToken);
