@@ -132,6 +132,12 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <returns></returns>
         public Task<AdvertImageDto> GetImage(int advertId, string imageId, CancellationToken cancellationToken);
         
-
+        /// <summary>
+        /// Получение списка изображений по id объявления.
+        /// </summary>
+        /// <param name="advertId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<List<AdvertImageDto>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken);
     }
 }

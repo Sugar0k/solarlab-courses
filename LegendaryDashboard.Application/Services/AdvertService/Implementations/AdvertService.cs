@@ -181,6 +181,18 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             return advertImageDto;
         }
 
+        public async Task<List<AdvertImageDto>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken)
+        {
+            var path = Path.Combine(ImagesPath, advertId.ToString());
+            var advertImages = await _advertImageRepository.GetByAdvertId(advertId, cancellationToken);
+            var advertImagesDto = _mapper.Map<List<AdvertImageDto>>(advertImages);
+            foreach (var advertImageDto in advertImagesDto)
+            {
+                advertImageDto.data = await _fileService.Get(advertImageDto.id, path, cancellationToken);
+            }
+            return advertImagesDto;
+        }
+
         public async Task AddFollow(int advertId, CancellationToken cancellationToken)
         {
             await _userAdvertRepository.Save(new UserAdvert
