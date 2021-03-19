@@ -149,6 +149,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
+            
             var path = Path.Combine(ImagesPath, advertId.ToString());
             await _advertImageRepository.Save(new AdvertImage
             {
@@ -160,37 +161,43 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             }, cancellationToken);
         }
 
-        public async Task DeleteImage(int advertId, string imageId, CancellationToken cancellationToken)
+        public async Task DeleteImage(string imageId, CancellationToken cancellationToken)
         {
-            var advert = await _advertRepository.FindById(advertId, cancellationToken);
-
+            var image = await _advertImageRepository.FindById(imageId, cancellationToken);
+            var advert = await _advertRepository.FindById(image.AdvertId, cancellationToken);
+            
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
-            var path = Path.Combine(ImagesPath, advertId.ToString());
-            await _fileService.Delete(imageId, path, cancellationToken);
+            await _fileService.Delete(imageId, image.FilePath, cancellationToken);
             await _advertImageRepository.Delete(imageId, cancellationToken);
         }
-        
-        public async Task<AdvertImageDto> GetImage(int advertId, string imageId, CancellationToken cancellationToken)
+
+        public async Task DeleteImagesByAdvertId(int advertId, CancellationToken cancellationToken)
         {
-            var path = Path.Combine(ImagesPath, advertId.ToString());
+            var images = await _advertImageRepository.GetByAdvertId(advertId, cancellationToken);
+            var advert = await _advertRepository.FindById(advertId, cancellationToken);
+            
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
+                throw new Exception("Advert не пренадлежит текущему пользователю");
+            
+            images.ForAll(async a => { await _fileService.Delete(a.Id, a.FilePath, cancellationToken); });
+            await _advertImageRepository.DeleteByAdvertId(advertId, cancellationToken);
+        }
+
+        public async Task<AdvertImageDto> GetImage(string imageId, CancellationToken cancellationToken)
+        {
             var advertImage = await _advertImageRepository.FindById(imageId, cancellationToken);
             var advertImageDto = _mapper.Map<AdvertImageDto>(advertImage);
-            advertImageDto.data = await _fileService.Get(advertImage.Id, path, cancellationToken);
+            advertImageDto.data = await _fileService.Get(advertImage.Id, advertImage.FilePath, cancellationToken);
             return advertImageDto;
         }
 
-        public async Task<List<AdvertImageDto>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken)
         {
-            var path = Path.Combine(ImagesPath, advertId.ToString());
-            var advertImages = await _advertImageRepository.GetByAdvertId(advertId, cancellationToken);
-            var advertImagesDto = _mapper.Map<List<AdvertImageDto>>(advertImages);
-            foreach (var advertImageDto in advertImagesDto)
-            {
-                advertImageDto.data = await _fileService.Get(advertImageDto.id, path, cancellationToken);
-            }
-            return advertImagesDto;
+            var advertImages = await _advertImageRepository.GetByAdvertId(advertId, 
+                cancellationToken);
+            return advertImages.Select(advertImage => advertImage.Id).ToList();
         }
 
         public async Task AddFollow(int advertId, CancellationToken cancellationToken)

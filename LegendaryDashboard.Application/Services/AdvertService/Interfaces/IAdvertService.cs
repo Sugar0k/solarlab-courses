@@ -121,16 +121,23 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <param name="imageId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task DeleteImage(int advertId, string imageId, CancellationToken cancellationToken);
+        public Task DeleteImage(string imageId, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Удаление изображения по advertId
+        /// </summary>
+        /// <param name="advertId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task DeleteImagesByAdvertId(int advertId, CancellationToken cancellationToken);
 
         /// <summary>
         /// Получение изображения по id
         /// </summary>
-        /// <param name="advertId"></param>
         /// <param name="imageId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<AdvertImageDto> GetImage(int advertId, string imageId, CancellationToken cancellationToken);
+        public Task<AdvertImageDto> GetImage(string imageId, CancellationToken cancellationToken);
         
         /// <summary>
         /// Получение списка изображений по id объявления.
@@ -138,6 +145,6 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <param name="advertId"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<List<AdvertImageDto>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken);
+        public Task<IEnumerable<string>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken);
     }
 }
