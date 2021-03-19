@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LegendaryDashboard.Application.Services.AdvertService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Api.Controllers.Advert
@@ -13,7 +14,7 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create(
-            [FromBody] CreateAdvertRequest request,
+            CreateAdvertRequest request,
             [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
