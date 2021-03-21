@@ -16,17 +16,17 @@ namespace LegendaryDashboard.Domain.Models
         
         public string Role { get; set; }
 
-        public List<UserAdvert> UsersAdverts { get; set; } //связь со списком объявлений
+        public ICollection<UserAdvert> UsersAdverts { get; set; } = new HashSet<UserAdvert>();//связь со списком объявлений
         
         /// <summary>
         /// Отправленные отзывы.
         /// </summary>
-        public List<Feedback> SentFeedbacks { get; set; } 
+        public ICollection<Feedback> SentFeedbacks { get; set; } = new HashSet<Feedback>();
         
         /// <summary>
         /// Полученные отзывы.
         /// </summary>
-        public List<Feedback> TakenFeedbacks { get; set; } 
+        public ICollection<Feedback> TakenFeedbacks { get; set; } = new HashSet<Feedback>();
         
         
     }

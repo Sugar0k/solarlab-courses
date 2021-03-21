@@ -6,17 +6,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Internal;
+using Castle.Core.Internal;
 using LegendaryDashboard.Application.Services.AdvertService.Interfaces;
 using LegendaryDashboard.Application.Services.FileService.Interfaces;
-using LegendaryDashboard.Application.Services.Repositories;
 using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Advert;
 using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
 using LegendaryDashboard.Contracts.Contracts.AdvertImage;
+using LegendaryDashboard.Contracts.Contracts.UserAdvert.Requests;
 using LegendaryDashboard.Domain.Common;
 using LegendaryDashboard.Domain.Models;
+using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations;
+using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.Specifications;
 using LegendaryDashboard.Infrastructure.IRepositories;
 using Microsoft.AspNetCore.Http;
+using Category = LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.Specifications.Category;
 
 namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 {
@@ -49,9 +53,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         
         public async Task Create(CreateAdvertRequest request, CancellationToken cancellationToken)
         {
-            
             if (request == null) throw new Exception("Запрос пуст!");
-
             var advert = _mapper.Map<Advert>(request);
             advert.CreationDate = DateTime.UtcNow;
             advert.Views = 0;
@@ -63,32 +65,27 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 UserId = ClaimsPrincipalExtensions.GetUserId(_accessor),
                 ConnectionType = AdvertUserConnectionTypes.OwnerConnection
             },cancellationToken);
-            //TODO: Забавно, походу нельзя запихнуть картинки с обычным реквестом(в контроллере) ну или я чего-то не знаю
-            // var path = Path.Combine(ImagesPath, advert.Id.ToString());
-            // request.Images.ForAll(async iFormFile =>
-            // {
-            //     await _fileService.Create(iFormFile, path, cancellationToken);
-            //     await _advertImageRepository.Save(new AdvertImage
-            //     {
-            //         FileName = iFormFile.Name,
-            //         FilePath = path,
-            //         DateCreate = DateTime.UtcNow,
-            //         AdvertId = advert.Id
-            //     }, cancellationToken); 
-            // });
-            
         }
 
         public async Task Delete(int advertId, CancellationToken cancellationToken)
         {
             var advert = await _advertRepository.FindById(advertId, cancellationToken);
-
-            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
-                throw new Exception("Advert не пренадлежит текущему пользователю");
             
             if (advert == null) throw new Exception("Advert not found");
+            
+            var a = await _userAdvertRepository.GetConnectionsByAdvertId(new GetConnectionsRequest
+            {
+                Id = advertId,
+                Limit = 1000,
+                Offset = 0
+            }, cancellationToken);
+            var b = a.Find(c => c.ConnectionType == AdvertUserConnectionTypes.OwnerConnection);
+            
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, b.UserId))
+                throw new Exception("Advert не пренадлежит текущему пользователю");
+            
             await _advertRepository.Delete(advertId, cancellationToken);
-
+            
             var path = Path.Combine(ImagesPath, advert.Id.ToString());
             advert.AdvertImages.ForAll(async image =>
             {
@@ -127,20 +124,25 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 
         public async Task<PagedResponse<AdvertDto>> GetPaged(PagedAdvertsRequest request, CancellationToken cancellationToken)
         {
-            //TODO: Починить под ownerId & followerId
-            if(request.FollowerId != 0 ) 
-                return _mapper.Map<PagedResponse<AdvertDto>>(
-                    await _advertRepository.GetPaged(
-                        //TODO: Добавить условие
-                        request.Offset, request.Limit, cancellationToken));
-            if(request.OwnerId != 0 ) 
-                return _mapper.Map<PagedResponse<AdvertDto>>(
-                    await _advertRepository.GetPaged(
-                        //TODO: Добавить условие
-                        request.Offset, request.Limit, cancellationToken));
-            if(request.FollowerId == 0 && request.OwnerId == 0) 
-                return _mapper.Map<PagedResponse<AdvertDto>>(await _advertRepository.GetPaged(request.Offset, request.Limit, cancellationToken));
-            throw new Exception("Ошибка запроса!");
+            var spec = (Specification<Advert>) new TrueSpecification<Advert>();
+            if (request.FollowerId != null) spec &= Follower.New(request.FollowerId.Value);
+
+            if (request.OwnerId != null) spec &= Owner.New(request.OwnerId.Value);
+
+            if (!request.City.IsNullOrEmpty()) spec &= City.New(request.City);
+
+            if (!request.State.IsNullOrEmpty()) spec &= State.New(request.State);
+
+            if (request.MinPrice != 0 || request.MaxPrice != int.MaxValue) spec &= Price.New(request.MinPrice, request.MaxPrice);
+
+            if (request.CategoryId != null) spec &= Category.New(request.CategoryId.Value);
+            
+            if (!request.Title.IsNullOrEmpty()) spec &= Title.New(request.Title);
+                
+            return _mapper.Map<PagedResponse<AdvertDto>>(
+                await _advertRepository.GetPaged(
+                    spec,
+                    request.Offset, request.Limit, cancellationToken));
         }
         
         public async Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken)

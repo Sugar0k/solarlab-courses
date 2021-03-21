@@ -54,40 +54,13 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// Постраничный вывод списка объявлений, в зависимости
         /// от поступающих параметров
         /// </summary>
-        /// <param name="ownerId"></param>
-        /// <param name="followerId"></param>
-        /// <param name="offset"></param>
-        /// <param name="limit"></param>
+        /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<PagedResponse<AdvertDto>> GetPaged(
             PagedAdvertsRequest request,
             CancellationToken cancellationToken);
         
-        // /// <summary>
-        // /// Постраничный вывод списка объявлений владельца 
-        // /// </summary>
-        // /// <param name="offset"></param>
-        // /// <param name="limit"></param>
-        // /// <param name="cancellationToken"></param>
-        // /// <returns></returns>
-        // Task<PagedResponse<AdvertDto>> GetPagedByOwnerId(
-        //     int offset, 
-        //     int limit, 
-        //     CancellationToken cancellationToken);
-        //
-        // /// <summary>
-        // /// Постраничный вывод объявлений избранных объявлений
-        // /// </summary>
-        // /// <param name="offset"></param>
-        // /// <param name="limit"></param>
-        // /// <param name="cancellationToken"></param>
-        // /// <returns></returns>
-        // Task<PagedResponse<AdvertDto>> GetPagedByFollowerId(
-        //     int offset, 
-        //     int limit, 
-        //     CancellationToken cancellationToken);
-
         /// <summary>
         /// Добавление объявления в избранное
         /// </summary>
@@ -96,7 +69,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <returns></returns>
         Task AddFollow(int advertId, CancellationToken cancellationToken);
 
-        //что-то еще 
+        //изображения
+        
         /// <summary>
         /// Получение всех изображений объявления
         /// </summary>
