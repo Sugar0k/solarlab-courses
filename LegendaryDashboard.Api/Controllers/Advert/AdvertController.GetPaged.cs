@@ -9,13 +9,23 @@ namespace LegendaryDashboard.Api.Controllers.Advert
     public partial class AdvertController : ControllerBase
     {
         [HttpGet]
-        [Route("get/paged/offset='{request.offset}'_limit='{request.limit}'")]
+        [Route("get/paged")] //limit='{limit}'_offset='{offset}'
         public async Task<IActionResult> GetByPaged(
-            PagedAdvertsRequest request,
+            int? OwnerId,
+            int? FollowerId,
+            int Limit,
+            int Offset,
             [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            return Ok(await service.GetPaged(request, cancellationToken));
+            
+            return Ok(await service.GetPaged(new PagedAdvertsRequest
+            {
+                FollowerId = FollowerId,
+                Limit = Limit,
+                Offset = Offset,
+                OwnerId = OwnerId
+            }, cancellationToken));
         }
     }
 }

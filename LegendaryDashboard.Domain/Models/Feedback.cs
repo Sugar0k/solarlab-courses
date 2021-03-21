@@ -6,10 +6,10 @@ namespace LegendaryDashboard.Domain.Models
     public class Feedback : BaseEntity<int>
     {
         public int UserId { get; set; } //Кому пишут комментарий
-        public User User { get; set; }
+        public virtual User User { get; set; }
         
         public int CommentatorId { get; set; } //Кто пишет комментарий
-        public User Commentator { get; set; }
+        public virtual User Commentator { get; set; }
         
         public DateTime CreateDate { get; set; }
 
