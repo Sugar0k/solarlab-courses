@@ -122,6 +122,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             if (advert == null) throw new Exception("Объявление не найдено");
             var dto =  _mapper.Map<AdvertDto>(advert);
             dto.Images = await GetImagesByAdvertId(id, cancellationToken);
+            //todo: добавить +1 просмотр
             return dto;
         }
 
