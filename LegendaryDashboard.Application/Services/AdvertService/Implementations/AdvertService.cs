@@ -142,18 +142,22 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             if (request.CategoryId != null) spec &= Category.New(request.CategoryId.Value);
             
             if (!request.Title.IsNullOrEmpty()) spec &= Title.New(request.Title);
-                
-            var dtos = _mapper.Map<PagedResponse<AdvertDto>>(
-                await _advertRepository.GetPaged(
+            
+            var adverts = await _advertRepository.GetPaged(
                     spec,
-                    request.Offset, request.Limit, cancellationToken));
-            var list = dtos.EntityList;
-            foreach (var dto in list)
+                    request.Offset, request.Limit, cancellationToken);
+            var list = adverts.EntityList;
+            var dtos = _mapper.Map<List<AdvertDto>>(list);
+            foreach (var dto in dtos)
             {
                 dto.Images = await GetImagesByAdvertId(dto.Id, cancellationToken);
             }
-            dtos.EntityList = list;
-            return dtos;
+
+            return new PagedResponse<AdvertDto>
+            {
+                Count = dtos.Count,
+                EntityList = dtos
+            };
         }
         
         public async Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken)
