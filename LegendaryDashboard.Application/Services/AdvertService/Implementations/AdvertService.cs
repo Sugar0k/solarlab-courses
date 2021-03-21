@@ -20,6 +20,7 @@ using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations;
 using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.Specifications;
 using LegendaryDashboard.Infrastructure.IRepositories;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Category = LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.Specifications.Category;
 
 namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
@@ -119,7 +120,9 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         {
             var advert = await _advertRepository.FindById(id, cancellationToken);
             if (advert == null) throw new Exception("Объявление не найдено");
-            return _mapper.Map<AdvertDto>(advert);
+            var dto =  _mapper.Map<AdvertDto>(advert);
+            dto.Images = await GetImagesByAdvertId(id, cancellationToken);
+            return dto;
         }
 
         public async Task<PagedResponse<AdvertDto>> GetPaged(PagedAdvertsRequest request, CancellationToken cancellationToken)
@@ -139,10 +142,17 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             
             if (!request.Title.IsNullOrEmpty()) spec &= Title.New(request.Title);
                 
-            return _mapper.Map<PagedResponse<AdvertDto>>(
+            var dtos = _mapper.Map<PagedResponse<AdvertDto>>(
                 await _advertRepository.GetPaged(
                     spec,
                     request.Offset, request.Limit, cancellationToken));
+            var list = dtos.EntityList;
+            foreach (var dto in list)
+            {
+                dto.Images = await GetImagesByAdvertId(dto.Id, cancellationToken);
+            }
+            dtos.EntityList = list;
+            return dtos;
         }
         
         public async Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken)
