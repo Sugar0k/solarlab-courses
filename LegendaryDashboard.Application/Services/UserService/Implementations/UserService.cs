@@ -167,10 +167,11 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             var userWithNewPassword = await _repository.FindById(userId, cancellationToken);
             
             if (userWithNewPassword == null) 
-                throw new Exception("Пользователь не найден");
-            
+                throw new Exception("Пользователь не найден!");
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, userId)) 
+                throw new Exception("Нет прав!");
             if (!userWithNewPassword.PasswordHash.Equals(Hashing.GetHash(oldPassword))) 
-                throw new Exception("Неверный пароль");
+                throw new Exception("Неверный пароль!");
             
             userWithNewPassword.PasswordHash = Hashing.GetHash(newPassword);
             
