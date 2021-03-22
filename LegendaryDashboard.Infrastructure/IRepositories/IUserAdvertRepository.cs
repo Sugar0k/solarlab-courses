@@ -10,14 +10,9 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
 {
     public interface IUserAdvertRepository : IRepository<UserAdvert, int>
     {
-        Task<List<UserAdvert>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
-        Task<List<UserAdvert>> GetConnectionsByUserId(GetConnectionsRequest request, CancellationToken cancellationToken);
-        Task<List<UserAdvert>> GetConnectionsByAdvertId(GetConnectionsRequest request, CancellationToken cancellationToken);
-        Task<List<UserAdvert>> GetConnectionsByAdvertIdAndType(
-            GetConnectionsWithTypeRequest request,
-            CancellationToken cancellationToken);
-        Task<List<UserAdvert>> GetConnectionsByUserIdAndType(
-            GetConnectionsWithTypeRequest request, 
+        public Task<int> GetOwnerId(int advertId, CancellationToken cancellationToken);
+        Task<List<UserAdvert>> GetConnections(
+            Expression<Func<UserAdvert, bool>> predicate, 
             CancellationToken cancellationToken);
         Task DeleteByAdvertId(int advertId, CancellationToken cancellationToken);
         Task DeleteByUserId(int userId, CancellationToken cancellationToken);

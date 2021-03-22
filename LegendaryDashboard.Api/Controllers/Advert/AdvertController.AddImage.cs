@@ -11,11 +11,12 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [HttpPut("image/add")]
         public async Task<IActionResult> AddImage(
             int id,
-            IFormFile file,
+            IFormFileCollection fileCollection,
             [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            await service.AddImage(id, file, cancellationToken);
+            //TODO: Доделать под IFormFileCollection 
+            await service.AddImage(id, fileCollection[0], cancellationToken);
             return Ok();
         }
     }

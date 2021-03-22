@@ -25,8 +25,6 @@ namespace LegendaryDashboard.Contracts.Contracts.Advert.Requests
         public string Street { get; set; }
         
         public string House { get; set; }
-        //TODO: Найти решение как передать картинки через реквест или удалить в итоге
-        //public IEnumerable<IFormFile> Images { get; set; }
 
     }
 }

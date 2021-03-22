@@ -73,16 +73,9 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             var advert = await _advertRepository.FindById(advertId, cancellationToken);
             
             if (advert == null) throw new Exception("Advert not found");
-            
-            var a = await _userAdvertRepository.GetConnectionsByAdvertId(new GetConnectionsRequest
-            {
-                Id = advertId,
-                Limit = 1000,
-                Offset = 0
-            }, cancellationToken);
-            var b = a.Find(c => c.ConnectionType == AdvertUserConnectionTypes.OwnerConnection);
-            
-            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, b.UserId))
+
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
+                await _userAdvertRepository.GetOwnerId(advertId, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
             await _advertRepository.Delete(advertId, cancellationToken);
@@ -163,8 +156,10 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         public async Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken)
         {
             var advert = await _advertRepository.FindById(advertId, cancellationToken);
-
-            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
+            if (advert == null) throw new Exception("Advert not found");
+            
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
+                await _userAdvertRepository.GetOwnerId(advertId, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
             var path = Path.Combine(ImagesPath, advertId.ToString());
