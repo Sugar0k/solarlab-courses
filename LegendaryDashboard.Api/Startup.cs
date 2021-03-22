@@ -46,7 +46,7 @@ namespace LegendaryDashboard.Api
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // добавляем контекст DashboardContext в качестве сервиса в приложение
             services.AddDbContext<DashboardContext>(options =>
-                options.UseSqlServer(connection));
+                options.UseSqlServer(connection).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services
                 .AddControllers();
