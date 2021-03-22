@@ -70,7 +70,7 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
 
         public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
         {
-            if (await _repository.FindById(updateRequest.Id, cancellationToken) == null)
+            if (await _repository.GetById(updateRequest.Id, cancellationToken) == null)
                 throw new EntityNotFoundException("Обновляемый элемент не найден");
             
             Feedback feedback = _mapper.Map<Feedback>(updateRequest);

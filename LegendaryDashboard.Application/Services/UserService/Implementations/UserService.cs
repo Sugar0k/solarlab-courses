@@ -134,6 +134,13 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             var user = await _repository.GetByPhone(phone, cancellationToken);
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task Update(UserDto userDto, CancellationToken cancellationToken)
+        {
+            var user = _mapper.Map<User>(userDto);
+            user.PasswordHash = (await _repository.FindById(userDto.Id, cancellationToken)).PasswordHash;
+            await _repository.Update(user, cancellationToken);
+        }
     }
 
     public static class Hashing
