@@ -52,7 +52,8 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task Update(TEntity entity, CancellationToken cancellationToken)
         {
-            DbSet.UpdateRange(entity);
+            Context.Entry(entity).State = EntityState.Modified;
+            DbSet.Update(entity);
             await Context.SaveChangesAsync(cancellationToken);
         }
 

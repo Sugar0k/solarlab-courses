@@ -19,5 +19,6 @@ namespace LegendaryDashboard.Application.Services.UserService.Interfaces
         Task<UserDto> FindById(int id, CancellationToken cancellationToken);
         Task<UserDto> GetByEmail(string email, CancellationToken cancellationToken);
         Task<UserDto> GetByPhone(string phone, CancellationToken cancellationToken);
+        Task Update(UserDto userDto, CancellationToken cancellationToken);
     }
 }
