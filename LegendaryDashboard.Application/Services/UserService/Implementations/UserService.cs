@@ -165,7 +165,25 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             user.PasswordHash = (await _repository.FindById(userDto.Id, cancellationToken)).PasswordHash;
             await _repository.Update(user, cancellationToken);
         }
+        
+        public async Task UpdatePassword(int userId, string oldPassword, string newPassword, CancellationToken cancellationToken)
+        {
+            var userWithNewPassword = await _repository.FindById(userId, cancellationToken);
+            
+            if (userWithNewPassword == null) 
+                throw new Exception("Пользователь не найден");
+            
+            if (!userWithNewPassword.PasswordHash.Equals(Hashing.GetHash(oldPassword))) 
+                throw new Exception("Неверный пароль");
+            
+            userWithNewPassword.PasswordHash = Hashing.GetHash(newPassword);
+            
+            await _repository.Update(
+                userWithNewPassword, cancellationToken
+            );
+        }
     }
+    
 
     public static class Hashing
     {
