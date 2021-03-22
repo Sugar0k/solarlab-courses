@@ -27,7 +27,13 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
 
         public async Task Save(CreateCategoryRequest request, CancellationToken cancellationToken)
         {
-            var category = _mapper.Map<Category>(request);
+            if (request.ParentCategoryId != null &&
+                await _repository.FindById((int) request.ParentCategoryId, cancellationToken) == null
+                )
+                throw new Exception(
+                    $"Не найдена категория с id = {request.ParentCategoryId} для объявления ее как родителя");
+
+            Category category = _mapper.Map<Category>(request);
             await _repository.Save(category, cancellationToken);
         }
 
@@ -36,9 +42,18 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
             await _repository.Delete(id, cancellationToken);  
         }
 
-        public async Task Update(CreateCategoryRequest request, CancellationToken cancellationToken)
+        public async Task Update(CategoryDto request, CancellationToken cancellationToken)
         {
-            var category = _mapper.Map<Category>(request);
+            if (request.ParentCategoryId != null && 
+                (request.Id == request.ParentCategoryId ||
+                 await _repository.FindById((int) request.ParentCategoryId, cancellationToken) == null
+                 )
+                ) 
+                throw new Exception(
+                    "Невозможно поменять id родителя на так как искомый id не найден или ссылается на себя"
+                    );
+
+            Category category = _mapper.Map<Category>(request);
             await _repository.Update(category, cancellationToken);
         }
         
@@ -49,7 +64,7 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
 
         public async Task<CategoryDto> FindById(int id, CancellationToken cancellationToken)
         {
-            var category = await _repository.FindById(id, cancellationToken);
+            Category category = await _repository.FindById(id, cancellationToken);
             if (category == null) throw new Exception("Категория не найдена");
             return _mapper.Map<CategoryDto>(category);
         }

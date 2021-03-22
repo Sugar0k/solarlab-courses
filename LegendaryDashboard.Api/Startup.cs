@@ -53,7 +53,11 @@ namespace LegendaryDashboard.Api
             //добавление сервисов и репозиториев Категорий
             services
                 .AddScoped<ICategoryService, CategoryService>()
-                .AddScoped<ICategoryRepository, CategoryRepository>();
+                .AddScoped<ICategoryRepository, CategoryRepository>()
+                
+                //подключение автомаппера
+                .AddAutoMapper(typeof(CategoryMapperProfile).Assembly);
+            
             //добавление сервисов и репозиториев Пользователя
             services
                 .AddScoped<IUserService, UserService>()

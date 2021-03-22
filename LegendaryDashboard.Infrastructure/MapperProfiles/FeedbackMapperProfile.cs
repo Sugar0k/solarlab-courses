@@ -11,6 +11,7 @@ namespace LegendaryDashboard.Infrastructure.MapperProfiles
         {
             CreateMap<FeedbackCreateRequest, Feedback>();
             CreateMap<Feedback, FeedbackDto>();
+            CreateMap<FeedbackDto, Feedback>();
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Category;
 using LegendaryDashboard.Contracts.Contracts.Category.Requests;
+using LegendaryDashboard.Domain.Models;
 
 namespace LegendaryDashboard.Application.Services.CategoryService.Interfaces
 {
@@ -11,7 +12,7 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Interfaces
     {
         Task Save(CreateCategoryRequest request, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
-        Task Update(CreateCategoryRequest request, CancellationToken cancellationToken);
+        Task Update(CategoryDto request, CancellationToken cancellationToken);
         Task<int> Count(CancellationToken cancellationToken);
         Task<CategoryDto> FindById(int id, CancellationToken cancellationToken);
         Task<PagedResponse<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
