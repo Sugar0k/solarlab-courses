@@ -72,5 +72,4 @@ namespace LegendaryDashboard.Application.Services.Repositories
             };
         }
     }
-
 }

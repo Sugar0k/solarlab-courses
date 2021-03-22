@@ -37,23 +37,33 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             _jwtOptions = jwtOptions;
             _accessor = accessor;
         }
-        
-        public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
+
+        private bool PhoneChecker(string phoneNumber)
         {
             Match phoneValidation  = Regex.
-                Match(request.Phone,
+                Match(phoneNumber,
                     @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
-            
+
+            return phoneValidation.Success;
+        }
+
+        private bool EmailChecker(string email)
+        {
             Match emailValidation = Regex.
-                Match(request.Email,
-                "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
+                Match(email,
+                    "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
             
-            if (!phoneValidation.Success)
+            return emailValidation.Success;
+        }
+
+        public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
+        {
+            if (!PhoneChecker(request.Phone))
             {
                 throw new ValidationException("Неверный формат номера телефона");   
             }
 
-            if (!emailValidation.Success)
+            if (!EmailChecker(request.Email))
             {
                 throw new ValidationException("Неверный формат электронной почты");
             }
@@ -133,6 +143,20 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task Update(UserDto userDto, CancellationToken cancellationToken)
         {
+            if (!PhoneChecker(userDto.Phone))
+            {
+                throw new ValidationException(
+                    "Невозможно изменить номер телефона так как изменение имеет неверный формат"
+                    );   
+            }
+
+            if (!EmailChecker(userDto.Email))
+            {
+                throw new ValidationException(
+                    "Невозможно изменить адрес электронной почты так как изменение имеет неверный формат"
+                    );
+            }
+
             var user = _mapper.Map<User>(userDto);
             user.PasswordHash = (await _repository.FindById(userDto.Id, cancellationToken)).PasswordHash;
             await _repository.Update(user, cancellationToken);
