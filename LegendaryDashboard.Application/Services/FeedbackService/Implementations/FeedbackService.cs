@@ -52,12 +52,13 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
 
         public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
         {
-            var feedback = await _repository.GetById(updateRequest.Id, cancellationToken);
-            if (feedback == null) throw new EntityNotFoundException("Обновляемый элемент не найден");
-            feedback.Text = updateRequest.Text;
-            feedback.Rating = updateRequest.Rating;
+            if (await _repository.FindById(updateRequest.Id, cancellationToken) == null)
+                throw new EntityNotFoundException("Обновляемый элемент не найден");
+            
+            Feedback feedback = _mapper.Map<Feedback>(updateRequest);
             await _repository.Update(feedback, cancellationToken);
         }
+        
 
         public async Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken)
         {

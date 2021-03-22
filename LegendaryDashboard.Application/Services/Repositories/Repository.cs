@@ -34,7 +34,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
         {
-            return await DbSet.FindAsync(id, cancellationToken);
+            return await DbSet.FindAsync(new object[]{id}, cancellationToken);
         }
 
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)

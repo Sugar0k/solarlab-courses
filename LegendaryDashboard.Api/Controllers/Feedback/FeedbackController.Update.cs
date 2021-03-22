@@ -10,7 +10,7 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
 {
     public partial class FeedbackController
     {
-        [Authorize]
+        //[Authorize]
         [HttpPatch("update")]
         public async Task<IActionResult> Update(
             [FromBody] FeedbackUpdateRequest request,
