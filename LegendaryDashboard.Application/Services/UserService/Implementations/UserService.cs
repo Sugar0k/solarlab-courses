@@ -37,23 +37,33 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             _jwtOptions = jwtOptions;
             _accessor = accessor;
         }
-        
-        public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
+
+        private bool PhoneChecker(string phoneNumber)
         {
             Match phoneValidation  = Regex.
-                Match(request.Phone,
+                Match(phoneNumber,
                     @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
-            
+
+            return phoneValidation.Success;
+        }
+
+        private bool EmailChecker(string email)
+        {
             Match emailValidation = Regex.
-                Match(request.Email,
-                "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
+                Match(email,
+                    "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
             
-            if (!phoneValidation.Success)
+            return emailValidation.Success;
+        }
+
+        public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
+        {
+            if (!PhoneChecker(request.Phone))
             {
                 throw new ValidationException("Неверный формат номера телефона");   
             }
 
-            if (!emailValidation.Success)
+            if (!EmailChecker(request.Email))
             {
                 throw new ValidationException("Неверный формат электронной почты");
             }
@@ -73,7 +83,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         public async Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetByEmail(request.Email, cancellationToken);
-            if (!user.PasswordHash.Equals(Hashing.GetHash(request.Password)))
+            if (user == null || !user.PasswordHash.Equals(Hashing.GetHash(request.Password)))
             {
                 throw new Exception("Неверный email или пароль!");
             }
@@ -134,7 +144,47 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             var user = await _repository.GetByPhone(phone, cancellationToken);
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task Update(UserDto userDto, CancellationToken cancellationToken)
+        {
+            if (!PhoneChecker(userDto.Phone))
+            {
+                throw new ValidationException(
+                    "Невозможно изменить номер телефона так как изменение имеет неверный формат"
+                    );   
+            }
+
+            if (!EmailChecker(userDto.Email))
+            {
+                throw new ValidationException(
+                    "Невозможно изменить адрес электронной почты так как изменение имеет неверный формат"
+                    );
+            }
+
+            var user = _mapper.Map<User>(userDto);
+            user.PasswordHash = (await _repository.FindById(userDto.Id, cancellationToken)).PasswordHash;
+            await _repository.Update(user, cancellationToken);
+        }
+        
+        public async Task UpdatePassword(int userId, string oldPassword, string newPassword, CancellationToken cancellationToken)
+        {
+            var userWithNewPassword = await _repository.FindById(userId, cancellationToken);
+            
+            if (userWithNewPassword == null) 
+                throw new Exception("Пользователь не найден!");
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, userId)) 
+                throw new Exception("Нет прав!");
+            if (!userWithNewPassword.PasswordHash.Equals(Hashing.GetHash(oldPassword))) 
+                throw new Exception("Неверный пароль!");
+            
+            userWithNewPassword.PasswordHash = Hashing.GetHash(newPassword);
+            
+            await _repository.Update(
+                userWithNewPassword, cancellationToken
+            );
+        }
     }
+    
 
     public static class Hashing
     {

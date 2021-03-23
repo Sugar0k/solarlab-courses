@@ -46,14 +46,18 @@ namespace LegendaryDashboard.Api
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // добавляем контекст DashboardContext в качестве сервиса в приложение
             services.AddDbContext<DashboardContext>(options =>
-                options.UseSqlServer(connection));
+                options.UseSqlServer(connection).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services
                 .AddControllers();
             //добавление сервисов и репозиториев Категорий
             services
                 .AddScoped<ICategoryService, CategoryService>()
-                .AddScoped<ICategoryRepository, CategoryRepository>();
+                .AddScoped<ICategoryRepository, CategoryRepository>()
+                
+                //подключение автомаппера
+                .AddAutoMapper(typeof(CategoryMapperProfile).Assembly);
+            
             //добавление сервисов и репозиториев Пользователя
             services
                 .AddScoped<IUserService, UserService>()

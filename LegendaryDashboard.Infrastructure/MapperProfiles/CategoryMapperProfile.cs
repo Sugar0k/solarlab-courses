@@ -16,6 +16,7 @@ namespace LegendaryDashboard.Infrastructure.MapperProfiles
         {
             CreateMap<CreateCategoryRequest, Category>();
             CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryDto, Category>();
         }
     }
 }
