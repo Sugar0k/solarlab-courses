@@ -17,6 +17,13 @@ namespace LegendaryDashboard.Application.Services.Repositories
         {
         }
 
+        public async Task Update(User user, CancellationToken cancellationToken)
+        {
+            DbSet.Update(user);
+            await Context.SaveChangesAsync(cancellationToken);
+        }
+        
+
         public async Task<User> GetByEmail(string email, CancellationToken cancellationToken)
         {
             return await DbSet.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);

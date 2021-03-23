@@ -10,6 +10,8 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
 {
     public interface IUserRepository : IRepository<User, int>
     {
+        public Task Update(User user, CancellationToken cancellationToken);
+        
         Task<User> GetByEmail(string email, CancellationToken cancellationToken);
         Task<User> GetByPhone(string phone, CancellationToken cancellationToken);
     }
