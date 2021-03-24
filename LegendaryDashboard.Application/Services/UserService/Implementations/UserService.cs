@@ -83,7 +83,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
         public async Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetByEmail(request.Email, cancellationToken);
-            if (!user.PasswordHash.Equals(Hashing.GetHash(request.Password)))
+            if (user == null || !user.PasswordHash.Equals(Hashing.GetHash(request.Password)))
             {
                 throw new Exception("Неверный email или пароль!");
             }

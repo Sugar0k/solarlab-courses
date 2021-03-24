@@ -34,12 +34,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
         {
-            //TODO: Та же дичь что и ниже, FindAsync с токеном походу просто не хочет работать
-            //return await DbSet.FindAsync(id, cancellationToken); //не работает 
-            //return await DbSet.FindAsync(id); //работает 
-            
-            return await DbSet.FirstAsync(enytity => enytity.Id.Equals(id) , cancellationToken);
-    
+            return await DbSet.FindAsync(new object[]{id}, cancellationToken);
         }
 
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)
@@ -49,8 +44,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
         
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
-            //TODO: Пофиксить! только как? async метод с токеном не работает при текущем конфиге бд
-            var entity  = await DbSet.FindAsync(id);
+            var entity  = await DbSet.FindAsync(id, cancellationToken);
             if (entity == null) throw new EntityNotFoundException("Удаляемый элемент не найден");
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
@@ -79,11 +73,11 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 EntityList = list
             };
         }
-        
+
         public async Task<PagedResponse<TEntity>> GetPaged(
-            Expression<Func<TEntity, bool>> predicate, 
-            int offset, 
-            int limit, 
+            Expression<Func<TEntity, bool>> predicate,
+            int offset,
+            int limit,
             CancellationToken cancellationToken)
         {
             var list = await DbSet
