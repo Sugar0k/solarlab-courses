@@ -120,5 +120,6 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public Task<IEnumerable<string>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken);
+        Task Update(UpdateAdvertsRequest request, CancellationToken cancellationToken);
     }
 }
