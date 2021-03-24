@@ -13,14 +13,12 @@ using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Advert;
 using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
 using LegendaryDashboard.Contracts.Contracts.AdvertImage;
-using LegendaryDashboard.Contracts.Contracts.UserAdvert.Requests;
 using LegendaryDashboard.Domain.Common;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations;
 using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.Specifications;
 using LegendaryDashboard.Infrastructure.IRepositories;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Category = LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.Specifications.Category;
 
 namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
@@ -153,7 +151,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             };
         }
         
-        public async Task AddImage(int advertId, IFormFile file, CancellationToken cancellationToken)
+        public async Task AddImages(int advertId, IFormFileCollection files, CancellationToken cancellationToken)
         {
             var advert = await _advertRepository.FindById(advertId, cancellationToken);
             if (advert == null) throw new Exception("Advert not found");
@@ -163,14 +161,17 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
             var path = Path.Combine(ImagesPath, advertId.ToString());
-            await _advertImageRepository.Save(new AdvertImage
+            foreach (var file in files)
             {
-                Id = await _fileService.Create(file, path, cancellationToken),
-                FileName = file.FileName,
-                FilePath = path,
-                DateCreate = DateTime.UtcNow,
-                AdvertId = advertId
-            }, cancellationToken);
+                await _advertImageRepository.Save(new AdvertImage
+                {
+                    Id = await _fileService.Create(file, path, cancellationToken),
+                    FileName = file.FileName,
+                    FilePath = path,
+                    DateCreate = DateTime.UtcNow,
+                    AdvertId = advertId
+                }, cancellationToken);
+            }
         }
 
         public async Task DeleteImage(string imageId, CancellationToken cancellationToken)

@@ -15,8 +15,7 @@ namespace LegendaryDashboard.Api.Controllers.Advert
             [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            //TODO: Доделать под IFormFileCollection 
-            await service.AddImage(id, fileCollection[0], cancellationToken);
+            await service.AddImages(id, fileCollection, cancellationToken);
             return Ok();
         }
     }

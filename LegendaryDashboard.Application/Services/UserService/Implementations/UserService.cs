@@ -56,6 +56,11 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             return emailValidation.Success;
         }
 
+        public Task Update(int userId, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
         {
             if (!PhoneChecker(request.Phone))
