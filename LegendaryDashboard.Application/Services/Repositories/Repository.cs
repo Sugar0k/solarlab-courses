@@ -52,6 +52,8 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task Update(TEntity entity, CancellationToken cancellationToken)
         {
+            if (await DbSet.FindAsync(new object[]{entity.Id}, cancellationToken) == null) 
+                throw new Exception($"Для {entity.GetType()} обновляемый элемент не найден");
             Context.Entry(entity).State = EntityState.Modified;
             DbSet.Update(entity);
             await Context.SaveChangesAsync(cancellationToken);

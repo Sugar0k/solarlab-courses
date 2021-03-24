@@ -14,6 +14,7 @@ namespace LegendaryDashboard.Infrastructure.MapperProfiles
         {
             CreateMap<CreateAdvertRequest, Advert>();
             CreateMap<Advert, AdvertDto>();
+            CreateMap<UpdateAdvertsRequest, Advert>();
         }
     }
 }

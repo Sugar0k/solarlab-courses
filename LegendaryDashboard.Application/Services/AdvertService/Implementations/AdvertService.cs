@@ -212,6 +212,14 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             return advertImages.Select(advertImage => advertImage.Id).ToList();
         }
 
+        public async Task Update(UpdateAdvertsRequest request, CancellationToken cancellationToken)
+        {
+            var advert = _mapper.Map<Advert>(request);
+            advert.Views = 0;
+            advert.CreationDate = (await _advertRepository.FindById(advert.Id, cancellationToken)).CreationDate;
+            await _advertRepository.Update(advert, cancellationToken);
+        }
+
         public async Task AddFollow(int advertId, CancellationToken cancellationToken)
         {
             await _userAdvertRepository.Save(new UserAdvert
