@@ -70,10 +70,16 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
 
         public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
         {
-            if (await _repository.GetById(updateRequest.Id, cancellationToken) == null)
+            var feedback = await _repository.GetById(updateRequest.Id, cancellationToken); 
+            if (feedback == null)
                 throw new EntityNotFoundException("Обновляемый элемент не найден");
             
-            Feedback feedback = _mapper.Map<Feedback>(updateRequest);
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, feedback.CommentatorId))
+                throw new Exception("Feedback не пренадлежит текущему пользователю");
+            
+            feedback.Text = updateRequest.Text;
+            feedback.Rating = updateRequest.Rating;
+            
             await _repository.Update(feedback, cancellationToken);
         }
         
