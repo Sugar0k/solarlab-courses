@@ -15,6 +15,7 @@ namespace LegendaryDashboard.Infrastructure.MapperProfiles
             CreateMap<RegisterUserRequest, User>();
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<UpdateUserRequest, User>();
         }
     }
 }

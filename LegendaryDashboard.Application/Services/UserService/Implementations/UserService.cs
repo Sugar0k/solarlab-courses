@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Castle.Core.Internal;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.User;
@@ -145,24 +146,58 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task Update(UserDto userDto, CancellationToken cancellationToken)
+        public async Task Update(UpdateUserRequest request, CancellationToken cancellationToken)
         {
-            if (!PhoneChecker(userDto.Phone))
+            var user = new User();
+            
+            if (!request.Phone.IsNullOrEmpty())
             {
-                throw new ValidationException(
-                    "Невозможно изменить номер телефона так как изменение имеет неверный формат"
+                if (!PhoneChecker(request.Phone))
+                {
+                    throw new ValidationException(
+                        "Невозможно изменить номер телефона так как изменение имеет неверный формат"
                     );   
-            }
+                }
 
-            if (!EmailChecker(userDto.Email))
+                user.Phone = request.Phone;
+            }
+            else
             {
-                throw new ValidationException(
-                    "Невозможно изменить адрес электронной почты так как изменение имеет неверный формат"
-                    );
+                user.Phone = (await _repository.FindById(request.Id, cancellationToken)).Phone;
             }
+            
+            if (!request.Email.IsNullOrEmpty())
+            {
+                if (!EmailChecker(request.Email))
+                {
+                    throw new ValidationException(
+                        "Невозможно изменить адрес электронной почты так как изменение имеет неверный формат"
+                    );
+                }
 
-            var user = _mapper.Map<User>(userDto);
-            user.PasswordHash = (await _repository.FindById(userDto.Id, cancellationToken)).PasswordHash;
+                user.Email = request.Email;
+            }
+            else
+            {
+                user.Email = (await _repository.FindById(request.Id, cancellationToken)).Email;
+            }
+            
+            user.FirstName = 
+                !request.FirstName.IsNullOrEmpty() 
+                    ? request.FirstName 
+                    : (await _repository.FindById(request.Id, cancellationToken)).FirstName;
+            user.MiddleName = 
+                !request.MiddleName.IsNullOrEmpty() 
+                    ? request.MiddleName 
+                    : (await _repository.FindById(request.Id, cancellationToken)).MiddleName;
+            user.LastName = 
+                !request.LastName.IsNullOrEmpty() 
+                    ? request.LastName 
+                    : (await _repository.FindById(request.Id, cancellationToken)).LastName;
+
+            user.Role = (await _repository.FindById(request.Id, cancellationToken)).Role;
+            user.RegisterDate = (await _repository.FindById(request.Id, cancellationToken)).RegisterDate;
+            user.PasswordHash = (await _repository.FindById(request.Id, cancellationToken)).PasswordHash;
             await _repository.Update(user, cancellationToken);
         }
         
