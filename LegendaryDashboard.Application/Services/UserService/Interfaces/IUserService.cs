@@ -11,8 +11,6 @@ namespace LegendaryDashboard.Application.Services.UserService.Interfaces
 {
     public interface IUserService
     {
-        public Task Update(int userId, CancellationToken cancellationToken);
-
         Task Register(RegisterUserRequest request, CancellationToken cancellationToken);
         Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
