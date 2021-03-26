@@ -11,7 +11,6 @@ namespace LegendaryDashboard.Api.Controllers.Advert
 {
     public partial class AdvertController : ControllerBase
     {
-        //TODO: только владелец и администратор может поменять объявление
         [Authorize]
         [HttpPatch]
         [Route("update")]

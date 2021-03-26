@@ -113,7 +113,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             if (advert == null) throw new Exception("Объявление не найдено");
             var dto =  _mapper.Map<AdvertDto>(advert);
             dto.Images = await GetImagesByAdvertId(id, cancellationToken);
-            //todo: добавить +1 просмотр
+            advert.Views += 1;
+            await _advertRepository.Update(advert, cancellationToken);
             return dto;
         }
 
@@ -160,6 +161,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 await _userAdvertRepository.GetOwnerId(advertId, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
+            
             var path = Path.Combine(ImagesPath, advertId.ToString());
             foreach (var file in files)
             {
@@ -191,7 +193,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             var images = await _advertImageRepository.GetByAdvertId(advertId, cancellationToken);
             var advert = await _advertRepository.FindById(advertId, cancellationToken);
             
-            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
+                await _userAdvertRepository.GetOwnerId(advertId, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
             images.ForAll(async a => { await _fileService.Delete(a.Id, a.FilePath, cancellationToken); });
@@ -215,8 +218,11 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 
         public async Task Update(UpdateAdvertsRequest request, CancellationToken cancellationToken)
         {
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
+                await _userAdvertRepository.GetOwnerId(request.Id, cancellationToken)))
+                throw new Exception("Advert не пренадлежит текущему пользователю");
             var advert = _mapper.Map<Advert>(request);
-            advert.Views = 0;
+            advert.Views = (await _advertRepository.FindById(advert.Id, cancellationToken)).Views;
             advert.CreationDate = (await _advertRepository.FindById(advert.Id, cancellationToken)).CreationDate;
             await _advertRepository.Update(advert, cancellationToken);
         }
