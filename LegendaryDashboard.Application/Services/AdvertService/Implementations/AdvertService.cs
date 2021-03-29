@@ -196,9 +196,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
                 await _userAdvertRepository.GetOwnerId(advertId, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
-            
-            images.ForAll(async a => { await _fileService.Delete(a.Id, a.FilePath, cancellationToken); });
             await _advertImageRepository.DeleteByAdvertId(advertId, cancellationToken);
+            images.ForAll(async a => { await _fileService.Delete(a.Id, a.FilePath, cancellationToken); });
         }
 
         public async Task<AdvertImageDto> GetImage(string imageId, CancellationToken cancellationToken)

@@ -9,7 +9,6 @@ namespace LegendaryDashboard.Api.Controllers.Category
 {
     public partial class CategoryController
     {
-        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetById(
             int id,

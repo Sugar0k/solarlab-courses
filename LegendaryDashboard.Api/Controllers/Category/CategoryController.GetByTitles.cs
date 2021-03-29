@@ -9,7 +9,6 @@ namespace LegendaryDashboard.Api.Controllers.Category
 {
     public partial class CategoryController
     {
-        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("get_by_titles/{title}")]
         public async Task<IActionResult> GetByTitles(
             string title,

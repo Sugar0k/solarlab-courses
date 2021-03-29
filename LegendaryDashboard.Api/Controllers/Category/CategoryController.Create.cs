@@ -10,9 +10,8 @@ namespace LegendaryDashboard.Api.Controllers.Category
 {
     public partial class CategoryController
     {
-        //[Authorize(Roles = RoleConstants.AdminRole)]
-        [HttpPost]
-        [Route("create")]
+        [Authorize(Roles = RoleConstants.AdminRole)]
+        [HttpPost("create")]
         public async Task<IActionResult> Create(
             [FromBody] CreateCategoryRequest request,
             [FromServices] ICategoryService service,

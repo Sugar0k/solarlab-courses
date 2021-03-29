@@ -9,9 +9,7 @@ namespace LegendaryDashboard.Api.Controllers.Category
 {
     public partial class CategoryController
     {
-        [Authorize(Roles = RoleConstants.AdminRole)]
-        [HttpGet]
-        [Route("count")]
+        [HttpGet("count")]
         public async Task<IActionResult> GetCount(
             [FromServices] ICategoryService service,
             CancellationToken cancellationToken)

@@ -42,6 +42,16 @@ namespace LegendaryDashboard.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "MyPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+            
             // получаем строку подключения из файла конфигурации
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // добавляем контекст DashboardContext в качестве сервиса в приложение
@@ -159,13 +169,15 @@ namespace LegendaryDashboard.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LegendaryDashboard v1.1"));
             }
-
+            
             app.UseHttpsRedirection();
             
             app.UseAuthentication();
             
             app.UseRouting();
             
+            app.UseCors();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
