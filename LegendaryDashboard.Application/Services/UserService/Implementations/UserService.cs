@@ -94,10 +94,9 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            if (ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, id))
-            {
-                await _repository.Delete(id, cancellationToken);  
-            }
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, id)) 
+                throw new Exception("Ошибка удаления! Нет прав!");
+            await _repository.Delete(id, cancellationToken);
         }
         public async Task<PagedResponse<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
