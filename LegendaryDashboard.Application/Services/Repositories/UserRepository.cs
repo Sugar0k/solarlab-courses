@@ -28,6 +28,12 @@ namespace LegendaryDashboard.Application.Services.Repositories
         {
             return await DbSet.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
         }
+
+        public async Task<User> GetByEmailAndPass(string email, string pass, CancellationToken cancellationToken)
+        {
+            return await DbSet.FirstOrDefaultAsync(c => c.Email == email && c.PasswordHash == pass, cancellationToken);
+        }
+
         public async Task<User> GetByPhone(string phone, CancellationToken cancellationToken)
         {
             return await DbSet.FirstOrDefaultAsync(c => c.Phone == phone, cancellationToken);

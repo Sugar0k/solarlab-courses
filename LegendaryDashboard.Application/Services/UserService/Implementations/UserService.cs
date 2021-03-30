@@ -5,7 +5,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -38,33 +37,16 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             _jwtOptions = jwtOptions;
             _accessor = accessor;
         }
-
-        private bool PhoneChecker(string phoneNumber)
-        {
-            Match phoneValidation  = Regex.
-                Match(phoneNumber,
-                    @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
-
-            return phoneValidation.Success;
-        }
-
-        private bool EmailChecker(string email)
-        {
-            Match emailValidation = Regex.
-                Match(email,
-                    "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
-            
-            return emailValidation.Success;
-        }
+        
 
         public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
         {
-            if (!PhoneChecker(request.Phone))
+            if (!Validators.PhoneChecker(request.Phone))
             {
                 throw new ValidationException("Неверный формат номера телефона");   
             }
 
-            if (!EmailChecker(request.Email))
+            if (!Validators.EmailChecker(request.Email))
             {
                 throw new ValidationException("Неверный формат электронной почты");
             }
@@ -83,11 +65,13 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetByEmail(request.Email, cancellationToken);
-            if (user == null || !user.PasswordHash.Equals(Hashing.GetHash(request.Password)))
+            request.Password = Hashing.GetHash(request.Password);
+            var user = await _repository.GetByEmailAndPass(request.Email, request.Password, cancellationToken);
+            if (user == null)
             {
                 throw new Exception("Неверный email или пароль!");
             }
+
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
@@ -152,7 +136,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             
             if (!request.Phone.IsNullOrEmpty())
             {
-                if (!PhoneChecker(request.Phone))
+                if (!Validators.PhoneChecker(request.Phone))
                 {
                     throw new ValidationException(
                         "Невозможно изменить номер телефона так как изменение имеет неверный формат"
@@ -168,7 +152,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             
             if (!request.Email.IsNullOrEmpty())
             {
-                if (!EmailChecker(request.Email))
+                if (!Validators.EmailChecker(request.Email))
                 {
                     throw new ValidationException(
                         "Невозможно изменить адрес электронной почты так как изменение имеет неверный формат"
