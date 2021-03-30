@@ -120,6 +120,21 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public Task<IEnumerable<string>> GetImagesByAdvertId(int advertId, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Обновление объявления
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task Update(UpdateAdvertsRequest request, CancellationToken cancellationToken);
+        
+        /// <summary>
+        /// Добавление просмотра на объявление
+        /// </summary>
+        /// /// <param name="advertId"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task AddView(int advertId, CancellationToken cancellationToken);
     }
 }

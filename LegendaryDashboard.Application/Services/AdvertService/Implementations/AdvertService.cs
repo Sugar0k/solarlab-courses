@@ -113,8 +113,6 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             if (advert == null) throw new Exception("Объявление не найдено");
             var dto =  _mapper.Map<AdvertDto>(advert);
             dto.Images = await GetImagesByAdvertId(id, cancellationToken);
-            advert.Views += 1;
-            await _advertRepository.Update(advert, cancellationToken);
             return dto;
         }
 
@@ -223,6 +221,14 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             var advert = _mapper.Map<Advert>(request);
             advert.Views = (await _advertRepository.FindById(advert.Id, cancellationToken)).Views;
             advert.CreationDate = (await _advertRepository.FindById(advert.Id, cancellationToken)).CreationDate;
+            await _advertRepository.Update(advert, cancellationToken);
+        }
+
+        public async Task AddView(int advertId, CancellationToken cancellationToken)
+        {
+            var advert = await _advertRepository.FindById(advertId, cancellationToken);
+            if (advert == null) throw new Exception("Объявление не найдено!");
+            advert.Views += 1;
             await _advertRepository.Update(advert, cancellationToken);
         }
 
