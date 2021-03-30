@@ -27,6 +27,7 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
 
         public async Task Save(CreateCategoryRequest request, CancellationToken cancellationToken)
         {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             if (request.ParentCategoryId != null &&
                 await _repository.FindById((int) request.ParentCategoryId, cancellationToken) == null
                 )
@@ -44,6 +45,7 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
 
         public async Task Update(CategoryDto request, CancellationToken cancellationToken)
         {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             if (request.ParentCategoryId != null && 
                 (request.Id == request.ParentCategoryId ||
                  await _repository.FindById((int) request.ParentCategoryId, cancellationToken) == null

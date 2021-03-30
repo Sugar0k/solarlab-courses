@@ -31,6 +31,7 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
 
         public async Task Create(FeedbackCreateRequest createRequest, CancellationToken cancellationToken)
         {
+            if (createRequest == null) throw new ArgumentNullException("Запрос пуст!");
             int commentatorId = ClaimsPrincipalExtensions.GetUserId(_accessor);
             var feedback = _mapper.Map<Feedback>(createRequest);
             feedback.CommentatorId = commentatorId;
@@ -71,6 +72,7 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
 
         public async Task Update(FeedbackUpdateRequest updateRequest, CancellationToken cancellationToken)
         {
+            if (updateRequest == null) throw new ArgumentNullException("Запрос пуст!");
             var feedback = await _repository.GetById(updateRequest.Id, cancellationToken); 
             if (feedback == null)
                 throw new EntityNotFoundException("Обновляемый элемент не найден");

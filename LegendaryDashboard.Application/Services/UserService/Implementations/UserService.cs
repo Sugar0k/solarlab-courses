@@ -41,6 +41,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
         {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             if (!Validators.PhoneChecker(request.Phone))
             {
                 throw new ValidationException("Неверный формат номера телефона");   
@@ -65,6 +66,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken)
         {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             request.Password = Hashing.GetHash(request.Password);
             var user = await _repository.GetByEmailAndPass(request.Email, request.Password, cancellationToken);
             if (user == null)
@@ -131,6 +133,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task Update(UpdateUserRequest request, CancellationToken cancellationToken)
         {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             var user = new User();
             
             if (!request.Phone.IsNullOrEmpty())

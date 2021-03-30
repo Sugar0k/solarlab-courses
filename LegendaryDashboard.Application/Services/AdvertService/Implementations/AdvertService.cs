@@ -52,7 +52,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         
         public async Task Create(CreateAdvertRequest request, CancellationToken cancellationToken)
         {
-            if (request == null) throw new Exception("Запрос пуст!");
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             var advert = _mapper.Map<Advert>(request);
             advert.CreationDate = DateTime.UtcNow;
             advert.Views = 0;
@@ -118,6 +118,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 
         public async Task<PagedResponse<AdvertDto>> GetPaged(PagedAdvertsRequest request, CancellationToken cancellationToken)
         {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             var spec = (Specification<Advert>) new TrueSpecification<Advert>();
             if (request.FollowerId != null) spec &= Follower.New(request.FollowerId.Value);
 
@@ -177,6 +178,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         public async Task DeleteImage(string imageId, CancellationToken cancellationToken)
         {
             var image = await _advertImageRepository.FindById(imageId, cancellationToken);
+            if (image == null) throw new Exception("Изображение не найдено");
             var advert = await _advertRepository.FindById(image.AdvertId, cancellationToken);
             
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
@@ -189,6 +191,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         public async Task DeleteImagesByAdvertId(int advertId, CancellationToken cancellationToken)
         {
             var images = await _advertImageRepository.GetByAdvertId(advertId, cancellationToken);
+            if (images == null) throw new Exception("Изображения не найдены");
             var advert = await _advertRepository.FindById(advertId, cancellationToken);
             
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
@@ -215,9 +218,11 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 
         public async Task Update(UpdateAdvertsRequest request, CancellationToken cancellationToken)
         {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
                 await _userAdvertRepository.GetOwnerId(request.Id, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
+            
             var advert = _mapper.Map<Advert>(request);
             advert.Views = (await _advertRepository.FindById(advert.Id, cancellationToken)).Views;
             advert.CreationDate = (await _advertRepository.FindById(advert.Id, cancellationToken)).CreationDate;
