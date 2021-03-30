@@ -8,8 +8,8 @@ namespace LegendaryDashboard.Api.Controllers.Advert
 {
     public partial class AdvertController
     {
-        [HttpPut("image/add")]
-        public async Task<IActionResult> AddImage(
+        [HttpPut("images/add")]
+        public async Task<IActionResult> AddImages(
             int id,
             IFormFileCollection fileCollection,
             [FromServices] IAdvertService service,

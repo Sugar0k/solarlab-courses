@@ -69,9 +69,9 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
                 throw new ValidationException("Неверный формат электронной почты");
             }
 
-            if (await GetByEmail(request.Email, cancellationToken) != null) 
+            if (await _repository.EmailExist(request.Email, cancellationToken)) 
                 throw new Exception("Пользователь с таким email уже существует");
-            if (await GetByPhone(request.Phone, cancellationToken) != null) 
+            if (await _repository.PhoneExist(request.Phone, cancellationToken)) 
                 throw new Exception("Пользователь с таким номером телефона уже существует");
             var user = _mapper.Map<User>(request);
             user.Role = RoleConstants.UserRole;
