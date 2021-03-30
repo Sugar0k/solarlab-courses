@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.
 {
     public class Follower: Specification<Advert>
     {
-        protected int FollowerId { get; }
+        private int FollowerId { get; }
 
         public Follower(int followerId)
         {

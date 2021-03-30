@@ -6,7 +6,7 @@ namespace LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.
 {
     public class Title: Specification<Advert>
     {
-        protected string title { get; }
+        private string title { get; }
 
         public Title(string t)
         {

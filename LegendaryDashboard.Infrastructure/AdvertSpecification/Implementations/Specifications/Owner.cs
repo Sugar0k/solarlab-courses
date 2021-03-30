@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.
 {
     public class Owner: Specification<Advert>
     {
-        protected int OwnerId { get; }
+        private int OwnerId { get; }
 
         public Owner(int ownerId)
         {

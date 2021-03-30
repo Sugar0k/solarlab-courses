@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.
             category = c;
         }
 
-        protected int category { get; }
+        private int category { get; }
         
         public override Expression<Func<Advert, bool>> ToExpression()
         {

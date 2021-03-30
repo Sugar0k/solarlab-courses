@@ -6,7 +6,7 @@ namespace LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.
 {
     public class City: Specification<Advert>
     {
-        protected string CityName { get; }
+        private string CityName { get; }
 
         public City(string city)
         {

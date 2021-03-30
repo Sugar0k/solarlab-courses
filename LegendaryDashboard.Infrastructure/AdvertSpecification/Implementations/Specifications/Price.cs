@@ -12,8 +12,8 @@ namespace LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.
             Max = max;
         }
 
-        protected int Min { get; }
-        protected int Max { get; }
+        private int Min { get; }
+        private int Max { get; }
         
         public override Expression<Func<Advert, bool>> ToExpression()
         {
