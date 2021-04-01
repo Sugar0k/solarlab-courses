@@ -57,6 +57,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             advert.CreationDate = DateTime.UtcNow;
             advert.Views = 0;
             
+            await _advertRepository.Save(advert, cancellationToken);
+
             await _userAdvertRepository.Save(new UserAdvert
             {
                 AdvertId = advert.Id,
@@ -64,7 +66,6 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 ConnectionType = AdvertUserConnectionTypes.OwnerConnection
             },cancellationToken);
             
-            await _advertRepository.Save(advert, cancellationToken);
         }
 
         public async Task Delete(int advertId, CancellationToken cancellationToken)
