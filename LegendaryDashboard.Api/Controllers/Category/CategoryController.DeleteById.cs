@@ -14,11 +14,10 @@ namespace LegendaryDashboard.Api.Controllers.Category
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(
             int id,
-            [FromServices] ICategoryService service,
             CancellationToken cancellationToken
         )
         {
-            await service.Delete(id, cancellationToken);
+            await _categoryService.Delete(id, cancellationToken);
             return NoContent();
         }
     }

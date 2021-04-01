@@ -17,11 +17,10 @@ namespace LegendaryDashboard.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Register(
             [FromBody] RegisterUserRequest request,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            await service.Register(request, cancellationToken);
+            await _userService.Register(request, cancellationToken);
             return Ok();
         }
     }

@@ -12,11 +12,10 @@ namespace LegendaryDashboard.Api.Controllers.Category
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetById(
             int id,
-            [FromServices] ICategoryService service,
             CancellationToken cancellationToken
         )
         {
-            var category = await service.FindById(id, cancellationToken);
+            var category = await _categoryService.FindById(id, cancellationToken);
             return Ok(category);
         }
     }

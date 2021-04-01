@@ -13,10 +13,9 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
         [HttpGet("count")]
         public async Task<IActionResult> Count(
             int userId,
-            [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
-            var count = await service.Count((f => f.UserId == userId), cancellationToken);
+            var count = await _feedbackService.Count((f => f.UserId == userId), cancellationToken);
             return Ok(count);
         }
     }

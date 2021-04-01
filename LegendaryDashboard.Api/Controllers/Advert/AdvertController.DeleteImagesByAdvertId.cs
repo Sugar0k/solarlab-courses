@@ -10,10 +10,9 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [HttpDelete("image/delete/advertId")]
         public async Task<IActionResult> DeleteImagesByAdvertId(
             int advertId,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            await service.DeleteImagesByAdvertId(advertId, cancellationToken);
+            await _advertService.DeleteImagesByAdvertId(advertId, cancellationToken);
             return Ok();
         }
     }

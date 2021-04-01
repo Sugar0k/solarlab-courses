@@ -11,14 +11,10 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [HttpGet("image/get/imageId")]
         public async Task<IActionResult> GetImageById(
             string imageId,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            var image = await service.GetImage(imageId, cancellationToken);
-            byte[] mas = image.data;
-            string fileType = "image/jpeg";
-            string fileName = image.FileName;
-            return File(mas, fileType, fileName);
+            var image = await _advertService.GetImage(imageId, cancellationToken);
+            return File(image.data, "image/jpeg", image.FileName);
         }
     }
 }

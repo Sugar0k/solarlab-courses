@@ -14,10 +14,9 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
         [HttpPost("create")]
         public async Task<IActionResult> Create(
             [FromBody] FeedbackCreateRequest request,
-            [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
-            await service.Create(request, cancellationToken);
+            await _feedbackService.Create(request, cancellationToken);
             return Ok();
         }
     }

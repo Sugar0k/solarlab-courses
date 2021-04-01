@@ -11,13 +11,12 @@ namespace LegendaryDashboard.Api.Controllers.Advert
 {
     public partial class AdvertController
     {
-        [HttpGet("image/get/advertId")]
+        [HttpGet("images/get/advertId")]
         public async Task<IActionResult> GetImagesByAdvertId(
             int advertId,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            return Ok(await service.GetImagesByAdvertId(advertId, cancellationToken));
+            return Ok(await _advertService.GetImagesByAdvertId(advertId, cancellationToken));
         }
     }
 }

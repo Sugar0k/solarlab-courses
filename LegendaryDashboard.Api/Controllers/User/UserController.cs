@@ -1,3 +1,4 @@
+using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Infrastructure.DbContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -11,10 +12,10 @@ namespace LegendaryDashboard.Api.Controllers.User
     [EnableCors("MyPolicy")]
     public partial class UserController : ControllerBase
     {
-        private readonly DashboardContext _db;
-        public UserController(DashboardContext context)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
-            _db = context;
+            _userService = userService;
         }
     }
 }

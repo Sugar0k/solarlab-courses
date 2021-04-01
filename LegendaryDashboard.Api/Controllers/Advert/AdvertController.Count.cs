@@ -11,10 +11,9 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [HttpGet]
         [Route("count")]
         public async Task<IActionResult> Count(
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            return Ok(await service.Count(cancellationToken));
+            return Ok(await _advertService.Count(cancellationToken));
         }
     }
 }

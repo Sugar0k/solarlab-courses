@@ -17,10 +17,9 @@ namespace LegendaryDashboard.Api.Controllers.User
         [Route("updatePassword")]
         public async Task<IActionResult> UpdatePassword(
             int userId, string oldPassword, string newPassword,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken)
         {
-            await service.UpdatePassword(userId, oldPassword, newPassword, cancellationToken);
+            await _userService.UpdatePassword(userId, oldPassword, newPassword, cancellationToken);
             return Ok();
         }
     }

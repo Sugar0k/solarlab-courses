@@ -14,10 +14,9 @@ namespace LegendaryDashboard.Api.Controllers.Category
         [HttpPost("create")]
         public async Task<IActionResult> Create(
             [FromBody] CreateCategoryRequest request,
-            [FromServices] ICategoryService service,
             CancellationToken cancellationToken)
         {
-            await service.Save(request, cancellationToken);
+            await _categoryService.Save(request, cancellationToken);
             return Ok();
         }
     }

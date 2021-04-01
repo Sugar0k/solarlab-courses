@@ -12,11 +12,10 @@ namespace LegendaryDashboard.Api.Controllers.Category
         [HttpGet("get_by_titles/{title}")]
         public async Task<IActionResult> GetByTitles(
             string title,
-            [FromServices] ICategoryService service,
             CancellationToken cancellationToken
         )
         {
-            var categories = await service.GetByTitles(title, cancellationToken);
+            var categories = await _categoryService.GetByTitles(title, cancellationToken);
             return Ok(categories);
         }
     }

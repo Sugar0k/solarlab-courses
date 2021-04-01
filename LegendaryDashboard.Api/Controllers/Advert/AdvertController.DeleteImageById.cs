@@ -9,11 +9,10 @@ namespace LegendaryDashboard.Api.Controllers.Advert
     {
         [HttpDelete("image/delete/imageId")]
         public async Task<IActionResult> DeleteImageById(
-            string imageId, 
-            [FromServices] IAdvertService service,
+            string imageId,
             CancellationToken cancellationToken)
         {
-            await service.DeleteImage(imageId, cancellationToken);
+            await _advertService.DeleteImage(imageId, cancellationToken);
             return Ok();
         }
     }

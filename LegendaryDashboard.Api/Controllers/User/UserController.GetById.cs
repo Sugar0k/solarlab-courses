@@ -16,11 +16,10 @@ namespace LegendaryDashboard.Api.Controllers.User
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetById(
             int id,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            var user = await service.FindById(id, cancellationToken);
+            var user = await _userService.FindById(id, cancellationToken);
             return Ok(user);
         }
     }

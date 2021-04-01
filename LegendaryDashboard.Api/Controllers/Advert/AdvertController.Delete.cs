@@ -14,10 +14,9 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [Route("delete/{id}")]
         public async Task<IActionResult> Delete(
             int id,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            await service.Delete(id, cancellationToken);
+            await _advertService.Delete(id, cancellationToken);
             return Ok();
         }
     }

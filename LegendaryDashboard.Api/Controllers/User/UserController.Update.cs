@@ -17,10 +17,9 @@ namespace LegendaryDashboard.Api.Controllers.User
         [Route("update")]
         public async Task<IActionResult> Update(
             [FromBody] UpdateUserRequest request,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken)
         {
-            await service.Update(request, cancellationToken);
+            await _userService.Update(request, cancellationToken);
             return Ok();
         }
     }

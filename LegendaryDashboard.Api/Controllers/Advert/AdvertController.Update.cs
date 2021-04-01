@@ -16,10 +16,9 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [Route("update")]
         public async Task<IActionResult> Update(
             UpdateAdvertsRequest request,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            await service.Update(request, cancellationToken);
+            await _advertService.Update(request, cancellationToken);
             return Ok();
         }
     }

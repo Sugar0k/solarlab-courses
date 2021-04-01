@@ -12,11 +12,10 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [Route("get/paged")] //limit='{limit}'_offset='{offset}'
         public async Task<IActionResult> GetByPaged(
             PagedAdvertsRequest request,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
             
-            return Ok(await service.GetPaged(request, cancellationToken));
+            return Ok(await _advertService.GetPaged(request, cancellationToken));
         }
     }
 }

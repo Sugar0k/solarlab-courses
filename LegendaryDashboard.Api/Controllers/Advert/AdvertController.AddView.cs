@@ -12,10 +12,9 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [Route("update/view")]
         public async Task<IActionResult> AddView(
             int id,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            await service.AddView(id, cancellationToken);
+            await _advertService.AddView(id, cancellationToken);
             return Ok();
         }
     }

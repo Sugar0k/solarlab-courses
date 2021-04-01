@@ -14,10 +14,9 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
         [HttpGet("paged")]
         public async Task<IActionResult> GetPaged(
             int id, int offset, int limit,
-            [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
-            var feedbacks = await service.GetPaged(id, offset, limit, cancellationToken);
+            var feedbacks = await _feedbackService.GetPaged(id, offset, limit, cancellationToken);
             return Ok(feedbacks);
         }
     }

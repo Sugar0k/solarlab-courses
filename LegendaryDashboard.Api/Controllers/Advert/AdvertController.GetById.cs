@@ -12,10 +12,9 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [Route("get/id/{id}")]
         public async Task<IActionResult> GetById(
             int id,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            return Ok(await service.FindById(id, cancellationToken));
+            return Ok(await _advertService.FindById(id, cancellationToken));
         }
     }
 }

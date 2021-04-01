@@ -12,10 +12,9 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
         [HttpGet("id")]
         public async Task<IActionResult> GetById(
             int id,
-            [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
-            var feedbacks = await service.GetById(id, cancellationToken);
+            var feedbacks = await _feedbackService.GetById(id, cancellationToken);
             return Ok(feedbacks);
         }
     }

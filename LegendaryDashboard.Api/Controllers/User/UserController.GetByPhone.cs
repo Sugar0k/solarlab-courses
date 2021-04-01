@@ -16,11 +16,10 @@ namespace LegendaryDashboard.Api.Controllers.User
         [HttpGet("phone/{phone}")]
         public async Task<IActionResult> GetByPhone(
             string phone,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            var user = await service.GetByPhone(phone, cancellationToken);
+            var user = await _userService.GetByPhone(phone, cancellationToken);
             return Ok(user);
         }
     }

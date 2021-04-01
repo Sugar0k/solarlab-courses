@@ -14,10 +14,9 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
         [HttpPatch("update")]
         public async Task<IActionResult> Update(
             [FromBody] FeedbackUpdateRequest request,
-            [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
-            await service.Update(request, cancellationToken);
+            await _feedbackService.Update(request, cancellationToken);
             return Ok();
         }
     }

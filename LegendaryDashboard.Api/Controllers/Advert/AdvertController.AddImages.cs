@@ -12,10 +12,9 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         public async Task<IActionResult> AddImages(
             int id,
             IFormFileCollection fileCollection,
-            [FromServices] IAdvertService service,
             CancellationToken cancellationToken)
         {
-            await service.AddImages(id, fileCollection, cancellationToken);
+            await _advertService.AddImages(id, fileCollection, cancellationToken);
             return Ok();
         }
     }

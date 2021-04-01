@@ -15,10 +15,9 @@ namespace LegendaryDashboard.Api.Controllers.Category
         [HttpPatch("update")]
         public async Task<IActionResult> Update(
             [FromBody] CategoryDto request,
-            [FromServices] ICategoryService service,
             CancellationToken cancellationToken)
         {
-            await service.Update(request, cancellationToken);
+            await _categoryService.Update(request, cancellationToken);
             return Ok();
         }
     }
