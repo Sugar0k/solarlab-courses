@@ -80,12 +80,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             
             var path = Path.Combine(ImagesPath, advert.Id.ToString());
             advert.AdvertImages.ForAll(async image =>
-            {
-                await _fileService.Delete(image.Id, path, cancellationToken);
-                await _advertImageRepository.Delete(image.Id, cancellationToken);
-            });
-            await _advertImageRepository.DeleteByAdvertId(advertId, cancellationToken);
-            await _userAdvertRepository.DeleteByAdvertId(advertId, cancellationToken);
+                await _fileService.Delete(image.Id, path, cancellationToken));
+         
         }
 
         public async Task<IEnumerable<AdvertImageDto>> GetAdvertImages(int advertId, CancellationToken cancellationToken)
