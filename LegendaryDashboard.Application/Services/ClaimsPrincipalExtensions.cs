@@ -1,14 +1,40 @@
 using System;
 using System.ComponentModel;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using LegendaryDashboard.Domain.Models;
+using LegendaryDashboard.Infrastructure.Options;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LegendaryDashboard.Application.Services
 {
     public static class ClaimsPrincipalExtensions
     {
-        
+        public static string CreateToken(User user, IOptions<JwtOptions> jwtOptions)
+        {
+            var claims = new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
+                new Claim(ClaimTypes.Role, user.Role)
+            };
+            var bytes = Encoding.ASCII.GetBytes(jwtOptions.Value.Key);
+            var expires = DateTime.UtcNow.AddMinutes(90);
+            var securityKey = new SymmetricSecurityKey(bytes);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Expires = expires,
+                SigningCredentials = credentials,
+                Subject = new ClaimsIdentity(claims),
+            });
+                
+            return tokenHandler.WriteToken(token);
+        }
         private static TValue GetClaimValue<TValue>(this ClaimsPrincipal principal, string type)
         {
             if (principal == null || !principal.HasClaim(x => string.Equals(x.Type, type))) return default;

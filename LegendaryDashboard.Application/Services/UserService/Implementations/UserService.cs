@@ -73,25 +73,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             {
                 throw new Exception("Неверный email или пароль!");
             }
-
-            var claims = new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
-                new Claim(ClaimTypes.Role, user.Role)
-            };
-            var bytes = Encoding.ASCII.GetBytes(_jwtOptions.Value.Key);
-                var expires = DateTime.UtcNow.AddMinutes(90);
-                var securityKey = new SymmetricSecurityKey(bytes);
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-                {
-                    Expires = expires,
-                    SigningCredentials = credentials,
-                    Subject = new ClaimsIdentity(claims),
-                });
-                
-            return tokenHandler.WriteToken(token);
+            return ClaimsPrincipalExtensions.CreateToken(user, _jwtOptions);
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
