@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -31,6 +32,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         private readonly IAdvertRepository _advertRepository;
         private readonly IAdvertImageRepository _advertImageRepository;
         private readonly IUserAdvertRepository _userAdvertRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _accessor;
         private readonly IFileService _fileService;
         
@@ -38,6 +40,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             IAdvertRepository advertRepository, 
             IAdvertImageRepository advertImageRepository, 
             IUserAdvertRepository userAdvertRepository, 
+            IUserRepository userRepository,
             IHttpContextAccessor accessor, 
             IFileService fileService)
         {
@@ -45,6 +48,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             _advertRepository = advertRepository;
             _advertImageRepository = advertImageRepository;
             _userAdvertRepository = userAdvertRepository;
+            _userRepository = userRepository;
             _accessor = accessor;
             _fileService = fileService;
         }
@@ -52,6 +56,15 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         
         public async Task Create(CreateAdvertRequest request, CancellationToken cancellationToken)
         {
+            if (await _userRepository.FindById(ClaimsPrincipalExtensions.GetUserId(_accessor), cancellationToken) ==
+                null)
+            {
+                throw new AuthenticationException("Пользователь не найден!");
+            }
+            if (ClaimsPrincipalExtensions.GetExpires(_accessor) <= DateTime.UtcNow)
+            {
+                throw new AuthenticationException("Токен устарел!");
+            }
             if (request == null) throw new ArgumentNullException("Запрос пуст!");
             var advert = _mapper.Map<Advert>(request);
             advert.CreationDate = DateTime.UtcNow;
