@@ -15,8 +15,8 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
         Task<Feedback> GetById(int id, CancellationToken cancellationToken);
 
         Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken);
-        Task<PagedResponse<Feedback>> GetPaged(Expression<Func<Feedback, bool>> predicate, int offset, int limit,
-            CancellationToken cancellationToken);
+        /*Task<PagedResponse<Feedback>> GetPaged(Expression<Func<Feedback, bool>> predicate, int offset, int limit,
+            CancellationToken cancellationToken);*/
         
         // Task Update(Feedback feedback, CancellationToken cancellationToken);
 

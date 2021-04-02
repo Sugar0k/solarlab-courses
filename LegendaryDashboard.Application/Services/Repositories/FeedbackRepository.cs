@@ -19,7 +19,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
         {
         }
         
-        public async Task<PagedResponse<Feedback>> GetPaged(
+        /*public async Task<PagedResponse<Feedback>> GetPaged(
             Expression<Func<Feedback, bool>> predicate, 
             int offset, 
             int limit, 
@@ -35,7 +35,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
                     .Take(limit)
                     .ToListAsync(cancellationToken)
             };
-        }
+        }*/
 
         public async Task<List<Feedback>> GetPaged(FeedbackGetRequest getRequest, CancellationToken cancellationToken)
         {

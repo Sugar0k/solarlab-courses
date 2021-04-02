@@ -56,8 +56,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         
         public async Task Create(CreateAdvertRequest request, CancellationToken cancellationToken)
         {
-            if (await _userRepository.FindById(ClaimsPrincipalExtensions.GetUserId(_accessor), cancellationToken) ==
-                null)
+            if (!(await _userRepository.Exist(ClaimsPrincipalExtensions.GetUserId(_accessor), cancellationToken)))
             {
                 throw new AuthenticationException("Пользователь не найден!");
             }

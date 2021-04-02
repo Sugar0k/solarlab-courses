@@ -10,6 +10,8 @@ using LegendaryDashboard.Contracts.Contracts.Feedback;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
+using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations;
+using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.Specifications;
 using LegendaryDashboard.Infrastructure.IRepositories;
 using Microsoft.AspNetCore.Http;
 
@@ -54,8 +56,10 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             int limit, 
             CancellationToken cancellationToken)
         {
+            var spec = (Specification<Feedback>) new TrueSpecification<Feedback>();
+            spec &= UserId.New(id);
             var feedbacks = await _repository.GetPaged(
-                (f => f.UserId == id),
+                spec,
                 offset, limit, cancellationToken);
             var feedbacksDto = _mapper.Map<List<FeedbackDto>>(feedbacks.EntityList);
             return new PagedResponse<FeedbackDto>
