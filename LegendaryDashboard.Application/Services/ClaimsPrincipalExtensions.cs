@@ -65,12 +65,5 @@ namespace LegendaryDashboard.Application.Services
             if (user == null) throw new Exception("Нет клеймов");
             return user.GetClaimValue<int>(ClaimTypes.NameIdentifier);
         }
-        public static DateTime GetExpires(IHttpContextAccessor accessor)
-        {
-            if (accessor.HttpContext == null) throw new Exception("Нет прав!");
-            var user = accessor.HttpContext.User;
-            if (user == null) throw new Exception("Нет клеймов");
-            return user.GetClaimValue<DateTime>(ClaimTypes.Expiration);
-        }
     }
 }

@@ -56,13 +56,10 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         
         public async Task Create(CreateAdvertRequest request, CancellationToken cancellationToken)
         {
+            Console.WriteLine(ClaimsPrincipalExtensions.GetUserId(_accessor));
             if (!(await _userRepository.Exist(ClaimsPrincipalExtensions.GetUserId(_accessor), cancellationToken)))
             {
                 throw new AuthenticationException("Пользователь не найден!");
-            }
-            if (ClaimsPrincipalExtensions.GetExpires(_accessor) <= DateTime.UtcNow)
-            {
-                throw new AuthenticationException("Токен устарел!");
             }
             if (request == null) throw new ArgumentNullException("Запрос пуст!");
             var advert = _mapper.Map<Advert>(request);
