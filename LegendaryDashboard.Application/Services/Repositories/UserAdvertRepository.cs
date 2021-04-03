@@ -5,10 +5,12 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using LegendaryDashboard.Contracts.Contracts.UserAdvert.Requests;
+using LegendaryDashboard.Domain.Common;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.DbContext;
 using LegendaryDashboard.Infrastructure.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace LegendaryDashboard.Application.Services.Repositories
 {
@@ -18,57 +20,38 @@ namespace LegendaryDashboard.Application.Services.Repositories
         {
         }
 
-        public async Task<List<UserAdvert>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
+        public async Task<int> GetOwnerId(int advertId, CancellationToken cancellationToken)
         {
-            return await DbSet
-                .OrderBy(u => u.Id)
-                .Skip(offset)
-                .Take(limit)
-                .ToListAsync(cancellationToken: cancellationToken);
+            return (await DbSet.FirstAsync(
+                u => u.AdvertId == advertId && 
+                     u.ConnectionType == AdvertUserConnectionTypes.OwnerConnection,
+                cancellationToken)).UserId;
         }
-
-        public async Task<List<UserAdvert>> GetConnectionsByUserId(GetConnectionsRequest request, CancellationToken cancellationToken)
-        {
-            return await DbSet
-                .Where(c => c.UserId == request.Id)
-                .OrderBy(u => u.Id)
-                .Skip(request.Offset)
-                .Take(request.Limit)
-                .ToListAsync(cancellationToken: cancellationToken);
-        }
-
-        public async Task<List<UserAdvert>> GetConnectionsByAdvertId(GetConnectionsRequest request, CancellationToken cancellationToken)
-        {
-            return await DbSet
-                .Where(c => c.AdvertId == request.Id)
-                .OrderBy(u => u.Id)
-                .Skip(request.Offset)
-                .Take(request.Limit)
-                .ToListAsync(cancellationToken: cancellationToken);
-        }
-
-        public async Task<List<UserAdvert>> GetConnectionsByAdvertIdAndType(GetConnectionsWithTypeRequest request,
+        
+        public async Task<List<UserAdvert>> GetConnections(
+            Expression<Func<UserAdvert, bool>> predicate, 
             CancellationToken cancellationToken)
         {
             return await DbSet
-                .Where(c => c.AdvertId == request.Id)
-                .Where(c => c.ConnectionType.Equals(request.Type))
+                .Where(predicate)
                 .OrderBy(u => u.Id)
-                .Skip(request.Offset)
-                .Take(request.Limit)
                 .ToListAsync(cancellationToken: cancellationToken);
         }
-
-        public async Task<List<UserAdvert>> GetConnectionsByUserIdAndType(GetConnectionsWithTypeRequest request, CancellationToken cancellationToken)
+        
+        public async Task DeleteByAdvertId(int advertId, CancellationToken cancellationToken)
         {
-            return await DbSet
-                .Where(c => c.UserId == request.Id)
-                .Where(c => c.ConnectionType.Equals(request.Type))
-                .OrderBy(u => u.Id)
-                .Skip(request.Offset)
-                .Take(request.Limit)
-                .ToListAsync(cancellationToken: cancellationToken);
+            DbSet.RemoveRange(
+                await DbSet.Where(u => u.AdvertId == advertId)
+                    .ToArrayAsync(cancellationToken));
+            await Context.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task DeleteByUserId(int userId, CancellationToken cancellationToken)
+        {
+            DbSet.RemoveRange(
+                await DbSet.Where(u => u.UserId == userId)
+                    .ToArrayAsync(cancellationToken));
+            await Context.SaveChangesAsync(cancellationToken);
+        }
     }
 }

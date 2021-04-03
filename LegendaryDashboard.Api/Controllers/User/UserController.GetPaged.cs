@@ -19,11 +19,10 @@ namespace LegendaryDashboard.Api.Controllers.User
         [HttpGet("paged")]
         public async Task<IActionResult> GetPaged(
             int offset, int limit,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            var users = await service.GetPaged(offset, limit, cancellationToken);
+            var users = await _userService.GetPaged(offset, limit, cancellationToken);
             return Ok(users);
         }
     }

@@ -5,10 +5,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Castle.Core.Internal;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
 using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.User;
@@ -38,26 +38,24 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             _accessor = accessor;
         }
         
+
         public async Task Register(RegisterUserRequest request, CancellationToken cancellationToken)
         {
-            Match phoneValidation  = Regex.
-                Match(request.Phone,
-                    @"^(?:\(?)(?<AreaCode>\d{3})(?:[\).\s]?)(?<Prefix>\d{3})(?:[-\.\s]?)(?<Suffix>\d{4})(?!\d)");
-            
-            Match emailValidation = Regex.
-                Match(request.Email,
-                "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}");
-            
-            if (!phoneValidation.Success)
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
+            if (!Validators.PhoneChecker(request.Phone))
             {
                 throw new ValidationException("Неверный формат номера телефона");   
             }
 
-            if (!emailValidation.Success)
+            if (!Validators.EmailChecker(request.Email))
             {
                 throw new ValidationException("Неверный формат электронной почты");
             }
-            
+
+            if (await _repository.EmailExist(request.Email, cancellationToken)) 
+                throw new Exception("Пользователь с таким email уже существует");
+            if (await _repository.PhoneExist(request.Phone, cancellationToken)) 
+                throw new Exception("Пользователь с таким номером телефона уже существует");
             var user = _mapper.Map<User>(request);
             user.Role = RoleConstants.UserRole;
             user.PasswordHash = Hashing.GetHash(request.Password);
@@ -68,37 +66,21 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
 
         public async Task<string> Login(LoginUserRequest request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetByEmail(request.Email, cancellationToken);
-            if (!user.PasswordHash.Equals(Hashing.GetHash(request.Password)))
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
+            request.Password = Hashing.GetHash(request.Password);
+            var user = await _repository.GetByEmailAndPass(request.Email, request.Password, cancellationToken);
+            if (user == null)
             {
                 throw new Exception("Неверный email или пароль!");
             }
-            var claims = new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
-                new Claim(ClaimTypes.Role, user.Role)
-            };
-            var bytes = Encoding.ASCII.GetBytes(_jwtOptions.Value.Key);
-                var expires = DateTime.UtcNow.AddMinutes(90);
-                var securityKey = new SymmetricSecurityKey(bytes);
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-                {
-                    Expires = expires,
-                    SigningCredentials = credentials,
-                    Subject = new ClaimsIdentity(claims),
-                });
-                
-            return tokenHandler.WriteToken(token);
+            return ClaimsPrincipalExtensions.CreateToken(user, _jwtOptions);
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
         {
-            if (ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, id))
-            {
-                await _repository.Delete(id, cancellationToken);  
-            }
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, id)) 
+                throw new Exception("Ошибка удаления! Нет прав!");
+            await _repository.Delete(id, cancellationToken);
         }
         public async Task<PagedResponse<UserDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken)
         {
@@ -130,7 +112,82 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             var user = await _repository.GetByPhone(phone, cancellationToken);
             return _mapper.Map<UserDto>(user);
         }
+
+        public async Task Update(UpdateUserRequest request, CancellationToken cancellationToken)
+        {
+            if (request == null) throw new ArgumentNullException("Запрос пуст!");
+            var user = new User();
+            
+            if (!request.Phone.IsNullOrEmpty())
+            {
+                if (!Validators.PhoneChecker(request.Phone))
+                {
+                    throw new ValidationException(
+                        "Невозможно изменить номер телефона так как изменение имеет неверный формат"
+                    );   
+                }
+
+                user.Phone = request.Phone;
+            }
+            else
+            {
+                user.Phone = (await _repository.FindById(request.Id, cancellationToken)).Phone;
+            }
+            
+            if (!request.Email.IsNullOrEmpty())
+            {
+                if (!Validators.EmailChecker(request.Email))
+                {
+                    throw new ValidationException(
+                        "Невозможно изменить адрес электронной почты так как изменение имеет неверный формат"
+                    );
+                }
+
+                user.Email = request.Email;
+            }
+            else
+            {
+                user.Email = (await _repository.FindById(request.Id, cancellationToken)).Email;
+            }
+            
+            user.FirstName = 
+                !request.FirstName.IsNullOrEmpty() 
+                    ? request.FirstName 
+                    : (await _repository.FindById(request.Id, cancellationToken)).FirstName;
+            user.MiddleName = 
+                !request.MiddleName.IsNullOrEmpty() 
+                    ? request.MiddleName 
+                    : (await _repository.FindById(request.Id, cancellationToken)).MiddleName;
+            user.LastName = 
+                !request.LastName.IsNullOrEmpty() 
+                    ? request.LastName 
+                    : (await _repository.FindById(request.Id, cancellationToken)).LastName;
+
+            user.Role = (await _repository.FindById(request.Id, cancellationToken)).Role;
+            user.RegisterDate = (await _repository.FindById(request.Id, cancellationToken)).RegisterDate;
+            user.PasswordHash = (await _repository.FindById(request.Id, cancellationToken)).PasswordHash;
+            await _repository.Update(user, cancellationToken);
+        }
+        
+        public async Task UpdatePassword(int userId, string oldPassword, string newPassword, CancellationToken cancellationToken)
+        {
+            var userWithNewPassword = await _repository.FindById(userId, cancellationToken);
+            
+            if (userWithNewPassword == null) 
+                throw new Exception("Пользователь не найден!");
+            if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, userId)) 
+                throw new Exception("Нет прав!");
+            if (!userWithNewPassword.PasswordHash.Equals(Hashing.GetHash(oldPassword))) 
+                throw new Exception("Неверный пароль!");
+            
+            userWithNewPassword.PasswordHash = Hashing.GetHash(newPassword);
+            
+            await _repository.Update(
+                userWithNewPassword, cancellationToken
+            );
+        }
     }
+    
 
     public static class Hashing
     {

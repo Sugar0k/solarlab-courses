@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using LegendaryDashboard.Application.Services.AdvertService.Implementations;
+using LegendaryDashboard.Application.Services.AdvertService.Interfaces;
 using LegendaryDashboard.Application.Services.CategoryService.Implementations;
 using LegendaryDashboard.Application.Services.CategoryService.Interfaces;
 using LegendaryDashboard.Application.Services.FeedbackService.Implementations;
 using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
+using LegendaryDashboard.Application.Services.FileService.Implementation;
+using LegendaryDashboard.Application.Services.FileService.Interfaces;
 using LegendaryDashboard.Application.Services.Repositories;
 using LegendaryDashboard.Application.Services.UserService.Implementations;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
@@ -38,18 +42,32 @@ namespace LegendaryDashboard.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "MyPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(Configuration["FrontAddress"]).AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+            
             // получаем строку подключения из файла конфигурации
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // добавляем контекст DashboardContext в качестве сервиса в приложение
             services.AddDbContext<DashboardContext>(options =>
-                options.UseSqlServer(connection));
+                options.UseSqlServer(connection).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             services
                 .AddControllers();
             //добавление сервисов и репозиториев Категорий
             services
                 .AddScoped<ICategoryService, CategoryService>()
-                .AddScoped<ICategoryRepository, CategoryRepository>();
+                .AddScoped<ICategoryRepository, CategoryRepository>()
+                
+                //подключение автомаппера
+                .AddAutoMapper(typeof(CategoryMapperProfile).Assembly);
+            
             //добавление сервисов и репозиториев Пользователя
             services
                 .AddScoped<IUserService, UserService>()
@@ -70,7 +88,16 @@ namespace LegendaryDashboard.Api
             services
                 .AddScoped<IFeedbackService, FeedbackService>()
                 .AddScoped<IFeedbackRepository, FeedbackRepository>();
-            
+            //добавление сервисов работы с файлами
+            services
+                .AddScoped<IFileService, FileService>();
+            //добавление репозитория картинок для объявления
+            services
+                .AddScoped<IAdvertImageRepository, AdvertImageRepository>();
+            //добавление сервиса Объявления
+            services
+                .AddScoped<IAdvertService, AdvertService>();
+                
             //Аутентификация
             services.AddOptions<JwtOptions>().Configure<IConfiguration>((o, c) => {
                 c.GetSection("Token").Bind(o);
@@ -142,13 +169,15 @@ namespace LegendaryDashboard.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LegendaryDashboard v1.1"));
             }
-
+            
             app.UseHttpsRedirection();
             
             app.UseAuthentication();
             
             app.UseRouting();
             
+            app.UseCors();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

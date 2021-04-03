@@ -9,15 +9,13 @@ namespace LegendaryDashboard.Api.Controllers.Category
 {
     public partial class CategoryController
     {
-        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("get_by_parent_id/{id}")]
         public async Task<IActionResult> GetByParentCategoryId(
             int id,
-            [FromServices] ICategoryService service,
             CancellationToken cancellationToken
         )
         {
-            var categories = await service.GetByParentCategoryId(id, cancellationToken);
+            var categories = await _categoryService.GetByParentCategoryId(id, cancellationToken);
             return Ok(categories);
         }
     }

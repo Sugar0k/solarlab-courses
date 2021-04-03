@@ -12,11 +12,10 @@ namespace LegendaryDashboard.Api.Controllers.User
         [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("count")]
         public async Task<IActionResult> GetCount(
-            [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            var count = await service.Count(cancellationToken);
+            var count = await _userService.Count(cancellationToken);
             return Ok(count);
         }
     }

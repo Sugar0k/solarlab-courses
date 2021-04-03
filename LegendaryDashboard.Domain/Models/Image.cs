@@ -11,6 +11,6 @@ namespace LegendaryDashboard.Domain.Models
         
         public string FilePath { get; set; } //Путь к файлу
 
-        public List<AdvertImage> ImageAdverts { get; set; } //связь со списком объявлений
+        public ICollection<AdvertImage> ImageAdverts { get; set; } = new HashSet<AdvertImage>(); //связь со списком объявлений
     }
 }

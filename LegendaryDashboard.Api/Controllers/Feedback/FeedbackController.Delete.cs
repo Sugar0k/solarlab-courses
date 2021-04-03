@@ -2,20 +2,20 @@
 using System.Threading.Tasks;
 using LegendaryDashboard.Application.Services.FeedbackService.Interfaces;
 using LegendaryDashboard.Application.Services.UserService.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LegendaryDashboard.Api.Controllers.Feedback
 {
     public partial class FeedbackController
     {
-        [HttpDelete]
-        [Route("delete")]
+        [Authorize]
+        [HttpDelete("delete")]
         public async Task<IActionResult> Delete(
             int id,
-            [FromServices] IFeedbackService service,
             CancellationToken cancellationToken)
         {
-            await service.Delete(id, cancellationToken);
+            await _feedbackService.Delete(id, cancellationToken);
             return Ok();
         }
     }

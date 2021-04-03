@@ -29,7 +29,21 @@ namespace LegendaryDashboard.Infrastructure.DbContext
                 .HasOne(ua => ua.User)
                 .WithMany(u => u.UsersAdverts)
                 .HasForeignKey(ua => ua.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.SentFeedbacks)
+                .WithOne(f => f.Commentator)
+                .HasForeignKey(f => f.CommentatorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.TakenFeedbacks)
+                .WithOne(f => f.User)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.ClientCascade);
             
+            
+
         }
     }
 }

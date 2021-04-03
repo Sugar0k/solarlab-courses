@@ -34,7 +34,12 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<TEntity> FindById(TId id, CancellationToken cancellationToken)
         {
-            return await DbSet.FindAsync(id, cancellationToken);
+            return await DbSet.FindAsync(new object[]{id}, cancellationToken);
+        }
+
+        public async Task<bool> Exist(TId id, CancellationToken cancellationToken)
+        {
+            return await DbSet.AnyAsync(x => Equals(x.Id, id), cancellationToken);
         }
 
         async Task<int> IRepository<TEntity, TId>.Count(CancellationToken cancellationToken)
@@ -44,7 +49,7 @@ namespace LegendaryDashboard.Application.Services.Repositories
         
         public async Task Delete(TId id, CancellationToken cancellationToken)
         {
-            var entity  = await DbSet.FindAsync(id, cancellationToken);
+            var entity  = await DbSet.FindAsync(new object[]{id}, cancellationToken);
             if (entity == null) throw new EntityNotFoundException("Удаляемый элемент не найден");
             DbSet.Remove(entity);
             await Context.SaveChangesAsync(cancellationToken);
@@ -52,7 +57,10 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task Update(TEntity entity, CancellationToken cancellationToken)
         {
-            DbSet.UpdateRange(entity);
+            if (await DbSet.FindAsync(new object[]{entity.Id}, cancellationToken) == null) 
+                throw new Exception($"Для {entity.GetType()} обновляемый элемент не найден");
+            Context.Entry(entity).State = EntityState.Modified;
+            DbSet.Update(entity);
             await Context.SaveChangesAsync(cancellationToken);
         }
 
@@ -70,6 +78,25 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 EntityList = list
             };
         }
-    }
 
+        public async Task<PagedResponse<TEntity>> GetPaged(
+            Expression<Func<TEntity, bool>> predicate,
+            int offset,
+            int limit,
+            CancellationToken cancellationToken)
+        {
+            var list = await DbSet
+                .Where(predicate)
+                .OrderBy(u => u.Id)
+                .Skip(offset)
+                .Take(limit)
+                .ToListAsync(cancellationToken: cancellationToken);
+            var count = await DbSet.CountAsync(cancellationToken);
+            return new PagedResponse<TEntity>
+            {
+                Count = count,
+                EntityList = list
+            };
+        }
+    }
 }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LegendaryDashboard.Application.Services.Repositories
 {
-    public class AdvertImageRepository : Repository<AdvertImage, int>, IAdvertImageRepository
+    public class AdvertImageRepository : Repository<AdvertImage, string>, IAdvertImageRepository
     {
         public AdvertImageRepository(DashboardContext context) : base(context)
         {
@@ -18,12 +18,9 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<IEnumerable<AdvertImage>> GetByAdvertId(int advertId, CancellationToken cancellationToken)
         {
-            return await DbSet.Where(a => a.AdvertId == advertId).ToListAsync(cancellationToken);
-        }
-
-        public async Task<IEnumerable<AdvertImage>> GetByImageId(string imageGuid, CancellationToken cancellationToken)
-        {
-            return await DbSet.Where(a => a.ImageGuid == imageGuid).ToListAsync(cancellationToken);
+            return await DbSet.Where(a => a.AdvertId == advertId)
+                .OrderBy(a => a.DateCreate)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task DeleteByAdvertId(int advertId, CancellationToken cancellationToken)
@@ -31,11 +28,6 @@ namespace LegendaryDashboard.Application.Services.Repositories
             DbSet.RemoveRange(DbSet.Where(a => a.AdvertId == advertId).ToArray());
             await Context.SaveChangesAsync(cancellationToken);
         }
-
-        public async Task DeleteByImageId(string imageGuid, CancellationToken cancellationToken)
-        {
-            DbSet.RemoveRange(DbSet.Where(a => a.ImageGuid == imageGuid).ToArray());
-            await Context.SaveChangesAsync(cancellationToken);
-        }
+        
     }
 }

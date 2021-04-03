@@ -17,11 +17,10 @@ namespace LegendaryDashboard.Api.Controllers.User
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(
             int id,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            await service.Delete(id, cancellationToken);
+            await _userService.Delete(id, cancellationToken);
             return NoContent();
         }
     }

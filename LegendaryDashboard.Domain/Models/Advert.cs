@@ -20,8 +20,8 @@ namespace LegendaryDashboard.Domain.Models
         
         public int Views { get; set; }
 
-        public List<AdvertImage> AdvertImages { get; set; } //связь со списком изображений
+        public ICollection<AdvertImage> AdvertImages { get; set; } = new HashSet<AdvertImage>(); //связь со списком изображений
         
-        public List<UserAdvert> UsersAdverts { get; set; } //связь со списком Пользователей
+        public ICollection<UserAdvert> UsersAdverts { get; set; } = new HashSet<UserAdvert>(); //связь со списком Пользователей
     }
 }

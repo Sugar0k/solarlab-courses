@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LegendaryDashboard.Contracts.Contracts.Advert
 {
@@ -15,5 +16,6 @@ namespace LegendaryDashboard.Contracts.Contracts.Advert
         public string Street { get; set; }
         public string House { get; set; }
         public int Views { get; set; }
+        public IEnumerable<string> Images { get; set; }
     }
 }

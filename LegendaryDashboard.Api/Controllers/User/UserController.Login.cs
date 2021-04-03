@@ -18,11 +18,10 @@ namespace LegendaryDashboard.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Login(
             [FromBody] LoginUserRequest request,
-            [FromServices] IUserService service,
             CancellationToken cancellationToken
         )
         {
-            return Ok(await service.Login(request, cancellationToken));
+            return Ok(await _userService.Login(request, cancellationToken));
         }
     }
 }

@@ -4,8 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using LegendaryDashboard.Application.Services.UserService.Interfaces;
-using LegendaryDashboard.Contracts.Contracts.Feedback;
+using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.DbContext;
@@ -19,12 +18,30 @@ namespace LegendaryDashboard.Application.Services.Repositories
         public FeedbackRepository(DashboardContext context) : base(context)
         {
         }
+        
+        /*public async Task<PagedResponse<Feedback>> GetPaged(
+            Expression<Func<Feedback, bool>> predicate, 
+            int offset, 
+            int limit, 
+            CancellationToken cancellationToken)
+        {
+            var feedbacks = DbSet.Where(predicate)
+                .OrderBy(f => f.CreateDate);
+                
+            return new PagedResponse<Feedback>
+            {
+                Count = await feedbacks.CountAsync(cancellationToken),
+                EntityList = await feedbacks.Skip(offset)
+                    .Take(limit)
+                    .ToListAsync(cancellationToken)
+            };
+        }*/
 
         public async Task<List<Feedback>> GetPaged(FeedbackGetRequest getRequest, CancellationToken cancellationToken)
         {
             return await DbSet
                 .Where(f=> f.UserId == getRequest.UserId)
-                .OrderBy(u => u.CreateDate) 
+                .OrderBy(f => f.CreateDate) 
                 .Skip(getRequest.Offset)
                 .Take(getRequest.Limit)
                 .ToListAsync(cancellationToken: cancellationToken);
@@ -32,9 +49,9 @@ namespace LegendaryDashboard.Application.Services.Repositories
 
         public async Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken)
         {
-            return DbSet
+            return await DbSet
                 .Where(predicate)
-                .Count();
+                .CountAsync();
         }
 
         // public async Task Update(Feedback feedback, CancellationToken cancellationToken)

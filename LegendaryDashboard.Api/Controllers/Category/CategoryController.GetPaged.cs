@@ -9,15 +9,13 @@ namespace LegendaryDashboard.Api.Controllers.Category
 {
     public partial class CategoryController
     {
-        [Authorize(Roles = RoleConstants.AdminRole)]
         [HttpGet("paged")]
         public async Task<IActionResult> GetPaged(
             int offset, int limit,
-            [FromServices] ICategoryService service,
             CancellationToken cancellationToken
         )
         {
-            return Ok(await service.GetPaged(offset, limit, cancellationToken));
+            return Ok(await _categoryService.GetPaged(offset, limit, cancellationToken));
         }
     }
 }
