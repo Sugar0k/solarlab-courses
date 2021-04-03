@@ -31,9 +31,14 @@ namespace LegendaryDashboard.Application.Services.FileService.Implementation
         public async Task Delete(string id, string path, CancellationToken cancellationToken)
         {
             var currentPath = Path.Combine(FilePath, path, id);
-            if (!File.Exists(currentPath)) 
-                throw new FileNotFoundException($"Файл по пути {currentPath} отсутствует"); 
-            
+
+            if (!File.Exists(currentPath))
+            {
+                await File.AppendAllTextAsync("log.txt", "Попытка удалить отсутствующий файл! " + currentPath + "\n",
+                    cancellationToken);
+                return;
+            }
+
             File.Delete(currentPath);
         }
 

@@ -48,7 +48,7 @@ namespace LegendaryDashboard.Api
                     name: "MyPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+                        builder.WithOrigins(Configuration["FrontAddress"]).AllowAnyHeader().AllowAnyMethod();
                     });
             });
             
