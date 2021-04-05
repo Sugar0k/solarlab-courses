@@ -30,10 +30,7 @@ namespace LegendaryDashboard.Application
             //добавление сервисов и репозиториев Пользователя
             services
                 .AddScoped<IUserService, UserService>()
-                .AddScoped<IUserRepository, UserRepository>()
-                
-                //подключение автомаппера
-                .AddAutoMapper(typeof(UserMapperProfile).Assembly);
+                .AddScoped<IUserRepository, UserRepository>();
 
             //добавление репозитория Объявления
             services
