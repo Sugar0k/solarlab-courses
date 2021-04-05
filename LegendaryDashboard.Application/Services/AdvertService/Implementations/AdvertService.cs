@@ -54,7 +54,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
         }
 
         
-        public async Task Create(CreateAdvertRequest request, CancellationToken cancellationToken)
+        public async Task<int> Create(CreateAdvertRequest request, CancellationToken cancellationToken)
         {
             Console.WriteLine(ClaimsPrincipalExtensions.GetUserId(_accessor));
             if (!(await _userRepository.Exist(ClaimsPrincipalExtensions.GetUserId(_accessor), cancellationToken)))
@@ -74,7 +74,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 UserId = ClaimsPrincipalExtensions.GetUserId(_accessor),
                 ConnectionType = AdvertUserConnectionTypes.OwnerConnection
             },cancellationToken);
-            
+
+            return advert.Id;
         }
 
         public async Task Delete(int advertId, CancellationToken cancellationToken)

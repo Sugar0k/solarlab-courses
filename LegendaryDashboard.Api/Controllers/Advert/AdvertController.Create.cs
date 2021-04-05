@@ -17,8 +17,7 @@ namespace LegendaryDashboard.Api.Controllers.Advert
             CreateAdvertRequest request,
             CancellationToken cancellationToken)
         {
-            await _advertService.Create(request, cancellationToken);
-            return Ok();
+            return Ok(await _advertService.Create(request, cancellationToken));
         }
     }
 }

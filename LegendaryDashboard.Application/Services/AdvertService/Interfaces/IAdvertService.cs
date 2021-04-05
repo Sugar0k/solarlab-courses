@@ -18,7 +18,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task Create(
+        Task<int> Create(
             CreateAdvertRequest request, 
             CancellationToken cancellationToken);
         
