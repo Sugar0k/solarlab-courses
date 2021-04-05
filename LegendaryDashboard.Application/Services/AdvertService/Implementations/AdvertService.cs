@@ -65,15 +65,20 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             var advert = _mapper.Map<Advert>(request);
             advert.CreationDate = DateTime.UtcNow;
             advert.Views = 0;
-            
-            await _advertRepository.Save(advert, cancellationToken);
-
-            await _userAdvertRepository.Save(new UserAdvert
+            advert.UsersAdverts.Add(new UserAdvert
             {
                 AdvertId = advert.Id,
                 UserId = ClaimsPrincipalExtensions.GetUserId(_accessor),
                 ConnectionType = AdvertUserConnectionTypes.OwnerConnection
-            },cancellationToken);
+            });
+            await _advertRepository.Save(advert, cancellationToken);
+
+            /*await _userAdvertRepository.Save(new UserAdvert
+            {
+                AdvertId = advert.Id,
+                UserId = ClaimsPrincipalExtensions.GetUserId(_accessor),
+                ConnectionType = AdvertUserConnectionTypes.OwnerConnection
+            },cancellationToken);*/
             
         }
 
