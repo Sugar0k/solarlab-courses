@@ -31,11 +31,16 @@ namespace LegendaryDashboard.Api
                     });
             });
             
+            // добавляем контекст DashboardContext в качестве сервиса в приложение
+            services.AddDbContext<DashboardContext>();
+            
+            
+            /*
             // получаем строку подключения из файла конфигурации
             string connection = Configuration.GetConnectionString("DefaultConnection");
             // добавляем контекст DashboardContext в качестве сервиса в приложение
-            services.AddDbContext<DashboardContext>(options =>
-                options.UseSqlServer(connection).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            services.AddDbContextFactory<DashboardContext>(options =>
+                options.UseSqlServer(connection).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));*/
 
             services
                 .AddControllers();

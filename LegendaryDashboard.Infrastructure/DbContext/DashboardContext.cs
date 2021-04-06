@@ -1,20 +1,36 @@
 using LegendaryDashboard.Domain.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 
 namespace LegendaryDashboard.Infrastructure.DbContext
 {
+    public class DashboardContextFactory : IDbContextFactory<DashboardContext>
+    {
+        /*public DashboardContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<DashboardContext>();
+            optionsBuilder
+                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=LegendaryDB;Trusted_Connection=True;")
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+            return new DashboardContext(optionsBuilder.Options);
+        }*/
+
+        public DashboardContext CreateDbContext()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<DashboardContext>();
+            optionsBuilder
+                .UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=LegendaryDB;Trusted_Connection=True;")
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+
+            return new DashboardContext(optionsBuilder.Options);
+        }
+    }
     public sealed class DashboardContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        //TODO: переделать под миграции и не умереть!!!
-        public DashboardContext(DbContextOptions<DashboardContext> options)
-            : base(options)
-        {
-            //Database.EnsureDeleted();
-            Database.EnsureCreated();
-        }
+        
+        public DashboardContext(DbContextOptions<DashboardContext> options) : base(options){}
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

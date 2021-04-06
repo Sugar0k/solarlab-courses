@@ -18,24 +18,6 @@ namespace LegendaryDashboard.Application.Services.Repositories
         public FeedbackRepository(DashboardContext context) : base(context)
         {
         }
-        
-        /*public async Task<PagedResponse<Feedback>> GetPaged(
-            Expression<Func<Feedback, bool>> predicate, 
-            int offset, 
-            int limit, 
-            CancellationToken cancellationToken)
-        {
-            var feedbacks = DbSet.Where(predicate)
-                .OrderBy(f => f.CreateDate);
-                
-            return new PagedResponse<Feedback>
-            {
-                Count = await feedbacks.CountAsync(cancellationToken),
-                EntityList = await feedbacks.Skip(offset)
-                    .Take(limit)
-                    .ToListAsync(cancellationToken)
-            };
-        }*/
 
         public async Task<List<Feedback>> GetPaged(FeedbackGetRequest getRequest, CancellationToken cancellationToken)
         {
@@ -53,12 +35,6 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .Where(predicate)
                 .CountAsync();
         }
-
-        // public async Task Update(Feedback feedback, CancellationToken cancellationToken)
-        // { 
-        //      DbSet.Update(feedback);
-        //      await Context.SaveChangesAsync(cancellationToken);
-        // }
 
         public async Task<Feedback> GetById(int id, CancellationToken cancellationToken)
         {
