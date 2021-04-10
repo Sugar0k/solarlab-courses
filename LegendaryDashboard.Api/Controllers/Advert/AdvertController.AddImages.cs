@@ -14,7 +14,7 @@ namespace LegendaryDashboard.Api.Controllers.Advert
             [FromForm] AdvertImageCreateRequest request,
             CancellationToken cancellationToken)
         {
-            await _advertService.AddImages(request.Id, request.File, cancellationToken);
+            await _advertService.AddImages(request, cancellationToken);
             return Ok();
         }
     }

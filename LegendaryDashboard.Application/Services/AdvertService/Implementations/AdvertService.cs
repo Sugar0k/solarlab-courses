@@ -14,6 +14,7 @@ using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Advert;
 using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
 using LegendaryDashboard.Contracts.Contracts.AdvertImage;
+using LegendaryDashboard.Contracts.Contracts.AdvertImage.Requests;
 using LegendaryDashboard.Domain.Common;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations;
@@ -159,28 +160,28 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             };
         }
         
-        public async Task AddImages(int advertId, IFormFile file, CancellationToken cancellationToken)
+        public async Task AddImages(AdvertImageCreateRequest request, CancellationToken cancellationToken)
         {
-            var advert = await _advertRepository.FindById(advertId, cancellationToken);
+            var advert = await _advertRepository.FindById(request.Id, cancellationToken);
             if (advert == null) throw new Exception("Advert not found");
             
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor,
-                await _userAdvertRepository.GetOwnerId(advertId, cancellationToken)))
+                await _userAdvertRepository.GetOwnerId(request.Id, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
             
-            var path = Path.Combine(ImagesPath, advertId.ToString());
-            /*foreach (var file in files)
-            {*/
+            var path = Path.Combine(ImagesPath, request.Id.ToString());
+            foreach (var file in request.Files)
+            {
                 await _advertImageRepository.Save(new AdvertImage
                 {
                     Id = await _fileService.Create(file, path, cancellationToken),
                     FileName = file.FileName,
                     FilePath = path,
                     DateCreate = DateTime.UtcNow,
-                    AdvertId = advertId
+                    AdvertId = request.Id
                 }, cancellationToken);
-            /*}*/
+            }
         }
 
         public async Task DeleteImage(string imageId, CancellationToken cancellationToken)

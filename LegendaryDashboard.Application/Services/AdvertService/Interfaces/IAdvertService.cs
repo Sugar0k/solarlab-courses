@@ -5,6 +5,7 @@ using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Advert;
 using LegendaryDashboard.Contracts.Contracts.Advert.Requests;
 using LegendaryDashboard.Contracts.Contracts.AdvertImage;
+using LegendaryDashboard.Contracts.Contracts.AdvertImage.Requests;
 using LegendaryDashboard.Domain.Common;
 using Microsoft.AspNetCore.Http;
 
@@ -82,11 +83,10 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <summary>
         /// Добавление изображения
         /// </summary>
-        /// <param name="advertId"></param>
-        /// <param name="files"></param>
+        /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task AddImages(int advertId, IFormFile files, CancellationToken cancellationToken);
+        public Task AddImages(AdvertImageCreateRequest request, CancellationToken cancellationToken);
 
         /// <summary>
         /// Удаление изображения по id
