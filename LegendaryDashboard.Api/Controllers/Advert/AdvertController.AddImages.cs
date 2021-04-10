@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using LegendaryDashboard.Application.Services.AdvertService.Interfaces;
+using LegendaryDashboard.Contracts.Contracts.AdvertImage.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,13 +9,12 @@ namespace LegendaryDashboard.Api.Controllers.Advert
 {
     public partial class AdvertController
     {
-        [HttpPut("images/add")]
+        [HttpPost("images/add")]
         public async Task<IActionResult> AddImages(
-            int id,
-            IFormFileCollection fileCollection,
+            [FromForm] AdvertImageCreateRequest request,
             CancellationToken cancellationToken)
         {
-            await _advertService.AddImages(id, fileCollection, cancellationToken);
+            await _advertService.AddImages(request.Id, request.File, cancellationToken);
             return Ok();
         }
     }

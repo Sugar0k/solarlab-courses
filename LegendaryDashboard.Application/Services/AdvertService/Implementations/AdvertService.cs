@@ -159,7 +159,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             };
         }
         
-        public async Task AddImages(int advertId, IFormFileCollection files, CancellationToken cancellationToken)
+        public async Task AddImages(int advertId, IFormFile file, CancellationToken cancellationToken)
         {
             var advert = await _advertRepository.FindById(advertId, cancellationToken);
             if (advert == null) throw new Exception("Advert not found");
@@ -170,8 +170,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             
             
             var path = Path.Combine(ImagesPath, advertId.ToString());
-            foreach (var file in files)
-            {
+            /*foreach (var file in files)
+            {*/
                 await _advertImageRepository.Save(new AdvertImage
                 {
                     Id = await _fileService.Create(file, path, cancellationToken),
@@ -180,7 +180,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                     DateCreate = DateTime.UtcNow,
                     AdvertId = advertId
                 }, cancellationToken);
-            }
+            /*}*/
         }
 
         public async Task DeleteImage(string imageId, CancellationToken cancellationToken)

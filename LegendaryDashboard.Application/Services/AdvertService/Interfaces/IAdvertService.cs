@@ -86,7 +86,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Interfaces
         /// <param name="files"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task AddImages(int advertId, IFormFileCollection files, CancellationToken cancellationToken);
+        public Task AddImages(int advertId, IFormFile files, CancellationToken cancellationToken);
 
         /// <summary>
         /// Удаление изображения по id
