@@ -86,15 +86,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             }
             
             await _advertRepository.Save(advert, cancellationToken);
-            //
-            // var addImagesRequest = new AdvertImageCreateRequest
-            // {
-            //     Id = advert.Id,
-            //     Files = request.Files
-            // };
-            //
-            // await AddImages(addImagesRequest, cancellationToken);
-            
+
             return advert.Id;
         }
 
@@ -110,9 +102,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             
             await _advertRepository.Delete(advertId, cancellationToken);
             
-            var path = Path.Combine(ImagesPath);
             advert.AdvertImages.ForAll(async image =>
-                await _fileService.Delete(image.Id, path, cancellationToken));
+                await _fileService.Delete(Path.Combine(image.FilePath, image.Id), cancellationToken));
          
         }
 
@@ -122,8 +113,8 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             foreach (var advertImage in await _advertImageRepository.GetByAdvertId(advertId, cancellationToken))
             {
                 var advertImageDto = _mapper.Map<AdvertImageDto>(advertImage);
-                advertImageDto.data = await _fileService.Get(advertImageDto.id, 
-                    Path.Combine(ImagesPath), cancellationToken);
+                advertImageDto.data = await _fileService.Get(
+                    Path.Combine(advertImage.FilePath, advertImage.Id), cancellationToken);
                 images.Add(advertImageDto);
             }
 
@@ -212,7 +203,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
             if (!ClaimsPrincipalExtensions.IsAdminOrOwner(_accessor, advert.CategoryId))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             
-            await _fileService.Delete(imageId, image.FilePath, cancellationToken);
+            await _fileService.Delete(Path.Combine(image.FilePath, image.Id), cancellationToken);
             await _advertImageRepository.Delete(imageId, cancellationToken);
         }
 
@@ -226,14 +217,16 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 await _userAdvertRepository.GetOwnerId(advertId, cancellationToken)))
                 throw new Exception("Advert не пренадлежит текущему пользователю");
             await _advertImageRepository.DeleteByAdvertId(advertId, cancellationToken);
-            images.ForAll(async a => { await _fileService.Delete(a.Id, a.FilePath, cancellationToken); });
+            images.ForAll(async a => { await _fileService.Delete(
+                Path.Combine(a.FilePath, a.Id), cancellationToken); });
         }
 
         public async Task<AdvertImageDto> GetImage(string imageId, CancellationToken cancellationToken)
         {
             var advertImage = await _advertImageRepository.FindById(imageId, cancellationToken);
             var advertImageDto = _mapper.Map<AdvertImageDto>(advertImage);
-            advertImageDto.data = await _fileService.Get(advertImage.Id, advertImage.FilePath, cancellationToken);
+            advertImageDto.data = await _fileService.Get(
+                Path.Combine(advertImage.FilePath, advertImage.Id), cancellationToken);
             return advertImageDto;
         }
 

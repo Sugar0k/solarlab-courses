@@ -28,9 +28,9 @@ namespace LegendaryDashboard.Application.Services.FileService.Implementation
             return guid;
         }
 
-        public async Task Delete(string id, string path, CancellationToken cancellationToken)
+        public async Task Delete(string path, CancellationToken cancellationToken)
         {
-            var currentPath = Path.Combine(FilePath, path, id);
+            var currentPath = Path.Combine(FilePath, path);
 
             if (!File.Exists(currentPath))
             {
@@ -42,9 +42,9 @@ namespace LegendaryDashboard.Application.Services.FileService.Implementation
             File.Delete(currentPath);
         }
 
-        public async Task<byte[]> Get(string id, string path, CancellationToken cancellationToken)
+        public async Task<byte[]> Get(string path, CancellationToken cancellationToken)
         {
-            var currentPath = Path.Combine(FilePath, path, id);
+            var currentPath = Path.Combine(FilePath, path);
             if (!File.Exists(currentPath)) 
                 throw new FileNotFoundException($"Файл по пути {currentPath} отсутствует");
 
