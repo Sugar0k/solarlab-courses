@@ -14,7 +14,7 @@ namespace LegendaryDashboard.Api.Controllers.Advert
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Create(
-            CreateAdvertRequest request,
+            [FromForm] CreateAdvertRequest request,
             CancellationToken cancellationToken)
         {
             return Ok(await _advertService.Create(request, cancellationToken));

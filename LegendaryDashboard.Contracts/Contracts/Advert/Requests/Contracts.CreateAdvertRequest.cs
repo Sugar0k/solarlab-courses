@@ -26,5 +26,7 @@ namespace LegendaryDashboard.Contracts.Contracts.Advert.Requests
         
         public string House { get; set; }
 
+        public IFormFileCollection Files { get; set; }
+
     }
 }
