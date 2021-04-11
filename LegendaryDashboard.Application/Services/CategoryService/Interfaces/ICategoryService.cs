@@ -18,5 +18,6 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Interfaces
         Task<PagedResponse<CategoryDto>> GetPaged(int offset, int limit, CancellationToken cancellationToken);
         Task<List<CategoryDto>> GetByTitles(string approximateName, CancellationToken cancellationToken);
         Task<List<CategoryDto>> GetByParentCategoryId(int id, CancellationToken cancellationToken);
+        Task<List<CategoryDto>> GetParentsCategories(int limit, int offset, CancellationToken cancellationToken);
     }
 }

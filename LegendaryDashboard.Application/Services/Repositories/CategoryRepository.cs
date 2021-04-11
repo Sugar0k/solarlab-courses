@@ -34,5 +34,15 @@ namespace LegendaryDashboard.Application.Services.Repositories
             return await DbSet.Where(c => c.ParentCategoryId == id)
                 .ToListAsync(cancellationToken: cancellationToken);
         }
+
+        public async Task<List<Category>> GetParentsCategories(int limit, int offset, CancellationToken cancellationToken)
+        {
+            return await DbSet
+                .Where(c => c.ParentCategoryId == null)
+                .Skip(offset)
+                .Take(limit)
+                .OrderBy(u => u.Id)
+                .ToListAsync(cancellationToken: cancellationToken);
+        }
     }
 }

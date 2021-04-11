@@ -95,5 +95,12 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
             if (categories == null) throw new Exception("Категории не найдены");
             return _mapper.Map<List<CategoryDto>>(categories);
         }
+
+        public async Task<List<CategoryDto>> GetParentsCategories(int limit, int offset, CancellationToken cancellationToken)
+        {
+            var categories = await _repository.GetParentsCategories(limit, offset, cancellationToken);
+            if (categories == null) throw new Exception("Категории не найдены");
+            return _mapper.Map<List<CategoryDto>>(categories);
+        }
     }
 }
