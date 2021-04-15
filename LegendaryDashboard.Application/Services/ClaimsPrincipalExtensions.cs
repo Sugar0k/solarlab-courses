@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -16,13 +17,16 @@ namespace LegendaryDashboard.Application.Services
     {
         public static string CreateToken(User user, IOptions<JwtOptions> jwtOptions)
         {
+            var expires = DateTime.UtcNow.AddMinutes(90);
+            
             var claims = new Claim[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
+                new Claim("expires", expires.ToString(CultureInfo.InvariantCulture)),
                 new Claim(ClaimTypes.Role, user.Role)
             };
             var bytes = Encoding.ASCII.GetBytes(jwtOptions.Value.Key);
-            var expires = DateTime.UtcNow.AddMinutes(90);
+            
             var securityKey = new SymmetricSecurityKey(bytes);
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var tokenHandler = new JwtSecurityTokenHandler();
