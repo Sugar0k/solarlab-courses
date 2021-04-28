@@ -149,7 +149,8 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             {
                 user.Email = (await _repository.FindById(request.Id, cancellationToken)).Email;
             }
-            
+
+            user.Id = request.Id;
             user.FirstName = 
                 !request.FirstName.IsNullOrEmpty() 
                     ? request.FirstName 
