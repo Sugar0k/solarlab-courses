@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -101,6 +102,25 @@ namespace LegendaryDashboard.Application.Services.CategoryService.Implementation
             var categories = await _repository.GetParentsCategories(limit, offset, cancellationToken);
             if (categories == null) throw new Exception("Категории не найдены");
             return _mapper.Map<List<CategoryDto>>(categories);
+        }
+
+        public async Task<IEnumerable<CategoryDto>> GetFullParents(int id, CancellationToken cancellationToken)
+        {
+            var list = new List<CategoryDto>();
+            
+            var category = await _repository.FindById(id, cancellationToken);
+            if (category == null) throw new Exception("Категоря не найдена");
+
+            list.Add(_mapper.Map<CategoryDto>(category));
+            
+            while (category.ParentCategoryId != null)
+            {
+                category = await _repository.FindById(category.ParentCategoryId.Value, cancellationToken);
+                list.Add(_mapper.Map<CategoryDto>(category));
+            }
+
+            list.Reverse();
+            return list;
         }
     }
 }

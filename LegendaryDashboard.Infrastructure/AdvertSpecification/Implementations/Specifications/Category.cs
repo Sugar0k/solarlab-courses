@@ -16,9 +16,15 @@ namespace LegendaryDashboard.Infrastructure.AdvertSpecification.Implementations.
         
         public override Expression<Func<Advert, bool>> ToExpression()
         {
-            return x => 
-                x.CategoryId == category || 
-                x.Category.ParentCategoryId == category;
+            //Не бейте, не разобрался с Expressions
+            return x =>
+                x.CategoryId == category ||
+                x.Category.ParentCategoryId == category ||
+                x.Category.ParentCategory.ParentCategoryId == category ||
+                x.Category.ParentCategory.ParentCategory.ParentCategoryId == category ||
+                x.Category.ParentCategory.ParentCategory.ParentCategory.ParentCategoryId == category ||
+                x.Category.ParentCategory.ParentCategory.ParentCategory.ParentCategory.ParentCategoryId == category;
+
         }
         public static Category New(int c) => new Category(c);
     }
