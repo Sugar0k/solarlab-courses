@@ -73,7 +73,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
                 ConnectionType = AdvertUserConnectionTypes.OwnerConnection
             });
             var path = Path.Combine(ImagesPath);
-            foreach (var file in request.Files)
+            if (request.Files != null) foreach (var file in request.Files)
             {
                 advert.AdvertImages.Add(new AdvertImage
                 {
