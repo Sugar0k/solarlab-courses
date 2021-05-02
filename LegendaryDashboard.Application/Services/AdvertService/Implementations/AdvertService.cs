@@ -165,7 +165,7 @@ namespace LegendaryDashboard.Application.Services.AdvertService.Implementations
 
             return new PagedResponse<AdvertDto>
             {
-                Count = dtos.Count,
+                Count = adverts.Count,
                 EntityList = dtos
             };
         }
