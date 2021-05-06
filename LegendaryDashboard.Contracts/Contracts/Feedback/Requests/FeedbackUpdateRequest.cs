@@ -7,7 +7,6 @@ namespace LegendaryDashboard.Contracts.Contracts.Feedback.Requests
         [Required(ErrorMessage = "Id required ")] // Необходим Id нужного комментария
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Text required")] // Необходим текс комментария
         public string Text { get; set; }
 
         [Required(ErrorMessage = "Rating required ")] // необходима оценка от пользователя

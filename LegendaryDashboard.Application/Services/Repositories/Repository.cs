@@ -85,17 +85,18 @@ namespace LegendaryDashboard.Application.Services.Repositories
             int limit,
             CancellationToken cancellationToken)
         {
-            var list = await DbSet
+            var list = DbSet
                 .Where(predicate)
-                .OrderBy(u => u.Id)
-                .Skip(offset)
-                .Take(limit)
-                .ToListAsync(cancellationToken: cancellationToken);
-            var count = await DbSet.CountAsync(cancellationToken);
+                .OrderBy(entity => entity.Id);
+
+            var count = await list.CountAsync(cancellationToken);
             return new PagedResponse<TEntity>
             {
                 Count = count,
-                EntityList = list
+                EntityList = await list
+                    .Skip(offset)
+                    .Take(limit)
+                    .ToListAsync(cancellationToken)
             };
         }
     }
