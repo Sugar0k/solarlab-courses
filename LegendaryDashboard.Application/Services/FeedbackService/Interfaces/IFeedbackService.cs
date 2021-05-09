@@ -12,7 +12,7 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Interfaces
 {
     public interface IFeedbackService
     {
-        Task Create(FeedbackCreateRequest createRequest, CancellationToken cancellationToken);
+        Task<FeedbackDto> Create(FeedbackCreateRequest createRequest, CancellationToken cancellationToken);
         Task Delete(int id, CancellationToken cancellationToken);
         Task<PagedResponse<FeedbackDto>> GetPaged(int id, int offset, int limit, CancellationToken cancellationToken);
         Task<FeedbackDto> GetById(int id, CancellationToken cancellationToken);

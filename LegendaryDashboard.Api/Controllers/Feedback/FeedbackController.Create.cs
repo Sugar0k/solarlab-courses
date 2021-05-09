@@ -16,8 +16,7 @@ namespace LegendaryDashboard.Api.Controllers.Feedback
             [FromBody] FeedbackCreateRequest request,
             CancellationToken cancellationToken)
         {
-            await _feedbackService.Create(request, cancellationToken);
-            return Ok();
+            return Ok(await _feedbackService.Create(request, cancellationToken));
         }
     }
 }

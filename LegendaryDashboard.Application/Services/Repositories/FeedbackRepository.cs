@@ -4,6 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
+using AutoMapper.Internal;
 using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.Feedback.Requests;
 using LegendaryDashboard.Domain.Models;
@@ -47,6 +49,18 @@ namespace LegendaryDashboard.Application.Services.Repositories
                 .ToListAsync(cancellationToken: cancellationToken);
         }
 
+        
+        public new async Task<PagedResponse<Feedback>> GetPaged(
+            Expression<Func<Feedback, bool>> predicate,
+            int offset,
+            int limit,
+            CancellationToken cancellationToken)
+        {
+            var response = await base.GetPaged(predicate, offset, limit, cancellationToken);
+            response.EntityList = response.EntityList.OrderByDescending(f => f.CreateDate).ToList();
+            return response;
+        }
+        
         public async Task<int> Count(Expression<Func<Feedback, bool>> predicate, CancellationToken cancellationToken)
         {
             return await DbSet

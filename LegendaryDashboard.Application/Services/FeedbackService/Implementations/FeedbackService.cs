@@ -31,7 +31,7 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             _accessor = accessor;
         }
 
-        public async Task Create(FeedbackCreateRequest createRequest, CancellationToken cancellationToken)
+        public async Task<FeedbackDto> Create(FeedbackCreateRequest createRequest, CancellationToken cancellationToken)
         {
             if (createRequest == null) throw new ArgumentNullException("Запрос пуст!");
             int commentatorId = ClaimsPrincipalExtensions.GetUserId(_accessor);
@@ -39,6 +39,7 @@ namespace LegendaryDashboard.Application.Services.FeedbackService.Implementation
             feedback.CommentatorId = commentatorId;
             feedback.CreateDate = DateTime.UtcNow;
             await _repository.Save(feedback, cancellationToken);
+            return _mapper.Map<FeedbackDto>(feedback);
         }
 
         public async Task Delete(int id, CancellationToken cancellationToken)
