@@ -59,6 +59,8 @@ namespace LegendaryDashboard.Api
             }
             
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionHandler>();
             
             app.UseAuthentication();
             

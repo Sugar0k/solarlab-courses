@@ -14,6 +14,7 @@ using LegendaryDashboard.Contracts.Contracts;
 using LegendaryDashboard.Contracts.Contracts.User;
 using LegendaryDashboard.Contracts.Contracts.User.Requests;
 using LegendaryDashboard.Domain.Common;
+using LegendaryDashboard.Domain.Exceptions;
 using LegendaryDashboard.Domain.Models;
 using LegendaryDashboard.Infrastructure.IRepositories;
 using LegendaryDashboard.Infrastructure.Options;
@@ -71,7 +72,7 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             var user = await _repository.GetByEmailAndPass(request.Email, request.Password, cancellationToken);
             if (user == null)
             {
-                throw new Exception("Неверный email или пароль!");
+                throw new UserReadableException("Неверный email или пароль!");
             }
             return ClaimsPrincipalExtensions.CreateToken(user, _jwtOptions);
         }
