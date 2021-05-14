@@ -189,10 +189,10 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
             );
         }
 
-        public async Task<string> FindByAdvertId(int id, CancellationToken cancellationToken)
+        public async Task<int> FindByAdvertId(int id, CancellationToken cancellationToken)
         {
             var user = await _repository.FindByAdvertId(id, cancellationToken);
-            return user.Phone;
+            return user.Id;
         }
     }
     
