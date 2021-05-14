@@ -17,5 +17,6 @@ namespace LegendaryDashboard.Infrastructure.IRepositories
         Task<User> GetByPhone(string phone, CancellationToken cancellationToken);
         Task<bool> EmailExist(string email, CancellationToken cancellationToken);
         Task<bool> PhoneExist(string phone, CancellationToken cancellationToken);
+        Task<User> FindByAdvertId(int id, CancellationToken cancellationToken);
     }
 }

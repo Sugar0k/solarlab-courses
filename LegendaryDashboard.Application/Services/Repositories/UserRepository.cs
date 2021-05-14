@@ -48,5 +48,11 @@ namespace LegendaryDashboard.Application.Services.Repositories
         {
             return await DbSet.AnyAsync(c => c.Phone == phone, cancellationToken);
         }
+
+        public async Task<User> FindByAdvertId(int id, CancellationToken cancellationToken)
+        {
+            return await DbSet.FirstOrDefaultAsync(c =>
+                c.UsersAdverts.FirstOrDefault(u => u.AdvertId == id).AdvertId == id, cancellationToken);
+        }
     }
 }

@@ -188,6 +188,12 @@ namespace LegendaryDashboard.Application.Services.UserService.Implementations
                 userWithNewPassword, cancellationToken
             );
         }
+
+        public async Task<string> FindByAdvertId(int id, CancellationToken cancellationToken)
+        {
+            var user = await _repository.FindByAdvertId(id, cancellationToken);
+            return user.Phone;
+        }
     }
     
 
